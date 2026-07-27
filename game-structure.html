@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instabuild</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap');
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #1a1c1a; color: #d1d5db;
+    min-height: 100vh; overflow: hidden;
+  }
+
+  #app { width: 100%; height: 100vh; display: flex; flex-direction: column; }
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
+
+  /* ── Title ── */
+  #title-screen { align-items: center; justify-content: center; text-align: center; padding: 2rem; }
+  #title-screen h1 {
+    font-family: 'Orbitron', monospace; font-size: 3rem; color: #4ade80;
+    letter-spacing: 6px; text-shadow: 0 0 40px rgba(74,222,128,0.25); margin-bottom: 0.3rem;
+  }
+  #title-screen .subtitle { color: #6b7280; font-size: 1rem; margin-bottom: 1rem; }
+  #title-screen .lumberjack-img {
+    width: 180px; height: auto; margin-bottom: 1rem;
+    filter: drop-shadow(0 0 20px rgba(74,222,128,0.3));
+    border-radius: 50%;
+  }
+  #title-screen::after { content: ''; display: block; width: 140px; height: 4px; margin: 0 auto 1.5rem; background: linear-gradient(90deg, #5c3d2e, #a0522d, #8B6914, #a0522d, #5c3d2e); border-radius: 2px; }
+
+  /* ── Dialog overlay ── */
+  .dialog-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.4s;
+  }
+  .dialog-overlay.show { opacity: 1; pointer-events: auto; }
+  .dialog-box {
+    background: #232623; border: 2px solid #4ade80; border-radius: 16px;
+    padding: 2rem 2.5rem; text-align: center; max-width: 420px;
+    box-shadow: 0 0 40px rgba(74,222,128,0.15);
+  }
+  .dialog-box .lumberjack-dialog-img {
+    width: 100px; height: auto; margin-bottom: 1rem;
+    filter: drop-shadow(0 0 15px rgba(74,222,128,0.3));
+  }
+  .dialog-box .msg {
+    font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; color: #d1d5db;
+    margin-bottom: 1.5rem; line-height: 1.5;
+  }
+  .dialog-box .msg span { color: #4ade80; }
+
+  .btn { display: inline-block; padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; border: 2px solid #374151; border-radius: 8px; background: #232623; color: #9ca3af; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
+  .btn:hover { background: #2d302d; border-color: #4ade80; color: #4ade80; }
+  .btn.primary { background: #166534; border-color: #22c55e; color: #fff; }
+  .btn.primary:hover { background: #15803d; border-color: #4ade80; }
+
+  /* ── Phase Select ── */
+  #phase-select-screen { align-items: center; justify-content: center; padding: 2rem; }
+  #phase-select-screen h2 { font-size: 1.8rem; color: #4ade80; margin-bottom: 1.5rem; text-align: center; }
+  .phase-cards { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+  .phase-card { flex: 1; min-width: 200px; max-width: 280px; background: #232623; border: 2px solid #374151; border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
+  .phase-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #5c3d2e, #a0522d, #5c3d2e); }
+  .phase-card:hover { border-color: #4ade80; transform: translateY(-4px); box-shadow: 0 8px 30px rgba(74,222,128,0.08); }
+  .phase-card .phase-num { font-family: 'Orbitron', monospace; font-size: 2rem; font-weight: 800; color: #4ade80; display: block; }
+  .phase-card .phase-label { font-size: 0.8rem; color: #6b7280; text-transform: uppercase; letter-spacing: 2px; margin: 0.2rem 0; }
+  .phase-card .phase-name { font-size: 1.15rem; font-weight: 600; color: #e5e7eb; margin: 0.4rem 0; }
+  .phase-card .level-count { font-size: 0.8rem; color: #6b7280; }
+
+  /* ── Level Grid ── */
+  #level-screen { align-items: center; justify-content: center; padding: 2rem; }
+  #level-screen h2 { font-size: 1.8rem; color: #4ade80; margin-bottom: 0.3rem; text-align: center; }
+  #level-screen .phase-subtitle { text-align: center; color: #6b7280; margin-bottom: 1.5rem; font-size: 0.9rem; }
+  .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.7rem; margin-bottom: 1.5rem; width: 100%; max-width: 500px; }
+  .level-cell { aspect-ratio: 1; background: #232623; border: 2px solid #374151; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Share Tech Mono', monospace; font-size: 1.3rem; font-weight: 700; color: #6b7280; cursor: pointer; transition: all 0.2s; position: relative; }
+  .level-cell:hover { border-color: #4ade80; color: #4ade80; background: #1a2e1a; }
+  .level-cell.completed { border-color: #22c55e; color: #4ade80; background: #0d2818; }
+  .level-cell .wood-dot { position: absolute; bottom: 4px; right: 4px; width: 8px; height: 8px; background: #a0522d; border-radius: 2px; }
+  #level-screen .back-row { text-align: center; }
+
+  /* ── Play Screen ── */
+  #play-screen { position: relative; flex: 1; }
+  #play-screen h2, #play-screen .level-info, #play-screen .btn-row { display: none; }
+  #play-screen .btn-row { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 0.6rem; }
+  #play-screen.game-mode .btn-row { display: flex; }
+  #play-screen .btn-row .btn { font-size: 0.8rem; padding: 0.4rem 1rem; }
+
+  /* ── Game Viewport ── */
+  .game-viewport {
+    position: absolute; inset: 0;
+    background: #1e211e;
+  }
+  .game-viewport canvas { display: block; width: 100%; height: 100%; }
+
+  /* ── HUD Overlay ── */
+  .hud-overlay { position: absolute; bottom: 0; left: 0; right: 0; pointer-events: none; z-index: 10; padding: 8px 16px; background: linear-gradient(transparent, rgba(13,17,13,0.85) 40%); }
+  .hud-dash { display: flex; justify-content: space-between; align-items: flex-end; font-family: 'Share Tech Mono', monospace; }
+  .hud-item { text-align: center; }
+  .hud-item .label { font-size: 0.55rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
+  .hud-item .value { font-size: 1.1rem; color: #4ade80; font-weight: 700; }
+  .hud-speed { font-family: 'Orbitron', monospace; font-size: 2.4rem; color: #4ade80; line-height: 1; }
+  .hud-speed .unit { font-size: 0.7rem; color: #6b7280; }
+  .hud-status { text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: #6b7280; margin-bottom: 2px; }
+  .hud-status span { color: #4ade80; }
+
+  /* ── Controls hint ── */
+  .ctrl-hint { position: absolute; top: 10px; right: 14px; z-index: 10; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: #4b5563; pointer-events: none; }
+
+  /* ── Crash flash ── */
+  .crash-flash { position: absolute; inset: 0; background: rgba(180,30,30,0.6); z-index: 15; pointer-events: none; opacity: 0; transition: opacity 0.15s; }
+  .crash-flash.show { opacity: 1; }
+  .crash-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 16; pointer-events: none; opacity: 0; transition: opacity 0.2s; font-family: 'Orbitron', monospace; font-size: 2.5rem; color: #ff4444; text-shadow: 0 0 20px rgba(255,0,0,0.5); }
+  .crash-text.show { opacity: 1; }
+
+  /* ── Complete overlay ── */
+  .complete-overlay { position: absolute; inset: 0; background: rgba(13,40,24,0.93); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+  .complete-overlay.show { opacity: 1; pointer-events: auto; }
+  .complete-overlay .check { font-size: 3.5rem; color: #4ade80; margin-bottom: 0.3rem; }
+  .complete-overlay .msg { font-family: 'Orbitron', monospace; font-size: 1.5rem; color: #4ade80; margin-bottom: 0.3rem; }
+  .complete-overlay .time { font-size: 0.9rem; color: #6b7280; margin-bottom: 1rem; }
+
+  /* ── Minimap ── */
+  .minimap { position: absolute; bottom: 80px; right: 12px; z-index: 8; width: 130px; height: 170px; background: rgba(13,17,13,0.88); border: 2px solid #374151; border-radius: 8px; overflow: hidden; pointer-events: none; }
+  .minimap canvas { width: 100%; height: 100%; display: block; }
+  .minimap-label { position: absolute; bottom: 81px; right: 50px; font-family: 'Share Tech Mono', monospace; font-size: 0.5rem; color: #4b5563; z-index: 9; pointer-events: none; }
+
+  /* ── Placeholder ── */
+  .placeholder-box { width: 100%; height: 300px; background: #232623; border: 2px dashed #374151; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #4b5563; font-size: 1rem; margin: 2rem auto; max-width: 600px; }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <div id="title-screen" class="screen active">
+    <h1>INSTABUILD</h1>
+    <p class="subtitle">Top-down delivery. Steer the curves. Don't crash.</p>
+    <img class="lumberjack-img" src="lucid-origin_an_image_of_a_lomberjack_cartoon_style_an_axe_in_his_hand_with_a_broen_cap_game_-0-removebg-preview.png" alt="Lumberjack">
+    <button class="btn primary" onclick="showDialog()">START</button>
+  </div>
+
+  <!-- Dialog -->
+  <div class="dialog-overlay" id="dialog-overlay">
+    <div class="dialog-box">
+      <img class="lumberjack-dialog-img" src="lucid-origin_an_image_of_a_lomberjack_cartoon_style_an_axe_in_his_hand_with_a_broen_cap_game_-0-removebg-preview.png" alt="Lumberjack">
+      <div class="msg">Hello, are you ready for this adventure <span>Lumberjack</span>?</div>
+      <button class="btn primary" onclick="startGame()">LET'S GO!</button>
+    </div>
+  </div>
+
+  <div id="phase-select-screen" class="screen">
+    <h2>Select Phase</h2>
+    <div class="phase-cards" id="phase-cards"></div>
+  </div>
+
+  <div id="level-screen" class="screen">
+    <h2 id="level-phase-title"></h2>
+    <p class="phase-subtitle" id="level-phase-sub"></p>
+    <div class="level-grid" id="level-grid"></div>
+    <div class="back-row"><button class="btn" onclick="showScreen('phase-select')">← Back to Phases</button></div>
+  </div>
+
+  <div id="play-screen" class="screen">
+    <!-- Game viewport fills the entire screen -->
+    <div class="game-viewport" id="viewport">
+      <canvas id="game-canvas"></canvas>
+      <div class="ctrl-hint">W/S speed · A/D steer</div>
+      <div class="minimap"><canvas id="minimap-canvas" width="130" height="170"></canvas></div>
+      <div class="minimap-label">MAP</div>
+
+      <div class="hud-overlay">
+        <div class="hud-status"><span id="hud-status-text">DRIVE TO PICKUP</span></div>
+        <div class="hud-dash">
+          <div class="hud-item"><div class="label">REMAINING</div><div class="value" id="hud-remain">0m</div></div>
+          <div class="hud-speed"><span id="hud-speed">0</span><span class="unit"> km/h</span></div>
+          <div class="hud-item"><div class="label">TIME</div><div class="value" id="hud-time">0.0s</div></div>
+        </div>
+      </div>
+
+      <div class="crash-flash" id="crash-flash"></div>
+      <div class="crash-text" id="crash-text">CRASHED!</div>
+
+      <div class="complete-overlay" id="complete-overlay">
+        <div class="check">✓</div><div class="msg">DELIVERED</div>
+        <div class="time" id="overlay-time"></div>
+        <button class="btn primary" onclick="finishLevel()">Continue →</button>
+      </div>
+    </div>
+
+    <div id="placeholder-container" style="display:none; flex:1; align-items:center; justify-content:center;">
+      <div class="placeholder-box">[ Phase content coming soon ]</div>
+    </div>
+
+    <div class="btn-row" style="display:none;">
+      <button class="btn" onclick="goBackToLevelGrid()">← Back</button>
+      <button class="btn primary" id="btn-complete" onclick="markComplete()">✓ Mark Complete</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  GAME DATA
+// ═══════════════════════════════════════
+const PHASE1_DISTANCES = [1500, 4000, 8000];
+const WOOD_ITEMS = ['plank','beam','post'];
+
+window.GAME = {
+  phases: [
+    { id: 1, name: 'Timber Run', desc: '3 roads. Choose your route. Deliver the wood.',
+      levels: PHASE1_DISTANCES.map((d,i) => ({ num: i+1, title: `Haul ${(d/1000).toFixed(1)}km`, info: `Deliver a ${WOOD_ITEMS[i]} ${(d/1000).toFixed(1)}km — 3 roads, pick one!`, distance: d, item: WOOD_ITEMS[i] })) },
+    { id: 2, name: 'The Descent', desc: 'Phase 2 — coming soon', levels: Array.from({length:3},(_,i)=>({num:i+1,title:`Level ${i+1}`,info:`Challenge ${i+1} of 3`})) },
+    { id: 3, name: 'The Reckoning', desc: 'Phase 3 — coming soon', levels: Array.from({length:3},(_,i)=>({num:i+1,title:`Level ${i+1}`,info:`Challenge ${i+1} of 3`})) },
+  ]
+};
+
+window.completed = { 1: new Set(), 2: new Set(), 3: new Set() };
+window.currentPhase = null;
+
+// ═══════════════════════════════════════
+//  2D TOP-DOWN ENGINE
+// ═══════════════════════════════════════
+let canvas, ctx;
+let cw, ch;
+let gameActive = false, animFrameId = null;
+
+// Road
+let roadWaypoints = [];      // waypoints for minimap (center road)
+let roadSampled = [];        // road 1 (left)
+let roadSampledC = [];       // road 2 (center) 
+let roadSampledR = [];       // road 3 (right)
+let roadLength = 0;
+const ROAD_HALF_W = 14.0;
+const TRACK_GAP = 22;
+// Car
+let carX = 0, carZ = 0;
+let carAngle = 0;
+let carSpeed = 0;
+let targetSpeed = 0;
+let carSteer = 0;
+let playerTrack = 1;        // 0=left, 1=center, 2=right
+let distanceDriven = 0;
+let closestRoadIdx = 0;
+
+// Level
+let levelData, phaseData, targetDist;
+let carryingWood = false, levelDone = false;
+let startTime = 0;
+let pickupDist = 120;
+let dropoffDist = 0;
+let crashCount = 0;
+let crashCooldown = 0;
+
+// House/tree data
+let sceneryItems = [];
+let camZoom = 0.45;
+
+// Minimap
+let mmCanvas, mmCtx;
+
+// ═══════════════════════════════════════
+//  ROAD GENERATION
+// ═══════════════════════════════════════
+function generateRoad(totalDist) {
+  const pts = [];
+  let x = 0, z = 0;
+  let angle = -Math.PI / 2;
+  pts.push({x, z});
+
+  let remaining = totalDist + 400;
+  while (remaining > 0) {
+    const segLen = Math.min(remaining, 100 + Math.random() * 200);
+    // Full turns — up to 90° corners
+    const turnChance = 0.45 + (totalDist / 25000);
+    if (Math.random() < Math.min(turnChance, 0.75)) {
+      const maxTurn = Math.PI * (0.35 + Math.random() * 0.55); // up to ~90°
+      angle += (Math.random() - 0.5) * maxTurn;
+    }
+    if (angle > -0.1) angle -= 0.3;
+    if (angle < -Math.PI + 0.1) angle += 0.3;
+    if (x < -500) angle += 0.4;
+    if (x > 500) angle -= 0.4;
+
+    x += Math.cos(angle) * segLen;
+    z += Math.sin(angle) * segLen;
+    pts.push({x, z});
+    remaining -= segLen;
+  }
+  return pts;
+}
+
+function sampleRoad() {
+  roadSampled = []; roadSampledC = []; roadSampledR = [];
+  roadLength = 0;
+
+  // Generate ONE road, then create 3 parallel offset tracks
+  roadWaypoints = generateRoad(targetDist);
+
+  // Compute length
+  for (let i = 1; i < roadWaypoints.length; i++) {
+    const dx = roadWaypoints[i].x - roadWaypoints[i-1].x;
+    const dz = roadWaypoints[i].z - roadWaypoints[i-1].z;
+    roadLength += Math.sqrt(dx*dx + dz*dz);
+  }
+
+  const SAMPLE_STEP = 3;
+  let accumulated = 0, segIdx = 0;
+
+  for (let dist = 0; dist <= roadLength; dist += SAMPLE_STEP) {
+    while (segIdx < roadWaypoints.length - 1) {
+      const dx = roadWaypoints[segIdx+1].x - roadWaypoints[segIdx].x;
+      const dz = roadWaypoints[segIdx+1].z - roadWaypoints[segIdx].z;
+      const segLen = Math.sqrt(dx*dx + dz*dz);
+      if (accumulated + segLen >= dist) break;
+      accumulated += segLen; segIdx++;
+    }
+    if (segIdx >= roadWaypoints.length - 1) break;
+
+    const wpA = roadWaypoints[segIdx], wpB = roadWaypoints[segIdx+1];
+    const dx = wpB.x - wpA.x, dz = wpB.z - wpA.z;
+    const segLen = Math.sqrt(dx*dx + dz*dz);
+    const t = segLen > 0 ? (dist - accumulated) / segLen : 0;
+    const tc = Math.max(0, Math.min(1, t));
+    const sx = wpA.x + dx * tc, sz = wpA.z + dz * tc;
+    const sAngle = Math.atan2(dz, dx);
+
+    // Center track
+    roadSampledC.push({x: sx, z: sz, angle: sAngle, dist});
+    // Left track — offset perpendicular
+    const lx = sx + Math.cos(sAngle + Math.PI/2) * TRACK_GAP;
+    const lz = sz + Math.sin(sAngle + Math.PI/2) * TRACK_GAP;
+    roadSampled.push({x: lx, z: lz, angle: sAngle, dist});
+    // Right track — offset opposite
+    const rx = sx - Math.cos(sAngle + Math.PI/2) * TRACK_GAP;
+    const rz = sz - Math.sin(sAngle + Math.PI/2) * TRACK_GAP;
+    roadSampledR.push({x: rx, z: rz, angle: sAngle, dist});
+  }
+}
+
+function getActiveTrack() {
+  return roadSampledC;
+}
+
+function findClosestRoadPoint(cx, cz) {
+  const track = getActiveTrack();
+  let bestIdx = closestRoadIdx;
+  let bestDist = Infinity;
+
+  const searchStart = Math.max(0, closestRoadIdx - 15);
+  const searchEnd = Math.min(track.length - 1, closestRoadIdx + 15);
+
+  for (let i = searchStart; i <= searchEnd; i++) {
+    const dx = cx - track[i].x, dz = cz - track[i].z;
+    const d = dx*dx + dz*dz;
+    if (d < bestDist) { bestDist = d; bestIdx = i; }
+  }
+  if (bestDist > 400) {
+    for (let i = 0; i < track.length; i++) {
+      const dx = cx - track[i].x, dz = cz - track[i].z;
+      const d = dx*dx + dz*dz;
+      if (d < bestDist) { bestDist = d; bestIdx = i; }
+    }
+  }
+  closestRoadIdx = bestIdx;
+  return { idx: bestIdx, dist: Math.sqrt(bestDist), point: track[bestIdx] };
+}
+
+// ═══════════════════════════════════════
+//  SCENERY GENERATION
+// ═══════════════════════════════════════
+function generateScenery() {
+  sceneryItems = [];
+  if (!roadSampledC.length) return;
+
+  for (let i = 10; i < roadSampledC.length - 5; i += 10) {
+    const pt = roadSampledC[i];
+    const side = (i % 20 < 10) ? 1 : -1;
+    const dist = ROAD_HALF_W + (4 + (i % 5) * 2); // houses right at road edge
+
+    const hx = pt.x + Math.cos(pt.angle + Math.PI/2) * dist * side;
+    const hz = pt.z + Math.sin(pt.angle + Math.PI/2) * dist * side;
+
+    if (i % 3 !== 0) {
+      sceneryItems.push({x: hx, z: hz, type: 'house', side, rot: pt.angle});
+    }
+    if (i % 5 !== 0) {
+      const tx = pt.x + Math.cos(pt.angle + Math.PI/2) * (dist - 3) * side;
+      const tz = pt.z + Math.sin(pt.angle + Math.PI/2) * (dist - 3) * side;
+      sceneryItems.push({x: tx, z: tz, type: 'tree', side, rot: 0});
+    }
+  }
+}
+
+// ═══════════════════════════════════════
+//  GAME LOOP
+// ═══════════════════════════════════════
+function resizeCanvas() {
+  const vp = document.getElementById('viewport');
+  cw = vp.clientWidth;
+  ch = vp.clientHeight;
+  canvas.width = cw;
+  canvas.height = ch;
+  camZoom = Math.max(0.85, Math.min(1.5, cw / 600));
+}
+
+function initGame2D(phase, level) {
+  phaseData = phase; levelData = level;
+  targetDist = level.distance;
+  dropoffDist = targetDist;
+  pickupDist = 120;
+  distanceDriven = 0;
+  carSpeed = 0; targetSpeed = 0;
+  carSteer = 0;
+  playerTrack = 1;
+  carryingWood = false; levelDone = false;
+  crashCount = 0; crashCooldown = 0;
+  startTime = performance.now();
+  closestRoadIdx = 0;
+
+  canvas = document.getElementById('game-canvas');
+  ctx = canvas.getContext('2d');
+  mmCanvas = document.getElementById('minimap-canvas');
+  mmCtx = mmCanvas.getContext('2d');
+  resizeCanvas();
+
+  // Generate road
+  roadWaypoints = generateRoad(targetDist);
+  sampleRoad();
+
+  // Place car on center road at start
+  if (roadSampledC.length > 5) {
+    carX = roadSampledC[5].x;
+    carZ = roadSampledC[5].z;
+    carAngle = roadSampledC[5].angle;
+  }
+
+  generateScenery();
+
+  document.getElementById('complete-overlay').classList.remove('show');
+  document.getElementById('game-container') && (document.getElementById('game-container').style.display = 'block');
+  document.getElementById('placeholder-container').style.display = 'none';
+  document.getElementById('play-screen').classList.add('game-mode');
+
+  gameActive = true;
+  updateHUD();
+  loop();
+}
+
+function loop(ts) {
+  if (!gameActive) return;
+  animFrameId = requestAnimationFrame(loop);
+
+  const dt = Math.min(0.05, 1/60); // fixed-ish timestep
+  update(dt);
+  draw();
+}
+
+function update(dt) {
+  if (levelDone) return;
+
+  const keys = window._keys || {};
+  crashCooldown = Math.max(0, crashCooldown - dt);
+
+  // Speed
+  if (keys['KeyW'] || keys['ArrowUp']) targetSpeed = Math.min(targetSpeed + 30 * dt, 100);
+  else if (keys['KeyS'] || keys['ArrowDown']) targetSpeed = Math.max(targetSpeed - 55 * dt, -15);
+  else { targetSpeed *= 0.96; if (Math.abs(targetSpeed) < 0.3) targetSpeed = 0; }
+
+  carSpeed += (targetSpeed - carSpeed) * 0.1;
+  const mps = carSpeed * (1000 / 3600);
+
+  // Steering — A = left, D = right
+  let steerInput = 0;
+  if (keys['KeyA'] || keys['ArrowLeft']) steerInput = -1;
+  if (keys['KeyD'] || keys['ArrowRight']) steerInput = 1;
+  carSteer += (steerInput - carSteer) * 0.25;
+
+  // Apply steering to car angle — faster steering, full turns
+  const steerRate = 1.8 * (carSpeed / 35);
+  carAngle += carSteer * steerRate * dt;
+
+  // Move car
+  carX += Math.cos(carAngle) * mps * dt;
+  carZ += Math.sin(carAngle) * mps * dt;
+
+  // Update odometer
+  distanceDriven += Math.abs(mps) * dt;
+
+  // Find closest road point
+  const closest = findClosestRoadPoint(carX, carZ);
+  const lateralDist = closest.dist;
+
+  // CRASH CHECK — if car is off the road
+  if (lateralDist > ROAD_HALF_W + 0.8 && crashCooldown <= 0) {
+    crash();
+  }
+
+  // Pickup check
+  if (!carryingWood && distanceDriven >= pickupDist) {
+    carryingWood = true;
+  }
+
+  // Drop-off check
+  if (carryingWood && distanceDriven >= dropoffDist) {
+    completeLevel();
+  }
+
+  updateHUD();
+  drawMinimap();
+}
+
+function crash() {
+  if (crashCooldown > 0) return;
+  crashCount++;
+  crashCooldown = 1.5;
+  carSpeed = 0;
+  targetSpeed = 0;
+
+  const track = getActiveTrack();
+  const backIdx = Math.max(0, closestRoadIdx - 35);
+  carX = track[backIdx].x;
+  carZ = track[backIdx].z;
+  carAngle = track[backIdx].angle;
+  distanceDriven = Math.max(0, track[backIdx].dist);
+  closestRoadIdx = backIdx;
+  carSteer = 0;
+
+  // Flash
+  const flash = document.getElementById('crash-flash');
+  const text = document.getElementById('crash-text');
+  flash.classList.add('show');
+  text.classList.add('show');
+  setTimeout(() => { flash.classList.remove('show'); text.classList.remove('show'); }, 600);
+
+  // If crashed 3+ times, lose level
+  if (crashCount >= 3) {
+    levelDone = true;
+    setTimeout(() => {
+      document.getElementById('complete-overlay').querySelector('.check').textContent = '✗';
+      document.getElementById('complete-overlay').querySelector('.msg').textContent = 'TOO MANY CRASHES';
+      document.getElementById('overlay-time').textContent = 'Drive more carefully on the curves!';
+      document.getElementById('complete-overlay').classList.add('show');
+    }, 700);
+  }
+}
+
+function completeLevel() {
+  levelDone = true;
+  const elapsed = (performance.now() - startTime) / 1000;
+  document.getElementById('complete-overlay').querySelector('.check').textContent = '✓';
+  document.getElementById('complete-overlay').querySelector('.msg').textContent = 'DELIVERED';
+  document.getElementById('overlay-time').textContent = `Time: ${elapsed.toFixed(1)}s · Crashes: ${crashCount} · ${(distanceDriven/1000).toFixed(1)}km`;
+  document.getElementById('complete-overlay').classList.add('show');
+  window.completed[phaseData.id].add(levelData.num);
+  window.saveState();
+}
+
+function updateHUD() {
+  const remain = Math.max(0, Math.round((dropoffDist - distanceDriven) / 100) * 100);
+  document.getElementById('hud-remain').textContent = remain >= 1000 ? (remain/1000).toFixed(1)+'km' : remain+'m';
+  document.getElementById('hud-speed').textContent = Math.round(Math.abs(carSpeed));
+  document.getElementById('hud-time').textContent = ((performance.now() - startTime) / 1000).toFixed(1) + 's';
+
+  const status = levelDone ? 'DELIVERED' : (carryingWood ? 'HAULING → SITE' : 'PICK UP WOOD');
+  document.getElementById('hud-status-text').textContent = status;
+}
+
+// ═══════════════════════════════════════
+//  DRAWING — car-fixed camera, 3 tracks
+// ═══════════════════════════════════════
+function draw() {
+  ctx.fillStyle = '#2d4a1e';
+  ctx.fillRect(0, 0, cw, ch);
+
+  if (roadSampled.length < 2) return;
+
+  // ── World transform: car always faces UP ──
+  ctx.save();
+  ctx.translate(cw / 2, ch / 2);
+  // Rotate so car points up: world rotates by -(carAngle + PI/2)
+  ctx.rotate(-carAngle - Math.PI / 2);
+  ctx.translate(-carX, -carZ);
+
+  // ── Draw only the main road ──
+  drawTrackRoad(roadSampledC, '#3a3a3a', 1.0);
+
+  // ── Scenery ──
+  for (const item of sceneryItems) {
+    if (!isVisibleWorld(item.x, item.z, 80)) continue;
+    if (item.type === 'house') {
+      const hw = 12 * camZoom, hh = 10 * camZoom;
+      ctx.fillStyle = '#c4a882';
+      ctx.fillRect(item.x - hw/2, item.z - hh/2, hw, hh);
+      ctx.fillStyle = '#5c3d2e';
+      ctx.fillRect(item.x - hw/2 - 2, item.z - hh/2 - 3, hw + 4, 4);
+      ctx.fillStyle = '#3a2e25';
+      ctx.fillRect(item.x - 2, item.z + 2, 4, hh/2 - 2);
+    } else if (item.type === 'tree') {
+      const r = 5 * camZoom;
+      ctx.fillStyle = '#2d5a1e';
+      ctx.beginPath(); ctx.arc(item.x, item.z, r, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#1a3a10';
+      ctx.beginPath(); ctx.arc(item.x, item.z, r*0.6, 0, Math.PI*2); ctx.fill();
+    }
+  }
+
+  // ── Pickup zone ──
+  if (roadSampledC.length > 10) {
+    const idx = Math.min(roadSampledC.length-1, Math.floor(pickupDist / 3));
+    const pt = roadSampledC[idx];
+    ctx.fillStyle = 'rgba(74,222,128,0.15)';
+    ctx.fillRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 2.5;
+    ctx.strokeRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.fillStyle = '#22c55e';
+    ctx.font = `${Math.max(9, 12*camZoom)}px "Share Tech Mono", monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText('PICKUP', pt.x, pt.z - 22);
+  }
+
+  // ── Drop-off zone ──
+  if (roadSampledC.length > 10) {
+    const idx = Math.min(roadSampledC.length-1, Math.floor(dropoffDist / 3));
+    const pt = roadSampledC[idx];
+    ctx.fillStyle = 'rgba(245,158,11,0.15)';
+    ctx.fillRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2.5;
+    ctx.strokeRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.fillStyle = '#f59e0b';
+    ctx.font = `${Math.max(9, 12*camZoom)}px "Share Tech Mono", monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText('DROP-OFF', pt.x, pt.z - 22);
+  }
+
+  ctx.restore();
+  ctx.textAlign = 'start';
+
+  // ── Car — always at screen center, facing UP ──
+  const carW = 16 * camZoom, carH = 24 * camZoom;
+  const cx = cw / 2, cy = ch / 2;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  // Car body
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.fillRect(-carW/2 + 2, -carH/2 + 2, carW, carH);
+  ctx.fillStyle = '#4ade80';
+  ctx.fillRect(-carW/2, -carH/2, carW, carH);
+  // Windshield (front = top)
+  ctx.fillStyle = '#86efac';
+  ctx.fillRect(-carW/2 + 2, -carH/2 + 2, carW - 4, carH * 0.3);
+  // Rear
+  ctx.fillStyle = '#166534';
+  ctx.fillRect(-carW/2 + 2, carH/2 - carH*0.25, carW - 4, carH * 0.2);
+  // Wheels
+  ctx.fillStyle = '#1f2937';
+  ctx.fillRect(-carW/2 - 2, -carH/2 + 3, 4, 8 * camZoom);
+  ctx.fillRect(carW/2 - 2, -carH/2 + 3, 4, 8 * camZoom);
+  ctx.fillRect(-carW/2 - 2, carH/2 - 8*camZoom - 3, 4, 8 * camZoom);
+  ctx.fillRect(carW/2 - 2, carH/2 - 8*camZoom - 3, 4, 8 * camZoom);
+  // Headlights (front)
+  ctx.fillStyle = '#ffff88';
+  ctx.fillRect(-carW/2 + 2, -carH/2, 3, 3);
+  ctx.fillRect(carW/2 - 5, -carH/2, 3, 3);
+  ctx.restore();
+
+  // Wood load
+  if (carryingWood && !levelDone) {
+    ctx.fillStyle = '#a0522d';
+    ctx.fillRect(cx - 5, cy - carH/2 - 9*camZoom, 10, 7 * camZoom);
+    ctx.fillStyle = '#8B6914';
+    ctx.fillRect(cx - 4, cy - carH/2 - 14*camZoom, 8, 6 * camZoom);
+  }
+
+  // Crash counter
+  if (crashCount > 0) {
+    ctx.fillStyle = '#ff4444';
+    ctx.font = `${Math.max(10, 14*camZoom)}px "Share Tech Mono", monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText(`Crashes: ${crashCount}/3`, cw/2, 44);
+    ctx.textAlign = 'start';
+  }
+}
+
+function drawTrackRoad(track, color, alpha) {
+  if (track.length < 2) return;
+  const hw = ROAD_HALF_W * camZoom;
+
+  for (let i = 1; i < track.length; i++) {
+    const p1 = track[i-1], p2 = track[i];
+    // Simple culling
+    const dx = p1.x - carX, dz = p1.z - carZ;
+    if (Math.abs(dx) > cw/camZoom && Math.abs(dz) > ch/camZoom) { i += 5; continue; }
+
+    const sdx = p2.x - p1.x, sdz = p2.z - p1.z;
+    const segLen = Math.sqrt(sdx*sdx + sdz*sdz);
+    if (segLen < 0.1) continue;
+
+    const nx = -sdz / segLen * hw, ny = sdx / segLen * hw;
+
+    ctx.fillStyle = color;
+    ctx.globalAlpha = alpha;
+    ctx.beginPath();
+    ctx.moveTo(p1.x + nx, p1.z + ny);
+    ctx.lineTo(p2.x + nx, p2.z + ny);
+    ctx.lineTo(p2.x - nx, p2.z - ny);
+    ctx.lineTo(p1.x - nx, p1.z - ny);
+    ctx.closePath(); ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Edge lines for center road
+    if (track === roadSampledC) {
+      ctx.strokeStyle = '#665500'; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(p1.x + nx, p1.z + ny);
+      ctx.lineTo(p2.x + nx, p2.z + ny);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(p1.x - nx, p1.z - ny);
+      ctx.lineTo(p2.x - nx, p2.z - ny);
+      ctx.stroke();
+      // Center dash
+      if (i % 4 === 0) {
+        ctx.strokeStyle = '#777'; ctx.lineWidth = 1;
+        ctx.setLineDash([6, 12]);
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.z); ctx.lineTo(p2.x, p2.z); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+  }
+}
+
+function isVisibleWorld(wx, wz, pad) {
+  // In car-relative space after transform, check bounds
+  return Math.abs(wx - carX) < cw/camZoom + pad && Math.abs(wz - carZ) < ch/camZoom + pad;
+}
+
+// ═══════════════════════════════════════
+//  MINIMAP
+// ═══════════════════════════════════════
+function drawMinimap() {
+  if (!mmCtx || !roadWaypoints.length) return;
+  const W = mmCanvas.width, H = mmCanvas.height;
+  mmCtx.fillStyle = '#0d110d'; mmCtx.fillRect(0, 0, W, H);
+
+  let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+  for (const wp of roadWaypoints) {
+    if (wp.x < minX) minX = wp.x; if (wp.x > maxX) maxX = wp.x;
+    if (wp.z < minZ) minZ = wp.z; if (wp.z > maxZ) maxZ = wp.z;
+  }
+  const pad = 80; minX -= pad; maxX += pad; minZ -= pad; maxZ += pad;
+  const scale = Math.min((W-16)/(maxX-minX), (H-16)/(maxZ-minZ));
+  const offX = 8 + (W-16 - (maxX-minX)*scale)/2;
+  const offY = 8 + (H-16 - (maxZ-minZ)*scale)/2;
+  const sx = v => offX + (v-minX)*scale;
+  const sy = v => offY + (v-minZ)*scale;
+
+  mmCtx.fillStyle = '#1a2e1a'; mmCtx.fillRect(0, 0, W, H);
+
+  // Main road
+  mmCtx.strokeStyle = '#4a4a4a'; mmCtx.lineWidth = 5; mmCtx.lineCap = 'round'; mmCtx.lineJoin = 'round';
+  mmCtx.beginPath();
+  for (let i = 0; i < roadWaypoints.length; i++) {
+    const px = sx(roadWaypoints[i].x), py = sy(roadWaypoints[i].z);
+    i === 0 ? mmCtx.moveTo(px, py) : mmCtx.lineTo(px, py);
+  }
+  mmCtx.stroke();
+
+  // Pickup
+  if (roadSampledC.length > 10) {
+    const pt = roadSampledC[Math.floor(pickupDist/3)];
+    mmCtx.fillStyle = '#4ade80'; mmCtx.fillRect(sx(pt.x)-4, sy(pt.z)-3, 8, 6);
+  }
+  // Drop-off
+  if (roadSampledC.length > 10) {
+    const idx = Math.floor(dropoffDist/3);
+    if (idx < roadSampledC.length) {
+      const pt = roadSampledC[idx];
+      mmCtx.fillStyle = '#f59e0b'; mmCtx.fillRect(sx(pt.x)-4, sy(pt.z)-3, 8, 6);
+    }
+  }
+  // Player
+  mmCtx.fillStyle = '#4ade80';
+  mmCtx.beginPath(); mmCtx.arc(sx(carX), sy(carZ), 3, 0, Math.PI*2); mmCtx.fill();
+  mmCtx.strokeStyle = '#fff'; mmCtx.lineWidth = 1;
+  mmCtx.beginPath(); mmCtx.arc(sx(carX), sy(carZ), 3, 0, Math.PI*2); mmCtx.stroke();
+}
+
+// ═══════════════════════════════════════
+//  PUBLIC API
+// ═══════════════════════════════════════
+window.initGame3D = function(phase, level) {
+  initGame2D(phase, level);
+};
+window.stopGame3D = function() {
+  gameActive = false;
+  if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
+};
+window.finishLevel = function() {
+  window.stopGame3D();
+  window.markComplete();
+  const pid = +document.getElementById('play-screen').dataset.phaseId;
+  document.getElementById('play-screen').classList.remove('game-mode');
+  if (pid) window.openPhase(pid); else window.showScreen('phase-select');
+};
+
+// Keyboard
+window._keys = {};
+window._leftHeld = false; window._rightHeld = false;
+window.addEventListener('keydown', e => {
+  window._keys[e.code] = true;
+  if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyW','KeyA','KeyS','KeyD','Space'].includes(e.code)) e.preventDefault();
+});
+window.addEventListener('keyup', e => { window._keys[e.code] = false; });
+window.addEventListener('resize', () => { if (canvas) resizeCanvas(); });
+
+console.log('Instabuild 2D — top-down curve racing ready');
+</script>
+
+<!-- ═══════ UI LOGIC ═══════ -->
+<script>
+window.saveState = function() { const r={}; for(const[p,s] of Object.entries(window.completed)) r[p]=[...s]; localStorage.setItem('instabuild2d', JSON.stringify(r)); };
+window.loadState = function() { try { const r=JSON.parse(localStorage.getItem('instabuild2d')); if(r) for(const[p,a] of Object.entries(r)) window.completed[p]=new Set(a); } catch(e){} };
+
+window.showDialog = function() {
+  const dlg = document.getElementById('dialog-overlay');
+  if (dlg) dlg.classList.add('show');
+};
+window.startGame = function() {
+  const dlg = document.getElementById('dialog-overlay');
+  if (dlg) dlg.classList.remove('show');
+  setTimeout(() => { window.showScreen('phase-select'); }, 100);
+};
+
+window.showScreen = function(name) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(name+'-screen');
+  if (el) el.classList.add('active');
+  if (window.stopGame3D) window.stopGame3D();
+  document.getElementById('play-screen').classList.remove('game-mode');
+  if (name==='phase-select') window.renderPhaseSelect();
+  if (name==='level') window.renderLevelGrid(window.currentPhase);
+};
+
+window.renderPhaseSelect = function() {
+  document.getElementById('phase-cards').innerHTML = window.GAME.phases.map(p => {
+    const d = window.completed[p.id].size;
+    return `<div class="phase-card" onclick="window.openPhase(${p.id})"><span class="phase-num">${['','I','II','III'][p.id]}</span><span class="phase-label">Phase ${p.id}</span><div class="phase-name">${p.name}</div><div class="level-count">${d} / ${p.levels.length} complete</div></div>`;
+  }).join('');
+};
+
+window.openPhase = function(pid) {
+  window.currentPhase = pid;
+  const p = window.GAME.phases.find(x=>x.id===pid);
+  document.getElementById('level-phase-title').textContent = `Phase ${['','I','II','III'][pid]} — ${p.name}`;
+  document.getElementById('level-phase-sub').textContent = `${p.desc}  ·  ${window.completed[pid].size} / ${p.levels.length} complete`;
+  window.showScreen('level');
+};
+
+window.renderLevelGrid = function(pid) {
+  if(!pid) return;
+  const p = window.GAME.phases.find(x=>x.id===pid);
+  let h = '';
+  for(const l of p.levels) {
+    let cls = 'level-cell'; if(window.completed[pid].has(l.num)) cls += ' completed';
+    h += `<div class="${cls}" onclick="window.openLevel(${pid},${l.num})" title="${l.title}">${l.num}<div class="wood-dot"></div></div>`;
+  }
+  document.getElementById('level-grid').innerHTML = h;
+};
+
+window.openLevel = function(pid, lnum) {
+  const p = window.GAME.phases.find(x=>x.id===pid);
+  const l = p.levels.find(x=>x.num===lnum);
+  document.getElementById('play-screen').dataset.phaseId = pid;
+  document.getElementById('play-screen').dataset.levelNum = lnum;
+  window.showScreen('play');
+  document.getElementById('play-screen').classList.add('game-mode');
+
+  if (pid===1) {
+    document.getElementById('placeholder-container').style.display = 'none';
+    window.initGame3D(p, l);
+  } else {
+    document.getElementById('placeholder-container').style.display = 'flex';
+    document.getElementById('play-screen').classList.remove('game-mode');
+  }
+};
+
+window.goBackToLevelGrid = function() {
+  if(window.stopGame3D) window.stopGame3D();
+  document.getElementById('play-screen').classList.remove('game-mode');
+  const pid=+document.getElementById('play-screen').dataset.phaseId;
+  pid?window.openPhase(pid):window.showScreen('phase-select');
+};
+window.markComplete = function() {
+  const pid=+document.getElementById('play-screen').dataset.phaseId;
+  const ln=+document.getElementById('play-screen').dataset.levelNum;
+  if(pid&&ln){window.completed[pid].add(ln);window.saveState();}
+};
+
+window.loadState(); window.renderPhaseSelect();
+</script>
+</body>
+</html>
