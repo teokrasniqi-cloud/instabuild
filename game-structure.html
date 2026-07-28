@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Instabuild</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -32,28 +33,91 @@
     border-radius: 50%;
   }
   #title-screen::after { content: ''; display: block; width: 140px; height: 4px; margin: 0 auto 1.5rem; background: linear-gradient(90deg, #5c3d2e, #a0522d, #8B6914, #a0522d, #5c3d2e); border-radius: 2px; }
+  #title-screen .btn-row { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ── About InstaBuilt info screen ── */
+  #about-screen { align-items: center; justify-content: flex-start; padding: 2rem; overflow-y: auto; }
+  #about-screen h2 {
+    font-family: 'Orbitron', sans-serif; font-size: 2rem; color: #4ade80;
+    letter-spacing: 4px; text-shadow: 0 0 30px rgba(74,222,128,0.2); margin-bottom: 0.3rem; text-align: center;
+  }
+  #about-screen .section-divider { width: 100px; height: 3px; margin: 0.6rem auto 1.2rem; background: linear-gradient(90deg, #5c3d2e, #a0522d, #5c3d2e); border-radius: 2px; }
+  #about-screen .about-content { max-width: 700px; width: 100%; }
+  .about-card {
+    background: #1a1c1a; border: 1px solid #374151; border-radius: 12px;
+    padding: 1.2rem 1.5rem; margin-bottom: 1rem;
+  }
+  .about-card h3 {
+    font-family: 'Orbitron', sans-serif; font-size: 1rem; color: #4ade80;
+    letter-spacing: 2px; margin-bottom: 0.5rem;
+  }
+  .about-card p { color: #9ca3af; font-size: 0.85rem; line-height: 1.6; margin: 0.3rem 0; }
+  .about-card p strong { color: #d1d5db; }
+  .about-card .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+  .about-tag {
+    background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25);
+    border-radius: 20px; padding: 0.3rem 0.8rem; font-size: 0.75rem;
+    color: #4ade80; font-family: 'Share Tech Mono', monospace;
+  }
+  .about-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-top: 0.6rem; }
+  .about-step {
+    background: #232623; border: 1px solid #374151; border-radius: 10px;
+    padding: 0.8rem 0.5rem; text-align: center;
+  }
+  .about-step .step-num {
+    font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 700; color: #4ade80;
+  }
+  .about-step .step-label { font-size: 0.7rem; color: #6b7280; margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 1px; }
 
   /* ── Dialog overlay ── */
   .dialog-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100;
     display: flex; align-items: center; justify-content: center;
     opacity: 0; pointer-events: none; transition: opacity 0.4s;
   }
   .dialog-overlay.show { opacity: 1; pointer-events: auto; }
   .dialog-box {
-    background: #232623; border: 2px solid #4ade80; border-radius: 16px;
-    padding: 2rem 2.5rem; text-align: center; max-width: 420px;
-    box-shadow: 0 0 40px rgba(74,222,128,0.15);
+    background: #1a1c1a; border: 2px solid #4ade80; border-radius: 20px;
+    padding: 1.6rem 2rem; max-width: 520px; width: 90%;
+    box-shadow: 0 0 50px rgba(74,222,128,0.15);
+    display: flex; align-items: flex-start; gap: 1.2rem;
   }
   .dialog-box .lumberjack-dialog-img {
-    width: 100px; height: auto; margin-bottom: 1rem;
-    filter: drop-shadow(0 0 15px rgba(74,222,128,0.3));
+    width: 90px; height: 90px; object-fit: cover; border-radius: 50%;
+    border: 3px solid #4ade80; flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(74,222,128,0.25);
   }
-  .dialog-box .msg {
-    font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; color: #d1d5db;
-    margin-bottom: 1.5rem; line-height: 1.5;
+  .dialog-chat {
+    flex: 1; display: flex; flex-direction: column; gap: 0.8rem;
   }
-  .dialog-box .msg span { color: #4ade80; }
+  .dialog-bubble {
+    background: #232623; border: 1px solid #374151; border-radius: 16px;
+    padding: 0.9rem 1.1rem; position: relative;
+  }
+  .dialog-bubble::before {
+    content: ''; position: absolute; left: -10px; top: 18px;
+    width: 0; height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 10px solid #374151;
+  }
+  .dialog-bubble::after {
+    content: ''; position: absolute; left: -7px; top: 20px;
+    width: 0; height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 8px solid #232623;
+  }
+  .dialog-bubble .npc-name {
+    font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #4ade80;
+    letter-spacing: 1px; margin-bottom: 0.3rem;
+  }
+  .dialog-bubble .msg {
+    font-family: 'Share Tech Mono', monospace; font-size: 1rem; color: #d1d5db;
+    line-height: 1.5;
+  }
+  .dialog-bubble .msg span { color: #4ade80; }
+  .dialog-box .btn { margin-top: 0.4rem; align-self: flex-end; }
 
   .btn { display: inline-block; padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; border: 2px solid #374151; border-radius: 8px; background: #232623; color: #9ca3af; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
   .btn:hover { background: #2d302d; border-color: #4ade80; color: #4ade80; }
@@ -131,9 +195,210 @@
 
   /* ── Placeholder ── */
   .placeholder-box { width: 100%; height: 300px; background: #232623; border: 2px dashed #374151; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #4b5563; font-size: 1rem; margin: 2rem auto; max-width: 600px; }
+
+  /* ── Phase 2: 3D Woodcutting HUD ── */
+  #viewport3d { position: absolute; inset: 0; display: none; }
+  #viewport3d.active { display: block; }
+  #viewport3d canvas { display: block; width: 100%; height: 100%; }
+
+  #wood-panel {
+    position: absolute; top: 14px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #wood-icon { font-size: 28px; }
+  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
+  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  #house-panel {
+    position: absolute; top: 14px; right: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  #preview-viewport {
+    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
+    border: 2px solid #4a5568;
+    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
+  }
+  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
+  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
+  #build-cost.has-enough { color: #4ade80; }
+  #build-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
+    transition: all 0.3s ease; letter-spacing: 1px;
+  }
+  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
+
+  #build-mode-banner {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
+    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
+    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
+  }
+  #build-mode-banner.show { display: block; }
+  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
+  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
+
+  #completion-overlay-3d {
+    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
+    display: none; justify-content: center; align-items: center; flex-direction: column;
+    backdrop-filter: blur(4px);
+  }
+  #completion-overlay-3d.show { display: flex; }
+  #completion-card-3d {
+    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
+    border-radius: 18px; padding: 30px 40px; text-align: center;
+    box-shadow: 0 0 60px rgba(251,191,36,0.25);
+  }
+  #completion-emoji { font-size: 64px; }
+  #completion-title-3d {
+    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
+  }
+  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
+  .btn-gold {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
+    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
+  }
+  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
+
+  #phase2-instructions {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
+  }
+  #phase2-instructions span { color: #4ade80; font-weight: 700; }
+
+  /* ── Leave button ── */
+  .leave-btn {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,100,100,0.4); background: rgba(255,60,60,0.12);
+    color: #f87171; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(6px);
+  }
+  .leave-btn:hover { background: rgba(255,60,60,0.3); border-color: #f87171; box-shadow: 0 0 14px rgba(255,60,60,0.25); }
+
+  /* ── Universal back button ── */
+  #back-btn {
+    position: fixed; top: 10px; left: 10px; z-index: 200;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15); background: rgba(15,17,15,0.85);
+    color: #9ca3af; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(8px);
+    display: none;
+  }
+  #back-btn.show { display: block; }
+  #back-btn:hover { background: rgba(74,222,128,0.15); border-color: #4ade80; color: #4ade80; }
+
+  /* ── Build plank button ── */
+  #place-plank-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.2);
+    color: #4ade80; cursor: pointer; transition: all 0.2s;
+    margin-top: 8px; display: none;
+  }
+  #place-plank-btn.show { display: inline-block; }
+  #place-plank-btn:hover { background: rgba(74,222,128,0.4); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+
+  /* ── Tutorial prompts ── */
+  #tutorial-overlay {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 25;
+    background: rgba(15,17,15,0.94); border: 2px solid #fbbf24; border-radius: 14px;
+    padding: 12px 22px; text-align: center; display: none;
+    box-shadow: 0 0 30px rgba(251,191,36,0.2);
+  }
+  #tutorial-overlay.show { display: block; animation: fadeInSlide 0.5s ease; }
+  @keyframes fadeInSlide { from{opacity:0;transform:translateX(-50%)translateY(10px)} to{opacity:1;transform:translateX(-50%)translateY(0)} }
+  #tutorial-text { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #fbbf24; }
+  #tutorial-hint { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+  /* ── Money & Screws HUD ── */
+  #money-panel {
+    position: absolute; top: 70px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #fbbf24;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #fbbf24;
+  }
+  #screws-panel {
+    position: absolute; top: 110px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #9ca3af;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #d1d5db;
+  }
+
+  /* ── Shop modal ── */
+  #shop-modal {
+    position: absolute; inset: 0; z-index: 40;
+    background: rgba(0,0,0,0.8); display: none;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  #shop-modal.show { display: flex; }
+  #shop-card {
+    background: #1a1c1a; border: 2px solid #fbbf24; border-radius: 16px;
+    padding: 24px 30px; text-align: center; max-width: 320px; width: 90%;
+    box-shadow: 0 0 40px rgba(251,191,36,0.2);
+    position: relative;
+  }
+  #shop-card h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fbbf24; margin-bottom: 14px; }
+  .shop-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #232623; color: #d1d5db; font-size: 13px; }
+  .shop-row .price { color: #fbbf24; font-weight: 700; }
+  .shop-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.12); color: #4ade80; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .shop-btn:hover { background: rgba(74,222,128,0.25); }
+  .shop-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .shop-close { margin-top: 12px; }
+
+  /* ── Upgrade panel ── */
+  #upgrade-panel {
+    position: absolute; top: 150px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #a855f7;
+    border-radius: 10px; padding: 6px 14px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px; color: #c084fc;
+    display: none; /* shown during game */
+  }
+
+  /* ── Build zone marker ── */
+  #build-zone-indicator {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4);
+    border-radius: 20px; padding: 6px 16px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4ade80;
+    display: none;
+  }
+
+  /* ── Design mode button ── */
+  #design-btn {
+    position: absolute; bottom: 50px; right: 14px; z-index: 12;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 8px 16px; border-radius: 20px;
+    border: 2px solid #60a5fa; background: rgba(96,165,250,0.12);
+    color: #60a5fa; cursor: pointer; transition: all 0.2s;
+    display: none;
+  }
+  #design-btn:hover { background: rgba(96,165,250,0.25); }
+  #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
 </style>
 </head>
 <body>
+
+<button id="back-btn" onclick="window.goBack()">← Back</button>
 
 <div id="app">
 
@@ -141,21 +406,85 @@
     <h1>INSTABUILD</h1>
     <p class="subtitle">Top-down delivery. Steer the curves. Don't crash.</p>
     <img class="lumberjack-img" src="lucid-origin_an_image_of_a_lomberjack_cartoon_style_an_axe_in_his_hand_with_a_broen_cap_game_-0-removebg-preview.png" alt="Lumberjack">
-    <button class="btn primary" onclick="showDialog()">START</button>
+    <div class="btn-row">
+      <button class="btn primary" onclick="showDialog()">START</button>
+      <button class="btn" onclick="showScreen('about')" style="border-color:#fbbf24;color:#fbbf24;">📖 READ ABOUT INSTABUILT</button>
+    </div>
+  </div>
+
+  <!-- About InstaBuilt -->
+  <div id="about-screen" class="screen">
+    <h2>ABOUT INSTABUILT</h2>
+    <div class="section-divider"></div>
+    <div class="about-content">
+
+      <div class="about-card">
+        <h3>🏗 Who They Are</h3>
+        <p>InstaBuilt is a <strong>pioneer in off-site modular construction</strong>, operating across the <strong>EU and United States</strong>. They build smarter, greener, and faster — turning visions into reality with cutting-edge factory-built solutions.</p>
+        <div class="tag-row">
+          <span class="about-tag">Modular</span><span class="about-tag">Sustainable</span>
+          <span class="about-tag">Panelized</span><span class="about-tag">Off-Site</span>
+        </div>
+      </div>
+
+      <div class="about-card">
+        <h3>🎯 Mission & Vision</h3>
+        <p><strong>Mission:</strong> Lead the construction industry toward a sustainable and socially responsible future — buildings that benefit the environment and the communities they serve.</p>
+        <p><strong>Vision:</strong> Give every individual access to <strong>sustainable, affordable housing</strong> that is efficient, resilient, and integrated with the natural environment.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>🏠 What They Build</h3>
+        <div class="tag-row">
+          <span class="about-tag">POP UP — 28/52/104 m²</span>
+          <span class="about-tag">Multifamily Housing</span>
+          <span class="about-tag">Senior Housing</span>
+          <span class="about-tag">Micro Apartments</span>
+          <span class="about-tag">Traditional Homes</span>
+          <span class="about-tag">Signature Homes</span>
+          <span class="about-tag">Bathpods</span>
+        </div>
+      </div>
+
+      <div class="about-card">
+        <h3>🔧 How They Do It</h3>
+        <div class="about-steps">
+          <div class="about-step"><div class="step-num">1</div><div class="step-label">Design</div></div>
+          <div class="about-step"><div class="step-num">2</div><div class="step-label">Fabricate</div></div>
+          <div class="about-step"><div class="step-num">3</div><div class="step-label">Transport</div></div>
+          <div class="about-step"><div class="step-num">4</div><div class="step-label">Assemble</div></div>
+        </div>
+        <p style="margin-top:0.6rem;">Components are <strong>designed, fabricated in-factory, transported, and assembled on-site</strong> — delivering swift assembly, cost efficiency, quality assurance, eco-friendliness, and design flexibility.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>🌍 Locations</h3>
+        <p><strong>Europe:</strong> Street Victoria, Prishtina-Mitrovica Highway 12km, Kosovo</p>
+        <p><strong>North America:</strong> 3500 S Dupont Hwy, Dover, DE 19901, United States</p>
+      </div>
+
+      <button class="btn primary" onclick="showScreen('title')" style="display:block;margin:0 auto 2rem;">← Back to Title</button>
+    </div>
   </div>
 
   <!-- Dialog -->
   <div class="dialog-overlay" id="dialog-overlay">
     <div class="dialog-box">
       <img class="lumberjack-dialog-img" src="lucid-origin_an_image_of_a_lomberjack_cartoon_style_an_axe_in_his_hand_with_a_broen_cap_game_-0-removebg-preview.png" alt="Lumberjack">
-      <div class="msg">Hello, are you ready for this adventure <span>Lumberjack</span>?</div>
-      <button class="btn primary" onclick="startGame()">LET'S GO!</button>
+      <div class="dialog-chat">
+        <div class="dialog-bubble">
+          <div class="npc-name">🧔 Lumberjack</div>
+          <div class="msg">Hello, are you ready for this adventure <span>Lumberjack</span>?</div>
+        </div>
+        <button class="btn primary" onclick="startGame()">LET'S GO! 🪓</button>
+      </div>
     </div>
   </div>
 
   <div id="phase-select-screen" class="screen">
     <h2>Select Phase</h2>
     <div class="phase-cards" id="phase-cards"></div>
+    <div class="back-row" style="margin-top:1.2rem;"><button class="btn" onclick="showScreen('title')">← Back to Title</button></div>
   </div>
 
   <div id="level-screen" class="screen">
@@ -169,6 +498,7 @@
     <!-- Game viewport fills the entire screen -->
     <div class="game-viewport" id="viewport">
       <canvas id="game-canvas"></canvas>
+      <button class="leave-btn" onclick="showScreen('phase-select')" title="Leave game">✕ LEAVE</button>
       <div class="ctrl-hint">W/S speed · A/D steer</div>
       <div class="minimap"><canvas id="minimap-canvas" width="130" height="170"></canvas></div>
       <div class="minimap-label">MAP</div>
@@ -189,6 +519,61 @@
         <div class="check">✓</div><div class="msg">DELIVERED</div>
         <div class="time" id="overlay-time"></div>
         <button class="btn primary" onclick="finishLevel()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Phase 2: 3D Woodcutting -->
+    <div id="viewport3d">
+      <button class="leave-btn" onclick="showScreen('phase-select')" title="Leave game">✕ LEAVE</button>
+      <div id="wood-panel">
+        <span id="wood-icon">🪵</span>
+        <div>
+          <div id="wood-count">0</div>
+          <div id="wood-label">Wood Collected</div>
+        </div>
+      </div>
+      <div id="money-panel">💰 <span id="money-count">0</span></div>
+      <div id="screws-panel">🔩 <span id="screws-count">0</span> Screws</div>
+      <div id="upgrade-panel">🪓 Axe Lv.<span id="axe-level">1</span> | <span id="axe-dmg">1</span> DMG</div>
+      <div id="house-panel">
+        <div id="preview-viewport"></div>
+        <div id="build-cost">0 / 0 Wood</div>
+        <button id="build-btn" disabled>🏗 Build House</button>
+      </div>
+      <div id="build-zone-indicator">📍 Build Zone — Stand here to build</div>
+      <button id="design-btn">🎨 Free Design</button>
+      <div id="build-mode-banner">
+        <div id="build-progress-text">Planks: 0 / 0</div>
+        <div id="build-hint">Click near the blueprint to place planks! (Esc to cancel)</div>
+        <button id="place-plank-btn" onclick="handleBuildClick3D()">🔨 Place Plank</button>
+      </div>
+      <div id="tutorial-overlay">
+        <div id="tutorial-text"></div>
+        <div id="tutorial-hint"></div>
+      </div>
+      <div id="shop-modal">
+        <div id="shop-card">
+          <div style="position:absolute;top:12px;right:16px;font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:#fbbf24;">💰 <span id="shop-money-display">0</span></div>
+          <h3>🏪 Shop</h3>
+          <div class="shop-row"><span>Sell Wood</span><span class="price">5💰 each</span><button class="shop-btn" id="shop-sell-wood">Sell All</button></div>
+          <div class="shop-row"><span>Buy Screws</span><span class="price">7💰 each</span><button class="shop-btn" id="shop-buy-screw">Buy 1</button></div>
+          <div class="shop-row"><span>Upgrade Axe</span><span class="price" id="upgrade-cost">50💰</span><button class="shop-btn" id="shop-upgrade-axe">Upgrade</button></div>
+          <button class="btn shop-close" id="shop-close">Close Shop</button>
+        </div>
+      </div>
+      <div id="completion-overlay-3d">
+        <div id="completion-card-3d">
+          <div id="completion-emoji">🏠</div>
+          <div id="completion-title-3d">House Complete!</div>
+          <div id="completion-subtitle-3d"></div>
+          <button class="btn-gold" id="phase2-continue-btn" onclick="window.finish3DLevel()">Continue →</button>
+        </div>
+      </div>
+      <div id="phase2-instructions">
+        <span>WASD</span> Move &nbsp;|&nbsp;
+        <span>Click</span> Chop / Place &nbsp;|&nbsp;
+        <span>B</span> Shop &nbsp;|&nbsp;
+        <span>Shift</span> Lock Cam
       </div>
     </div>
 
@@ -215,7 +600,12 @@ window.GAME = {
   phases: [
     { id: 1, name: 'Timber Run', desc: '3 roads. Choose your route. Deliver the wood.',
       levels: PHASE1_DISTANCES.map((d,i) => ({ num: i+1, title: `Haul ${(d/1000).toFixed(1)}km`, info: `Deliver a ${WOOD_ITEMS[i]} ${(d/1000).toFixed(1)}km — 3 roads, pick one!`, distance: d, item: WOOD_ITEMS[i] })) },
-    { id: 2, name: 'The Descent', desc: 'Phase 2 — coming soon', levels: Array.from({length:3},(_,i)=>({num:i+1,title:`Level ${i+1}`,info:`Challenge ${i+1} of 3`})) },
+    { id: 2, name: 'Build & Chop', desc: 'Chop trees, collect wood & screws, build your house.',
+      levels: [
+        { num: 1, title: 'Cozy Cabin', info: 'Build a small cabin — 25 Wood + 5 Screws', woodRequired: 25, screwsRequired: 5, houseSize: 'small', treeCount: 12, houseName: 'Cozy Cabin' },
+        { num: 2, title: 'Farmhouse', info: 'Build a farmhouse — 30 Wood + 7 Screws', woodRequired: 30, screwsRequired: 7, houseSize: 'medium', treeCount: 18, houseName: 'Farmhouse' },
+        { num: 3, title: 'Luxury Villa', info: 'Build a luxury villa — 40 Wood + 10 Screws', woodRequired: 40, screwsRequired: 10, houseSize: 'large', treeCount: 24, houseName: 'Luxury Villa' },
+      ] },
     { id: 3, name: 'The Reckoning', desc: 'Phase 3 — coming soon', levels: Array.from({length:3},(_,i)=>({num:i+1,title:`Level ${i+1}`,info:`Challenge ${i+1} of 3`})) },
   ]
 };
@@ -230,14 +620,17 @@ let canvas, ctx;
 let cw, ch;
 let gameActive = false, animFrameId = null;
 
-// Road
-let roadWaypoints = [];      // waypoints for minimap (center road)
+// Road — grid-based, 90° intersections only
+let roadWaypoints = [];      // intersection points
 let roadSampled = [];        // road 1 (left)
-let roadSampledC = [];       // road 2 (center) 
+let roadSampledC = [];       // road 2 (center)
 let roadSampledR = [];       // road 3 (right)
+let roadSegments = [];       // {x1,z1,x2,z2,dir} for scenery placement
 let roadLength = 0;
-const ROAD_HALF_W = 14.0;
-const TRACK_GAP = 22;
+const ROAD_HALF_W = 22.0;   // wide lanes
+const TRACK_GAP = 30;        // wider spacing
+const BLOCK_SIZE = 220;      // distance between intersections
+const HOUSE_OFFSET = 38;     // houses beside road edge
 // Car
 let carX = 0, carZ = 0;
 let carAngle = 0;
@@ -259,38 +652,43 @@ let crashCooldown = 0;
 
 // House/tree data
 let sceneryItems = [];
+let mountains = [];
 let camZoom = 0.45;
 
 // Minimap
 let mmCanvas, mmCtx;
 
 // ═══════════════════════════════════════
-//  ROAD GENERATION
+//  GRID ROAD GENERATION — 90° intersections
 // ═══════════════════════════════════════
 function generateRoad(totalDist) {
+  // Build a grid-aligned path with 90° intersections
+  const BLOCK = BLOCK_SIZE;
   const pts = [];
   let x = 0, z = 0;
-  let angle = -Math.PI / 2;
+  // dir: 0=up(-Z), 1=right(+X), 2=down(+Z), 3=left(-X)
+  let dir = 2; // start heading south
   pts.push({x, z});
+  roadSegments = [];
 
-  let remaining = totalDist + 400;
-  while (remaining > 0) {
-    const segLen = Math.min(remaining, 100 + Math.random() * 200);
-    // Full turns — up to 90° corners
-    const turnChance = 0.45 + (totalDist / 25000);
-    if (Math.random() < Math.min(turnChance, 0.75)) {
-      const maxTurn = Math.PI * (0.35 + Math.random() * 0.55); // up to ~90°
-      angle += (Math.random() - 0.5) * maxTurn;
-    }
-    if (angle > -0.1) angle -= 0.3;
-    if (angle < -Math.PI + 0.1) angle += 0.3;
-    if (x < -500) angle += 0.4;
-    if (x > 500) angle -= 0.4;
+  let remaining = totalDist + 200;
+  while (remaining > BLOCK * 0.5) {
+    const segLen = Math.min(remaining, BLOCK);
+    const nx = dir === 1 ? x + segLen : dir === 3 ? x - segLen : x;
+    const nz = dir === 0 ? z - segLen : dir === 2 ? z + segLen : z;
 
-    x += Math.cos(angle) * segLen;
-    z += Math.sin(angle) * segLen;
+    roadSegments.push({x1: x, z1: z, x2: nx, z2: nz, dir});
+    x = nx; z = nz;
     pts.push({x, z});
     remaining -= segLen;
+
+    if (remaining > BLOCK * 0.6) {
+      // 90° turn at intersection: 35% left, 35% right, 30% straight
+      const r = Math.random();
+      if (r < 0.35) dir = (dir + 3) % 4;      // left turn
+      else if (r < 0.7) dir = (dir + 1) % 4;  // right turn
+      // else continue straight
+    }
   }
   return pts;
 }
@@ -299,17 +697,16 @@ function sampleRoad() {
   roadSampled = []; roadSampledC = []; roadSampledR = [];
   roadLength = 0;
 
-  // Generate ONE road, then create 3 parallel offset tracks
   roadWaypoints = generateRoad(targetDist);
 
-  // Compute length
+  // Compute total length
   for (let i = 1; i < roadWaypoints.length; i++) {
     const dx = roadWaypoints[i].x - roadWaypoints[i-1].x;
     const dz = roadWaypoints[i].z - roadWaypoints[i-1].z;
     roadLength += Math.sqrt(dx*dx + dz*dz);
   }
 
-  const SAMPLE_STEP = 3;
+  const SAMPLE_STEP = 5;
   let accumulated = 0, segIdx = 0;
 
   for (let dist = 0; dist <= roadLength; dist += SAMPLE_STEP) {
@@ -325,18 +722,17 @@ function sampleRoad() {
     const wpA = roadWaypoints[segIdx], wpB = roadWaypoints[segIdx+1];
     const dx = wpB.x - wpA.x, dz = wpB.z - wpA.z;
     const segLen = Math.sqrt(dx*dx + dz*dz);
-    const t = segLen > 0 ? (dist - accumulated) / segLen : 0;
-    const tc = Math.max(0, Math.min(1, t));
-    const sx = wpA.x + dx * tc, sz = wpA.z + dz * tc;
+    const t = segLen > 0 ? Math.max(0, Math.min(1, (dist - accumulated) / segLen)) : 0;
+    const sx = wpA.x + dx * t, sz = wpA.z + dz * t;
     const sAngle = Math.atan2(dz, dx);
 
     // Center track
     roadSampledC.push({x: sx, z: sz, angle: sAngle, dist});
-    // Left track — offset perpendicular
+    // Left track
     const lx = sx + Math.cos(sAngle + Math.PI/2) * TRACK_GAP;
     const lz = sz + Math.sin(sAngle + Math.PI/2) * TRACK_GAP;
     roadSampled.push({x: lx, z: lz, angle: sAngle, dist});
-    // Right track — offset opposite
+    // Right track
     const rx = sx - Math.cos(sAngle + Math.PI/2) * TRACK_GAP;
     const rz = sz - Math.sin(sAngle + Math.PI/2) * TRACK_GAP;
     roadSampledR.push({x: rx, z: rz, angle: sAngle, dist});
@@ -372,27 +768,82 @@ function findClosestRoadPoint(cx, cz) {
 }
 
 // ═══════════════════════════════════════
-//  SCENERY GENERATION
+//  SCENERY — houses beside grid roads with front yards
 // ═══════════════════════════════════════
 function generateScenery() {
   sceneryItems = [];
-  if (!roadSampledC.length) return;
+  mountains = [];
+  if (!roadSegments.length) return;
+  const HO = HOUSE_OFFSET;
+  const SPACING = 50;
+  const houseColors = ['#c4a882','#d4c5b9','#b8a88a','#ccbb99','#c9b896','#bfa88a'];
 
-  for (let i = 10; i < roadSampledC.length - 5; i += 10) {
-    const pt = roadSampledC[i];
-    const side = (i % 20 < 10) ? 1 : -1;
-    const dist = ROAD_HALF_W + (4 + (i % 5) * 2); // houses right at road edge
+  // ── Mountains in the distance ──
+  // Find world bounds from road segments
+  let minX=Infinity,maxX=-Infinity,minZ=Infinity,maxZ=-Infinity;
+  for(const seg of roadSegments){
+    if(seg.x1<minX)minX=seg.x1;if(seg.x2<minX)minX=seg.x2;
+    if(seg.x1>maxX)maxX=seg.x1;if(seg.x2>maxX)maxX=seg.x2;
+    if(seg.z1<minZ)minZ=seg.z1;if(seg.z2<minZ)minZ=seg.z2;
+    if(seg.z1>maxZ)maxZ=seg.z1;if(seg.z2>maxZ)maxZ=seg.z2;
+  }
+  const pad = 400; // mountain ring distance from road
+  minX -= pad; maxX += pad; minZ -= pad; maxZ += pad;
+  // Place mountains along each edge of the bounding box
+  const edgeLen = (maxX-minX)+(maxZ-minZ);
+  const count = Math.floor(edgeLen / 60); // one mountain every ~60 units
+  for(let i=0;i<count;i++){
+    const t = i/count;
+    let mx, mz, edge;
+    if(t<0.25){edge=0;mx=minX+t*4*(maxX-minX);mz=minZ;}        // top edge
+    else if(t<0.5){edge=1;mx=maxX;mz=minZ+(t-0.25)*4*(maxZ-minZ);} // right
+    else if(t<0.75){edge=2;mx=maxX-(t-0.5)*4*(maxX-minX);mz=maxZ;} // bottom
+    else{edge=3;mx=minX;mz=maxZ-(t-0.75)*4*(maxZ-minZ);}           // left
+    // Add some jitter
+    mx+=(Math.random()-0.5)*40;mz+=(Math.random()-0.5)*40;
+    const h = 30+Math.random()*60; // mountain height
+    const w = 25+Math.random()*35; // mountain width
+    mountains.push({x:mx,z:mz,h,w,edge});
+  }
 
-    const hx = pt.x + Math.cos(pt.angle + Math.PI/2) * dist * side;
-    const hz = pt.z + Math.sin(pt.angle + Math.PI/2) * dist * side;
+  // ── Houses + trees along road ──
+  for (const seg of roadSegments) {
+    const dx = seg.x2 - seg.x1, dz = seg.z2 - seg.z1;
+    const segLen = Math.sqrt(dx*dx + dz*dz);
+    // Perpendicular offsets for left/right side
+    const ang = Math.atan2(dz, dx);
+    const pxL = Math.cos(ang + Math.PI/2);  // left perpendicular
+    const pzL = Math.sin(ang + Math.PI/2);
+    const pxR = Math.cos(ang - Math.PI/2);  // right perpendicular
+    const pzR = Math.sin(ang - Math.PI/2);
 
-    if (i % 3 !== 0) {
-      sceneryItems.push({x: hx, z: hz, type: 'house', side, rot: pt.angle});
-    }
-    if (i % 5 !== 0) {
-      const tx = pt.x + Math.cos(pt.angle + Math.PI/2) * (dist - 3) * side;
-      const tz = pt.z + Math.sin(pt.angle + Math.PI/2) * (dist - 3) * side;
-      sceneryItems.push({x: tx, z: tz, type: 'tree', side, rot: 0});
+    for (let d = SPACING; d < segLen - SPACING; d += SPACING) {
+      const t = d / segLen;
+      const sx = seg.x1 + dx * t, sz = seg.z1 + dz * t;
+
+      // Houses on both sides
+      for (const side of [-1, 1]) {
+        const mult = side === 1 ? 1 : -1;
+        const hx = sx + (side === 1 ? pxR : pxL) * HO * mult;
+        const hz = sz + (side === 1 ? pzR : pzL) * HO * mult;
+        sceneryItems.push({
+          x: hx, z: hz, type: 'house',
+          rot: ang + (side === 1 ? Math.PI/2 : -Math.PI/2),
+          color: houseColors[Math.floor(Math.random() * houseColors.length)]
+        });
+
+        // Tree in front yard (closer to road)
+        const tx = sx + (side === 1 ? pxR : pxL) * (HO - 10) * mult;
+        const tz = sz + (side === 1 ? pzR : pzL) * (HO - 10) * mult;
+        sceneryItems.push({x: tx, z: tz, type: 'tree'});
+
+        // Second tree
+        if (Math.random() < 0.5) {
+          const tx2 = sx + (side === 1 ? pxR : pxL) * (HO - 18) * mult;
+          const tz2 = sz + (side === 1 ? pzR : pzL) * (HO - 18) * mult;
+          sceneryItems.push({x: tx2, z: tz2, type: 'tree'});
+        }
+      }
     }
   }
 }
@@ -467,8 +918,8 @@ function update(dt) {
   const keys = window._keys || {};
   crashCooldown = Math.max(0, crashCooldown - dt);
 
-  // Speed
-  if (keys['KeyW'] || keys['ArrowUp']) targetSpeed = Math.min(targetSpeed + 30 * dt, 100);
+  // Speed — 2x faster
+  if (keys['KeyW'] || keys['ArrowUp']) targetSpeed = Math.min(targetSpeed + 60 * dt, 200);
   else if (keys['KeyS'] || keys['ArrowDown']) targetSpeed = Math.max(targetSpeed - 55 * dt, -15);
   else { targetSpeed *= 0.96; if (Math.abs(targetSpeed) < 0.3) targetSpeed = 0; }
 
@@ -544,7 +995,7 @@ function crash() {
     setTimeout(() => {
       document.getElementById('complete-overlay').querySelector('.check').textContent = '✗';
       document.getElementById('complete-overlay').querySelector('.msg').textContent = 'TOO MANY CRASHES';
-      document.getElementById('overlay-time').textContent = 'Drive more carefully on the curves!';
+      document.getElementById('overlay-time').textContent = 'Stay on the road and watch the intersections!';
       document.getElementById('complete-overlay').classList.add('show');
     }, 700);
   }
@@ -590,17 +1041,42 @@ function draw() {
   // ── Draw only the main road ──
   drawTrackRoad(roadSampledC, '#3a3a3a', 1.0);
 
+  // ── Intersection filler squares (fill gaps at 90° turns) ──
+  const hw = ROAD_HALF_W;
+  for (let i = 1; i < roadWaypoints.length - 1; i++) {
+    const wp = roadWaypoints[i];
+    if (!isVisibleWorld(wp.x, wp.z, 80)) continue;
+    ctx.fillStyle = '#3a3a3a';
+    ctx.fillRect(wp.x - hw, wp.z - hw, hw * 2, hw * 2);
+  }
+
+  // ── Mountains (background) ──
+  for (const m of mountains) {
+    if (!isVisibleWorld(m.x, m.z, 120)) continue;
+    drawMountain(m.x, m.z, m.w, m.h);
+  }
+
   // ── Scenery ──
   for (const item of sceneryItems) {
     if (!isVisibleWorld(item.x, item.z, 80)) continue;
     if (item.type === 'house') {
-      const hw = 12 * camZoom, hh = 10 * camZoom;
-      ctx.fillStyle = '#c4a882';
-      ctx.fillRect(item.x - hw/2, item.z - hh/2, hw, hh);
+      const hw = 14, hh = 12;
+      ctx.save();
+      ctx.translate(item.x, item.z);
+      ctx.rotate(item.rot || 0);
+      // House body
+      ctx.fillStyle = item.color || '#c4a882';
+      ctx.fillRect(-hw/2, -hh/2, hw, hh);
+      // Roof
       ctx.fillStyle = '#5c3d2e';
-      ctx.fillRect(item.x - hw/2 - 2, item.z - hh/2 - 3, hw + 4, 4);
+      ctx.fillRect(-hw/2 - 2, -hh/2 - 3, hw + 4, 4);
+      // Front door (always faces road — toward camera in world space)
       ctx.fillStyle = '#3a2e25';
-      ctx.fillRect(item.x - 2, item.z + 2, 4, hh/2 - 2);
+      ctx.fillRect(-2, 0, 4, hh/2);
+      // Front yard / driveway
+      ctx.fillStyle = '#9b8c7a';
+      ctx.fillRect(-3, hh/2, 6, 10);
+      ctx.restore();
     } else if (item.type === 'tree') {
       const r = 5 * camZoom;
       ctx.fillStyle = '#2d5a1e';
@@ -611,31 +1087,31 @@ function draw() {
   }
 
   // ── Pickup zone ──
-  if (roadSampledC.length > 10) {
-    const idx = Math.min(roadSampledC.length-1, Math.floor(pickupDist / 3));
-    const pt = roadSampledC[idx];
+  if (roadSegments.length > 0) {
+    const pickSeg = roadSegments[0];
+    const pt = {x: (pickSeg.x1 + pickSeg.x2) / 2, z: (pickSeg.z1 + pickSeg.z2) / 2};
     ctx.fillStyle = 'rgba(74,222,128,0.15)';
-    ctx.fillRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.fillRect(pt.x - 30, pt.z - 20, 60, 40);
     ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 2.5;
-    ctx.strokeRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.strokeRect(pt.x - 30, pt.z - 20, 60, 40);
     ctx.fillStyle = '#22c55e';
-    ctx.font = `${Math.max(9, 12*camZoom)}px "Share Tech Mono", monospace`;
+    ctx.font = '14px "Share Tech Mono", monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('PICKUP', pt.x, pt.z - 22);
+    ctx.fillText('PICKUP', pt.x, pt.z - 28);
   }
 
   // ── Drop-off zone ──
-  if (roadSampledC.length > 10) {
-    const idx = Math.min(roadSampledC.length-1, Math.floor(dropoffDist / 3));
-    const pt = roadSampledC[idx];
+  if (roadSegments.length > 1) {
+    const dropSeg = roadSegments[roadSegments.length - 1];
+    const pt = {x: (dropSeg.x1 + dropSeg.x2) / 2, z: (dropSeg.z1 + dropSeg.z2) / 2};
     ctx.fillStyle = 'rgba(245,158,11,0.15)';
-    ctx.fillRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.fillRect(pt.x - 30, pt.z - 20, 60, 40);
     ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2.5;
-    ctx.strokeRect(pt.x - 25, pt.z - 15, 50, 30);
+    ctx.strokeRect(pt.x - 30, pt.z - 20, 60, 40);
     ctx.fillStyle = '#f59e0b';
-    ctx.font = `${Math.max(9, 12*camZoom)}px "Share Tech Mono", monospace`;
+    ctx.font = '14px "Share Tech Mono", monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('DROP-OFF', pt.x, pt.z - 22);
+    ctx.fillText('DROP-OFF', pt.x, pt.z - 28);
   }
 
   ctx.restore();
@@ -741,20 +1217,56 @@ function isVisibleWorld(wx, wz, pad) {
   return Math.abs(wx - carX) < cw/camZoom + pad && Math.abs(wz - carZ) < ch/camZoom + pad;
 }
 
+function drawMountain(mx, mz, mw, mh) {
+  var hw2 = mw / 2;
+  // Shadow
+  ctx.fillStyle = '#4a5568';
+  ctx.beginPath();
+  ctx.moveTo(mx - hw2 - 2, mz + 2);
+  ctx.lineTo(mx, mz - mh - 2);
+  ctx.lineTo(mx + hw2 + 2, mz + 2);
+  ctx.closePath(); ctx.fill();
+  // Body
+  ctx.fillStyle = '#718096';
+  ctx.beginPath();
+  ctx.moveTo(mx - hw2, mz);
+  ctx.lineTo(mx, mz - mh);
+  ctx.lineTo(mx + hw2, mz);
+  ctx.closePath(); ctx.fill();
+  // Snow cap
+  var snowH = mh * 0.35;
+  ctx.fillStyle = '#e2e8f0';
+  ctx.beginPath();
+  ctx.moveTo(mx - hw2 * 0.35, mz - mh + snowH);
+  ctx.lineTo(mx, mz - mh);
+  ctx.lineTo(mx + hw2 * 0.35, mz - mh + snowH);
+  ctx.closePath(); ctx.fill();
+  // Snow highlight
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.moveTo(mx - hw2 * 0.15, mz - mh + snowH * 0.6);
+  ctx.lineTo(mx, mz - mh);
+  ctx.lineTo(mx + hw2 * 0.05, mz - mh + snowH * 0.5);
+  ctx.closePath(); ctx.fill();
+}
+
 // ═══════════════════════════════════════
 //  MINIMAP
 // ═══════════════════════════════════════
 function drawMinimap() {
-  if (!mmCtx || !roadWaypoints.length) return;
+  if (!mmCtx || !roadSegments.length) return;
   const W = mmCanvas.width, H = mmCanvas.height;
   mmCtx.fillStyle = '#0d110d'; mmCtx.fillRect(0, 0, W, H);
 
+  // Find bounds from road segments
   let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
-  for (const wp of roadWaypoints) {
-    if (wp.x < minX) minX = wp.x; if (wp.x > maxX) maxX = wp.x;
-    if (wp.z < minZ) minZ = wp.z; if (wp.z > maxZ) maxZ = wp.z;
+  for (const seg of roadSegments) {
+    if (seg.x1 < minX) minX = seg.x1; if (seg.x2 < minX) minX = seg.x2;
+    if (seg.x1 > maxX) maxX = seg.x1; if (seg.x2 > maxX) maxX = seg.x2;
+    if (seg.z1 < minZ) minZ = seg.z1; if (seg.z2 < minZ) minZ = seg.z2;
+    if (seg.z1 > maxZ) maxZ = seg.z1; if (seg.z2 > maxZ) maxZ = seg.z2;
   }
-  const pad = 80; minX -= pad; maxX += pad; minZ -= pad; maxZ += pad;
+  const pad = 120; minX -= pad; maxX += pad; minZ -= pad; maxZ += pad;
   const scale = Math.min((W-16)/(maxX-minX), (H-16)/(maxZ-minZ));
   const offX = 8 + (W-16 - (maxX-minX)*scale)/2;
   const offY = 8 + (H-16 - (maxZ-minZ)*scale)/2;
@@ -763,27 +1275,26 @@ function drawMinimap() {
 
   mmCtx.fillStyle = '#1a2e1a'; mmCtx.fillRect(0, 0, W, H);
 
-  // Main road
-  mmCtx.strokeStyle = '#4a4a4a'; mmCtx.lineWidth = 5; mmCtx.lineCap = 'round'; mmCtx.lineJoin = 'round';
+  // Draw road segments as thick rectangles
+  mmCtx.strokeStyle = '#4a4a4a'; mmCtx.lineWidth = 7; mmCtx.lineCap = 'butt';
   mmCtx.beginPath();
-  for (let i = 0; i < roadWaypoints.length; i++) {
-    const px = sx(roadWaypoints[i].x), py = sy(roadWaypoints[i].z);
-    i === 0 ? mmCtx.moveTo(px, py) : mmCtx.lineTo(px, py);
+  for (const seg of roadSegments) {
+    mmCtx.moveTo(sx(seg.x1), sy(seg.z1));
+    mmCtx.lineTo(sx(seg.x2), sy(seg.z2));
   }
   mmCtx.stroke();
 
   // Pickup
-  if (roadSampledC.length > 10) {
-    const pt = roadSampledC[Math.floor(pickupDist/3)];
-    mmCtx.fillStyle = '#4ade80'; mmCtx.fillRect(sx(pt.x)-4, sy(pt.z)-3, 8, 6);
+  if (roadSegments.length > 0) {
+    const s = roadSegments[0];
+    const px = sx((s.x1+s.x2)/2), py = sy((s.z1+s.z2)/2);
+    mmCtx.fillStyle = '#4ade80'; mmCtx.fillRect(px-5, py-4, 10, 8);
   }
   // Drop-off
-  if (roadSampledC.length > 10) {
-    const idx = Math.floor(dropoffDist/3);
-    if (idx < roadSampledC.length) {
-      const pt = roadSampledC[idx];
-      mmCtx.fillStyle = '#f59e0b'; mmCtx.fillRect(sx(pt.x)-4, sy(pt.z)-3, 8, 6);
-    }
+  if (roadSegments.length > 1) {
+    const s = roadSegments[roadSegments.length-1];
+    const px = sx((s.x1+s.x2)/2), py = sy((s.z1+s.z2)/2);
+    mmCtx.fillStyle = '#f59e0b'; mmCtx.fillRect(px-5, py-4, 10, 8);
   }
   // Player
   mmCtx.fillStyle = '#4ade80';
@@ -823,10 +1334,225 @@ window.addEventListener('resize', () => { if (canvas) resizeCanvas(); });
 console.log('Instabuild 2D — top-down curve racing ready');
 </script>
 
+<!-- ═══════ PHASE 2: 3D WOODCUTTING & BUILDING ═══════ -->
+<script>
+// ── House Configs Per Level ─────────────────
+const HOUSE_CONFIGS = {
+  small: { colsPerSide: 3, wallRows: 2, wallWidth: 2.4, wallDepth: 1.6, plankSpacing: 0.55, roofPlanks: 4 },
+  medium: { colsPerSide: 4, wallRows: 2, wallWidth: 2.4, wallDepth: 2.2, plankSpacing: 0.52, roofPlanks: 6 },
+  large: { colsPerSide: 5, wallRows: 3, wallWidth: 3.0, wallDepth: 2.8, plankSpacing: 0.50, roofPlanks: 8 }
+};
+const UPGRADE_COSTS = [0, 50, 100];
+const AXE_DAMAGE = [0, 1, 2, 3];
+const SCREW_COST = 7;
+const WOOD_SELL_PRICE = 5;
+
+// ── 3D Engine State ────────────────────────
+let g3d = {
+  scene: null, camera: null, renderer: null, clock: null,
+  player: null, trees: [], woodDrops: [], particles: [],
+  houseGroup: null, blueprintGroup: null, plankTargets: [],
+  buildingMode: false, placedPlanks: 0, freeDesign: false,
+  woodCount: 0, money: 0, screws: 0, totalPlanks: 0, woodRequired: 50, screwsRequired: 5,
+  axeLevel: 1, chopCooldown: 0, gameActive: false, animFrameId: null, axeGroup: null,
+  shiftLock: false, shopOpen: false,
+  camTheta: 0, camPhi: 0.55, camDistance: 14,
+  targetCamTheta: 0, targetCamPhi: 0.55, targetCamDistance: 14,
+  shakeIntensity: 0, shakeDuration: 0,
+  mouseNDC: new THREE.Vector2(), keys: {}, mouse: { down: false },
+  isDragging: false, lastMouseX: 0, lastMouseY: 0,
+  previewRenderer: null, previewScene: null, previewCamera: null, previewHouse: null,
+  levelConfig: null, treeRespawnTimer: 0, audioCtx: null
+};
+const PLAYER_SPEED_3D = 8;
+const CHOP_COOLDOWN_3D = 0.45;
+const COLLECT_RADIUS_3D = 2.5;
+const WORLD_SIZE_3D = 100;
+const TREE_HP_3D = 5;
+const BUILD_ZONE = new THREE.Vector3(18, 0, -18);
+const BUILD_RADIUS = 14;
+
+// ── Wood plank colors for realistic look ──
+const PLANK_COLORS = [0x8B6914, 0xa0522d, 0x8B5E3C, 0xcd853f, 0x9c6b3c, 0x7B5B3A, 0x6B4226, 0xa0703c];
+
+// ── Material cache ──
+const matCache3D = {};
+function mat3d(color) { if(!matCache3D[color]) matCache3D[color]=new THREE.MeshStandardMaterial({color,roughness:0.7}); return matCache3D[color]; }
+
+// ── Audio ──
+function ensureAudio3D() { if(!g3d.audioCtx){var AC=window.AudioContext||window.webkitAudioContext;g3d.audioCtx=new AC();} }
+function playTone3D(freq,type,dur,vol,rd){if(!g3d.audioCtx)return;vol=vol||0.12;rd=rd!==false;var t=g3d.audioCtx.currentTime,o=g3d.audioCtx.createOscillator(),g=g3d.audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(vol,t);if(rd)g.gain.exponentialRampToValueAtTime(0.001,t+dur);o.connect(g).connect(g3d.audioCtx.destination);o.start(t);o.stop(t+dur);}
+// SFX from MP3 files (# encoded as %23)
+var sfxChop=new Audio('choping_wood_sound_w_%234-1785243407946.mp3');sfxChop.volume=0.7;
+var sfxBuild=new Audio('Construction_site_am_%231-1785243436508.mp3');sfxBuild.volume=0.6;
+var bgMusic=new Audio('Morning Porch.mp3');bgMusic.loop=true;bgMusic.volume=0.35;
+function playSFX(a){a.currentTime=0;a.play().catch(function(){});}
+function playChop3D(){playSFX(sfxChop);}
+function playPlank3D(){playSFX(sfxBuild);}
+function playBuildComplete3D(){playSFX(sfxBuild);[523,659,784,1047].forEach(function(f,i){setTimeout(function(){playTone3D(f,'triangle',0.35,0.1);},i*150);});setTimeout(function(){playTone3D(1047,'triangle',0.7,0.12);},600);}
+function playCollect3D(){playTone3D(600,'sine',0.1,0.07);setTimeout(function(){playTone3D(900,'sine',0.1,0.07);},60);}
+function playBuySound(){playTone3D(500,'sine',0.08,0.08);setTimeout(function(){playTone3D(700,'sine',0.1,0.08);},80);}
+function playTreeFall3D(){if(!g3d.audioCtx)return;var t=g3d.audioCtx.currentTime,b=g3d.audioCtx.createBuffer(1,g3d.audioCtx.sampleRate*0.3,g3d.audioCtx.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.5);var s=g3d.audioCtx.createBufferSource();s.buffer=b;var gn=g3d.audioCtx.createGain();gn.gain.setValueAtTime(0.18,t);gn.gain.exponentialRampToValueAtTime(0.001,t+0.3);var f=g3d.audioCtx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(30,t+0.3);s.connect(f).connect(gn).connect(g3d.audioCtx.destination);s.start(t);playTone3D(40,'sine',0.3,0.2);}
+
+// ── Particles ──
+function spawnParticles3D(pos,color,count){count=count||10;for(var i=0;i<count;i++){var sz=0.05+Math.random()*0.1,geo=new THREE.SphereGeometry(sz,4,4),pm=new THREE.MeshBasicMaterial({color:color}),p=new THREE.Mesh(geo,pm);p.position.copy(pos);p.userData={vel:new THREE.Vector3((Math.random()-0.5)*4,2+Math.random()*5,(Math.random()-0.5)*4),life:0.5+Math.random()*0.8,age:0};g3d.scene.add(p);g3d.particles.push(p);}}
+function updateParticles3D(dt){for(var i=g3d.particles.length-1;i>=0;i--){var p=g3d.particles[i];p.userData.age+=dt;if(p.userData.age>=p.userData.life){g3d.scene.remove(p);p.geometry.dispose();p.material.dispose();g3d.particles.splice(i,1);}else{var prog=p.userData.age/p.userData.life;p.userData.vel.y-=9.8*dt;p.position.x+=p.userData.vel.x*dt;p.position.y+=p.userData.vel.y*dt;p.position.z+=p.userData.vel.z*dt;p.scale.setScalar(1-prog);p.material.opacity=1-prog;p.material.transparent=true;}}}
+function screenShake3D(intensity,duration){g3d.shakeIntensity=Math.max(g3d.shakeIntensity,intensity);g3d.shakeDuration=Math.max(g3d.shakeDuration,duration);}
+
+// ── Trees ──
+var trunkGeo=new THREE.CylinderGeometry(0.3,0.45,4,8);
+var foliageGeos=[new THREE.ConeGeometry(1.6,3.5,8),new THREE.ConeGeometry(1.4,3.0,8),new THREE.ConeGeometry(1.2,2.5,8)];
+var trunkMat3d=new THREE.MeshStandardMaterial({color:0x5c3d2e,roughness:0.9});
+var foliageMats3d=[new THREE.MeshStandardMaterial({color:0x2d5a1e,roughness:0.8}),new THREE.MeshStandardMaterial({color:0x3a6b2a,roughness:0.8}),new THREE.MeshStandardMaterial({color:0x1e4a15,roughness:0.8})];
+
+function spawnTree3D(x,z){var grp=new THREE.Group();grp.position.set(x,0,z);var tr=new THREE.Mesh(trunkGeo,trunkMat3d);tr.position.y=2;tr.castShadow=true;tr.receiveShadow=true;grp.add(tr);var fg=new THREE.Group();for(var i=0;i<3;i++){var f=new THREE.Mesh(foliageGeos[i],foliageMats3d[i%3]);f.position.y=3.5+i*1.2;f.castShadow=true;f.receiveShadow=true;fg.add(f);}grp.add(fg);var hb=new THREE.Mesh(new THREE.PlaneGeometry(1.2,0.18),new THREE.MeshBasicMaterial({color:0x333333,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));hb.position.y=7.5;hb.renderOrder=999;grp.add(hb);var hf=new THREE.Mesh(new THREE.PlaneGeometry(1.2,0.18),new THREE.MeshBasicMaterial({color:0x4ade80,side:THREE.DoubleSide,depthTest:false,depthWrite:false}));hf.position.y=7.5;hf.position.z=0.01;hf.renderOrder=999;grp.add(hf);grp.userData={hp:TREE_HP_3D,maxHp:TREE_HP_3D,hpBg:hb,hpFill:hf,foliageGroup:fg,trunk:tr,alive:true,falling:false,fallProgress:0,fallDir:new THREE.Vector3(Math.random()-0.5,0,Math.random()-0.5).normalize()};g3d.scene.add(grp);g3d.trees.push(grp);}
+
+function spawnTrees3D(count){var poses=[],margin=5,att=count*3;for(var i=0;i<att&&poses.length<count;i++){var x=(Math.random()-0.5)*(WORLD_SIZE_3D-margin*2),z=(Math.random()-0.5)*(WORLD_SIZE_3D-margin*2);if(Math.abs(x)<6&&Math.abs(z)<6)continue;var ok=true;for(var j=0;j<poses.length;j++){if(Math.hypot(x-poses[j].x,z-poses[j].z)<7){ok=false;break;}}if(ok){poses.push({x:x,z:z});spawnTree3D(x,z);}}}
+
+// ── Wood Drops ──
+var logGeo3d=new THREE.BoxGeometry(0.5,0.25,1.2);var logMat3d=new THREE.MeshStandardMaterial({color:0xcd853f,roughness:0.6});
+function spawnWoodDrop3D(x,y,z){var log=new THREE.Mesh(logGeo3d,logMat3d);log.position.set(x,y,z);log.rotation.y=Math.random()*Math.PI;log.rotation.x=(Math.random()-0.5)*0.6;log.castShadow=true;log.userData={collected:false,bobOffset:Math.random()*Math.PI*2};g3d.scene.add(log);g3d.woodDrops.push(log);}
+
+// ── Tree Damage ──
+function damageTree3D(tree){var dmg=AXE_DAMAGE[g3d.axeLevel];tree.userData.hp-=dmg;var hr=Math.max(0,tree.userData.hp/tree.userData.maxHp);tree.userData.hpFill.scale.x=hr;tree.userData.hpFill.position.x=-(1-hr)*0.6;if(hr<0.3)tree.userData.hpFill.material.color.set(0xff4444);else if(hr<0.6)tree.userData.hpFill.material.color.set(0xfbbf24);var sa=0.15;tree.userData.foliageGroup.position.x=(Math.random()-0.5)*sa;tree.userData.foliageGroup.position.z=(Math.random()-0.5)*sa;setTimeout(function(){if(tree.userData.alive){tree.userData.foliageGroup.position.x=0;tree.userData.foliageGroup.position.z=0;}},150);var wp=tree.position.clone();wp.y+=3;spawnParticles3D(wp,0x2d5a1e,5);spawnParticles3D(wp,0x5c3d2e,3);if(tree.userData.hp<=0)killTree3D(tree);}
+function killTree3D(tree){tree.userData.alive=false;tree.userData.falling=true;tree.userData.fallProgress=0;playTreeFall3D();tree.userData.hpBg.visible=false;tree.userData.hpFill.visible=false;var dc=3+Math.floor(Math.random()*3);for(var i=0;i<dc;i++)spawnWoodDrop3D(tree.position.x+(Math.random()-0.5)*3,0.3+Math.random()*0.3,tree.position.z+(Math.random()-0.5)*3);var p=tree.position.clone();p.y+=2;spawnParticles3D(p,0x2d5a1e,8);spawnParticles3D(p,0x5c3d2e,6);screenShake3D(0.05,0.2);}
+function updateFallingTrees3D(dt){for(var i=g3d.trees.length-1;i>=0;i--){var t=g3d.trees[i];if(!t.userData.falling)continue;t.userData.fallProgress+=dt*1.8;var prog=t.userData.fallProgress;if(prog>=1){g3d.scene.remove(t);g3d.trees.splice(i,1);}else{var d=t.userData.fallDir,ang=prog*Math.PI/2;t.rotation.z=d.x*ang;t.rotation.x=d.z*ang;t.position.y=-prog*1.5;t.scale.setScalar(1-prog*0.3);}}}
+function collectWood3D(drop,idx){g3d.woodCount++;updateUI3D();playCollect3D();spawnParticles3D(drop.position,0xcd853f,4);spawnParticles3D(drop.position,0xfbbf24,3);drop.userData.collected=true;drop.userData.floatY=drop.position.y;drop.userData.floatSpeed=0;setTimeout(function(){g3d.scene.remove(drop);drop.geometry.dispose();g3d.woodDrops.splice(idx,1);},400);}
+function updateWoodDrops3D(dt){for(var i=0;i<g3d.woodDrops.length;i++){var d=g3d.woodDrops[i];if(d.userData.collected){d.userData.floatSpeed+=dt*8;d.userData.floatY+=d.userData.floatSpeed*dt;d.position.y=d.userData.floatY;d.scale.setScalar(Math.max(0,d.scale.x-dt*2));}else{d.position.y+=Math.sin(Date.now()*0.005+d.userData.bobOffset)*0.003;var dist=g3d.player.position.distanceTo(d.position);if(dist<0.8)collectWood3D(d,i);}}}
+function collectNearby3D(){ensureAudio3D();for(var i=g3d.woodDrops.length-1;i>=0;i--){if(g3d.player.position.distanceTo(g3d.woodDrops[i].position)<COLLECT_RADIUS_3D)collectWood3D(g3d.woodDrops[i],i);}}
+
+// ── Plank Generation ──
+function generatePlankTargets3D(cfg){var targets=[],cs=cfg.colsPerSide,ps=cfg.plankSpacing,wr=cfg.wallRows,ww=cfg.wallWidth,wd=cfg.wallDepth,rp=cfg.roofPlanks,hw2=ps*(cs-1)/2,hd2=ps*(cs-1)/2;for(var i=0;i<cs;i++)targets.push({pos:new THREE.Vector3(-hw2+i*ps,0.08,0),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[i%PLANK_COLORS.length]});for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var c=0;c<cs;c++){if(r===0&&c===Math.floor(cs/2))continue;targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,wd/2+0.1),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[(r*cs+c)%PLANK_COLORS.length]});}}for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var c=0;c<cs;c++){if(r===Math.floor(wr/2)&&c===Math.floor(cs/2))continue;targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,-wd/2-0.1),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[(r*cs+c+2)%PLANK_COLORS.length]});}}for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var s=0;s<cs;s++){targets.push({pos:new THREE.Vector3(-ww/2-0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:PLANK_COLORS[(r*cs+s+4)%PLANK_COLORS.length]});targets.push({pos:new THREE.Vector3(ww/2+0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:PLANK_COLORS[(r*cs+s+6)%PLANK_COLORS.length]});}}for(var i=0;i<rp;i++){var t=i/(rp-1);targets.push({pos:new THREE.Vector3(-ww/2+t*ww,1.2+t*1.2,0),rot:new THREE.Euler(0.45,0,0),color:0x5c3d2e});}for(var i=0;i<rp;i++){var t=i/(rp-1);targets.push({pos:new THREE.Vector3(ww/2-t*ww,1.2+t*1.2,0),rot:new THREE.Euler(-0.45,0,0),color:0x5c3d2e});}return targets;}
+
+// ── Blueprint & House ──
+function createBlueprint3D(){g3d.blueprintGroup=new THREE.Group();var pgeo=new THREE.BoxGeometry(1.6,0.15,0.4);for(var i=0;i<g3d.plankTargets.length;i++){var t=g3d.plankTargets[i],bp=new THREE.Mesh(pgeo,new THREE.MeshBasicMaterial({color:0x4ade80,transparent:true,opacity:0.25,depthTest:true}));bp.position.copy(t.pos);bp.rotation.copy(t.rot);g3d.blueprintGroup.add(bp);}g3d.blueprintGroup.position.copy(BUILD_ZONE);g3d.scene.add(g3d.blueprintGroup);}
+function createHouseGroup3D(){g3d.houseGroup=new THREE.Group();g3d.houseGroup.position.copy(BUILD_ZONE);g3d.scene.add(g3d.houseGroup);}
+function placeNextPlank3D(){if(g3d.placedPlanks>=g3d.plankTargets.length)return;var t=g3d.plankTargets[g3d.placedPlanks],plank=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.15,0.4),new THREE.MeshStandardMaterial({color:t.color,roughness:0.5}));plank.position.copy(t.pos);plank.position.y+=3;plank.rotation.copy(t.rot);g3d.houseGroup.add(plank);plank.userData={targetY:t.pos.y,lerpSpeed:6,placed:false};var wp=t.pos.clone().add(BUILD_ZONE);spawnParticles3D(wp,0xcd853f,5);spawnParticles3D(wp,0x4ade80,3);screenShake3D(0.06,0.12);g3d.placedPlanks++;playPlank3D();updateBuildUI3D();if(g3d.placedPlanks>=g3d.plankTargets.length)completeHouse3D();}
+function animatePlanks3D(dt){if(!g3d.houseGroup)return;for(var i=0;i<g3d.houseGroup.children.length;i++){var c=g3d.houseGroup.children[i];if(!c.userData||c.userData.placed||c.userData.targetY===undefined)continue;c.position.y+=(c.userData.targetY-c.position.y)*c.userData.lerpSpeed*dt;if(Math.abs(c.position.y-c.userData.targetY)<0.02){c.position.y=c.userData.targetY;c.userData.placed=true;spawnParticles3D(c.position.clone().add(BUILD_ZONE),0xfbbf24,3);}}}
+function completeHouse3D(){g3d.buildingMode=false;if(g3d.blueprintGroup){g3d.scene.remove(g3d.blueprintGroup);g3d.blueprintGroup=null;}document.getElementById('build-mode-banner').classList.remove('show');document.getElementById('place-plank-btn').classList.remove('show');document.getElementById('build-btn').style.display='none';document.getElementById('design-btn').style.display='none';spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,3,0)),0xfbbf24,30);spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,3,0)),0x4ade80,20);spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,3,0)),0xff6b6b,15);playBuildComplete3D();screenShake3D(0.3,0.8);var cfg=g3d.levelConfig;document.getElementById('completion-subtitle-3d').textContent='You built the '+cfg.houseName+'!';setTimeout(function(){document.getElementById('completion-overlay-3d').classList.add('show');},1200);var bc=0,bi=setInterval(function(){spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,4,0)),0xfbbf24,8);bc++;if(bc>=5)clearInterval(bi);},300);}
+function startBuilding3D(){if(g3d.shopOpen||(g3d.woodCount<g3d.woodRequired||g3d.screws<g3d.screwsRequired||g3d.buildingMode||g3d.placedPlanks>0))return;if(g3d.player.position.distanceTo(BUILD_ZONE)>BUILD_RADIUS){playTone3D(150,'square',0.1,0.04);return;}g3d.buildingMode=true;g3d.woodCount-=g3d.woodRequired;g3d.screws-=g3d.screwsRequired;updateUI3D();if(g3d.freeDesign){g3d.plankTargets=[];g3d.totalPlanks=999;document.getElementById('build-hint').textContent='Free Design — Click to place planks anywhere near the zone! (Esc to finish)';}else{g3d.plankTargets=generatePlankTargets3D(g3d.levelConfig);g3d.totalPlanks=g3d.plankTargets.length;document.getElementById('build-hint').textContent='Click near the blueprint to place planks! (Esc to cancel)';createBlueprint3D();}createHouseGroup3D();document.getElementById('build-mode-banner').classList.add('show');document.getElementById('place-plank-btn').classList.add('show');updateBuildUI3D();document.getElementById('build-btn').disabled=true;playTone3D(400,'sine',0.3,0.1);setTimeout(function(){playTone3D(600,'sine',0.3,0.1);},150);}
+function cancelBuilding3D(){g3d.buildingMode=false;g3d.woodCount+=g3d.woodRequired;g3d.screws+=g3d.screwsRequired;function dg(g){if(!g)return;g3d.scene.remove(g);while(g.children.length>0){var c=g.children[0];if(c.geometry)c.geometry.dispose();if(c.material)c.material.dispose();g.remove(c);}}dg(g3d.blueprintGroup);g3d.blueprintGroup=null;dg(g3d.houseGroup);g3d.houseGroup=null;g3d.placedPlanks=0;g3d.plankTargets=[];document.getElementById('build-mode-banner').classList.remove('show');document.getElementById('place-plank-btn').classList.remove('show');document.getElementById('build-btn').style.display='';updateUI3D();playTone3D(300,'sine',0.15,0.07);setTimeout(function(){playTone3D(200,'sine',0.15,0.07);},100);}
+
+// ── Free design plank placement ──
+function placeFreePlank(){if(!g3d.buildingMode||!g3d.freeDesign)return;var fwd=new THREE.Vector3(0,0,-1);fwd.applyQuaternion(g3d.player.rotation);fwd.y=0;fwd.normalize();var pos=g3d.player.position.clone().add(fwd.clone().multiplyScalar(2.5));pos.y=0.08;var localPos=pos.clone().sub(BUILD_ZONE);var color=PLANK_COLORS[Math.floor(Math.random()*PLANK_COLORS.length)];var plank=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.15,0.4),new THREE.MeshStandardMaterial({color:color,roughness:0.5}));plank.position.copy(localPos);plank.position.y+=3;g3d.houseGroup.add(plank);plank.userData={targetY:localPos.y,lerpSpeed:6,placed:false};spawnParticles3D(pos,0xcd853f,4);screenShake3D(0.04,0.08);g3d.placedPlanks++;playPlank3D();updateBuildUI3D();}
+
+// ── UI Updates ──
+function updateUI3D(){document.getElementById('wood-count').textContent=g3d.woodCount;document.getElementById('money-count').textContent=g3d.money;document.getElementById('screws-count').textContent=g3d.screws;document.getElementById('shop-money-display').textContent=g3d.money;document.getElementById('axe-level').textContent=g3d.axeLevel;document.getElementById('axe-dmg').textContent=AXE_DAMAGE[g3d.axeLevel];var ce=document.getElementById('build-cost');ce.textContent=g3d.woodCount+'/'+g3d.woodRequired+' Wood | '+g3d.screws+'/'+g3d.screwsRequired+' Screws';var bb=document.getElementById('build-btn');if(g3d.woodCount>=g3d.woodRequired&&g3d.screws>=g3d.screwsRequired&&!g3d.buildingMode&&g3d.placedPlanks===0&&!g3d.shopOpen){bb.disabled=false;ce.classList.add('has-enough');}else{bb.disabled=true;ce.classList.remove('has-enough');}var uc=document.getElementById('upgrade-cost');if(g3d.axeLevel>=3){uc.textContent='MAX';document.getElementById('shop-upgrade-axe').disabled=true;}else{uc.textContent=UPGRADE_COSTS[g3d.axeLevel]+'💰';document.getElementById('shop-upgrade-axe').disabled=g3d.money<UPGRADE_COSTS[g3d.axeLevel];}document.getElementById('shop-sell-wood').disabled=g3d.woodCount===0;document.getElementById('shop-buy-screw').disabled=g3d.money<SCREW_COST;}
+function updateBuildUI3D(){document.getElementById('build-progress-text').textContent='Planks: '+g3d.placedPlanks+' / '+g3d.totalPlanks;}
+
+// ── Tutorial system ──
+var _tutorialStep=0,_tutorialActive=false;
+function showTutorial(step){
+  if(!_tutorialActive)return;
+  var overlay=document.getElementById('tutorial-overlay');
+  var text=document.getElementById('tutorial-text');
+  var hint=document.getElementById('tutorial-hint');
+  _tutorialStep=step;
+  var msgs={
+    start:{t:'🌲 Chop trees to collect wood!',h:'Walk up to a tree and click to swing your axe'},
+    collecting:{t:'🪵 Collect the wood logs!',h:'Walk over the dropped logs to pick them up'},
+    enough:{t:'✅ You have enough wood!',h:'Press the Build House button in the top-right corner'},
+    building:{t:'🏗 Building mode!',h:'Click the blueprint or press 🔨 Place Plank to build'},
+    done:{t:'🎉 Tutorial complete!',h:'You built your first house. Try Level 2 next!'},
+  };
+  var m=msgs[step]||msgs.start;
+  text.textContent=m.t;hint.textContent=m.h;
+  overlay.classList.add('show');
+  setTimeout(function(){overlay.classList.remove('show');},5000);
+}
+function updateTutorial(){
+  if(!_tutorialActive)return;
+  var prev=_tutorialStep;
+  if(g3d.buildingMode&&prev!=='building'&&prev!=='done')showTutorial('building');
+  else if(g3d.placedPlanks>0&&g3d.buildingMode===false&&prev!=='done')showTutorial('done');
+  else if(g3d.woodCount>=g3d.woodRequired&&prev!=='enough'&&prev!=='building'&&prev!=='done')showTutorial('enough');
+  else if(g3d.woodCount>0&&prev==='start')showTutorial('collecting');
+}
+
+// ── Shop ──
+function toggleShop(){if(!g3d.gameActive||g3d.buildingMode)return;g3d.shopOpen=!g3d.shopOpen;document.getElementById('shop-modal').classList.toggle('show',g3d.shopOpen);updateUI3D();if(g3d.shopOpen){ensureAudio3D();playTone3D(440,'sine',0.15,0.08);}}
+function sellAllWood(){if(!g3d.shopOpen||g3d.woodCount===0)return;var earned=g3d.woodCount*WOOD_SELL_PRICE;g3d.money+=earned;g3d.woodCount=0;playBuySound();updateUI3D();}
+function buyScrew(){if(!g3d.shopOpen||g3d.money<SCREW_COST)return;g3d.money-=SCREW_COST;g3d.screws++;playBuySound();updateUI3D();}
+function upgradeAxe(){if(!g3d.shopOpen||g3d.axeLevel>=3)return;var cost=UPGRADE_COSTS[g3d.axeLevel];if(g3d.money<cost)return;g3d.money-=cost;g3d.axeLevel++;playTone3D(600,'triangle',0.2,0.12);setTimeout(function(){playTone3D(800,'triangle',0.2,0.12);},150);setTimeout(function(){playTone3D(1000,'triangle',0.3,0.15);},300);updateUI3D();}
+
+// ── House Preview ──
+function setupPreview3D(){var vp=document.getElementById('preview-viewport'),w=vp.clientWidth,h=vp.clientHeight;g3d.previewRenderer=new THREE.WebGLRenderer({antialias:true,alpha:true});g3d.previewRenderer.setSize(w,h);vp.appendChild(g3d.previewRenderer.domElement);g3d.previewScene=new THREE.Scene();g3d.previewScene.background=null;g3d.previewCamera=new THREE.PerspectiveCamera(45,w/h,0.3,20);g3d.previewCamera.position.set(3,2.8,5);g3d.previewCamera.lookAt(0,1.2,0);g3d.previewScene.add(new THREE.AmbientLight(0xffffff,1.2));g3d.previewScene.add(new THREE.HemisphereLight(0xffffff,0x444444,0.8));g3d.previewHouse=new THREE.Group();var wm=new THREE.MeshStandardMaterial({color:0xa0522d,roughness:0.5});g3d.previewHouse.add(new THREE.Mesh(new THREE.BoxGeometry(1.6,1.4,1.6),wm));var rm=new THREE.MeshStandardMaterial({color:0x5c3d2e,roughness:0.6});var roof=new THREE.Mesh(new THREE.ConeGeometry(1.2,0.8,4),rm);roof.position.y=1.7;roof.rotation.y=Math.PI/4;g3d.previewHouse.add(roof);var dm=new THREE.MeshStandardMaterial({color:0x6b3a1f,roughness:0.4});var door=new THREE.Mesh(new THREE.PlaneGeometry(0.4,0.7),dm);door.position.set(0,0.35,0.81);g3d.previewHouse.add(door);var wnm=new THREE.MeshStandardMaterial({color:0x87CEEB,roughness:0.3,emissive:0x334455,emissiveIntensity:0.5});var wgeo=new THREE.PlaneGeometry(0.25,0.25);var wl=new THREE.Mesh(wgeo,wnm);wl.position.set(-0.35,0.9,0.81);g3d.previewHouse.add(wl);var wr=new THREE.Mesh(wgeo,wnm);wr.position.set(0.35,0.9,0.81);g3d.previewHouse.add(wr);g3d.previewScene.add(g3d.previewHouse);}
+function renderPreview3D(){if(g3d.previewRenderer){g3d.previewHouse.rotation.y+=0.005;g3d.previewRenderer.render(g3d.previewScene,g3d.previewCamera);}}
+
+// ── Player with smiley face ──
+function createPlayer3D(){g3d.player=new THREE.Group();g3d.player.position.set(0,0,0);var body=new THREE.Mesh(new THREE.CapsuleGeometry(0.45,1.0,4,8),new THREE.MeshStandardMaterial({color:0x4a90d9,roughness:0.4}));body.position.y=1.2;body.castShadow=true;g3d.player.add(body);var head=new THREE.Mesh(new THREE.SphereGeometry(0.35,8,8),new THREE.MeshStandardMaterial({color:0xffd5b4,roughness:0.6}));head.position.y=2.3;head.castShadow=true;g3d.player.add(head);var hat=new THREE.Mesh(new THREE.CylinderGeometry(0.38,0.42,0.2,8),new THREE.MeshStandardMaterial({color:0xf59e0b,roughness:0.3}));hat.position.y=2.6;hat.castShadow=true;g3d.player.add(hat);var brim=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.06,16),new THREE.MeshStandardMaterial({color:0xf59e0b,roughness:0.3}));brim.position.y=2.5;g3d.player.add(brim);var leye=new THREE.Mesh(new THREE.SphereGeometry(0.06,4,4),new THREE.MeshBasicMaterial({color:0x111111}));leye.position.set(-0.12,2.4,0.32);g3d.player.add(leye);var reye=new THREE.Mesh(new THREE.SphereGeometry(0.06,4,4),new THREE.MeshBasicMaterial({color:0x111111}));reye.position.set(0.12,2.4,0.32);g3d.player.add(reye);var smile=new THREE.Mesh(new THREE.TorusGeometry(0.1,0.025,8,8,Math.PI),new THREE.MeshBasicMaterial({color:0x111111}));smile.position.set(0,2.28,0.3);smile.rotation.set(0,0,Math.PI);g3d.player.add(smile);g3d.axeGroup=new THREE.Group();g3d.axeGroup.position.set(0.6,1.6,0.3);g3d.axeGroup.rotation.z=-0.4;var handle=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.6,6),new THREE.MeshStandardMaterial({color:0x8B6914,roughness:0.7}));handle.rotation.x=Math.PI/2;g3d.axeGroup.add(handle);var bladeColor=g3d.axeLevel>=3?0x66ccff:g3d.axeLevel>=2?0xaaaaaa:0x888888;var blade=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.55,0.35),new THREE.MeshStandardMaterial({color:bladeColor,roughness:0.2,metalness:0.9}));blade.position.set(0,0.55,0);g3d.axeGroup.add(blade);g3d.player.add(g3d.axeGroup);g3d.scene.add(g3d.player);}
+
+function handleChop3D(){if(!g3d.gameActive||g3d.buildingMode||g3d.chopCooldown>0||g3d.shopOpen)return;ensureAudio3D();g3d.chopCooldown=CHOP_COOLDOWN_3D;g3d.axeGroup.rotation.z=-1.8;var closest=null,closestDist=4.5;for(var i=0;i<g3d.trees.length;i++){var t=g3d.trees[i];if(!t.userData.alive||t.userData.falling)continue;var d=g3d.player.position.distanceTo(t.position);if(d<closestDist){closestDist=d;closest=t;}}if(closest)damageTree3D(closest);playChop3D();setTimeout(function(){g3d.axeGroup.rotation.z=-0.4;},180);}
+function handleBuildClick3D(){if(!g3d.buildingMode)return;if(g3d.freeDesign){ensureAudio3D();placeFreePlank();return;}if(g3d.placedPlanks>=g3d.plankTargets.length)return;ensureAudio3D();if(g3d.player.position.distanceTo(BUILD_ZONE)>BUILD_RADIUS){playTone3D(150,'square',0.1,0.04);return;}placeNextPlank3D();}
+
+// ── Player Movement (WASD relative to facing) ──
+function updatePlayer3D(dt){if(!g3d.gameActive||g3d.shopOpen)return;
+// WASD = movement relative to player facing: W=forward, A=left, S=back, D=right
+var fwd=new THREE.Vector3(0,0,-1);fwd.applyQuaternion(g3d.player.quaternion);fwd.y=0;fwd.normalize();
+var right=new THREE.Vector3(1,0,0);right.applyQuaternion(g3d.player.quaternion);right.y=0;right.normalize();
+var mx=0,mz=0;
+if(g3d.keys['KeyW']){mx+=fwd.x;mz+=fwd.z;}if(g3d.keys['KeyS']){mx-=fwd.x;mz-=fwd.z;}
+if(g3d.keys['KeyA']){mx-=right.x;mz-=right.z;}if(g3d.keys['KeyD']){mx+=right.x;mz+=right.z;}
+var len=Math.sqrt(mx*mx+mz*mz);if(len>1){mx/=len;mz/=len;}
+var sp=PLAYER_SPEED_3D*dt,nx=g3d.player.position.x+mx*sp,nz=g3d.player.position.z+mz*sp;
+var hw=WORLD_SIZE_3D/2-1;g3d.player.position.x=Math.max(-hw,Math.min(hw,nx));g3d.player.position.z=Math.max(-hw,Math.min(hw,nz));
+// Rotate player to face movement direction
+if(len>0.1){var ta=Math.atan2(mx,mz),diff=ta-g3d.player.rotation.y;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;g3d.player.rotation.y+=diff*10*dt;}
+if(g3d.chopCooldown>0)g3d.chopCooldown-=dt;}
+
+// ── Camera ──
+function updateCamera3D(dt){g3d.camTheta+=(g3d.targetCamTheta-g3d.camTheta)*4*dt;g3d.camPhi+=(g3d.targetCamPhi-g3d.camPhi)*4*dt;g3d.camDistance+=(g3d.targetCamDistance-g3d.camDistance)*4*dt;var px=g3d.player.position.x,py=g3d.player.position.y+3,pz=g3d.player.position.z;if(g3d.shiftLock){var behind=new THREE.Vector3(0,1.5,-g3d.camDistance);behind.applyQuaternion(g3d.player.quaternion);var cx=px+behind.x,cy=py+behind.y+2,cz=pz+behind.z;g3d.camera.position.lerp(new THREE.Vector3(cx,cy,cz),6*dt);g3d.camera.lookAt(new THREE.Vector3(px,py-0.5,pz));}else{var cx=px+Math.sin(g3d.camTheta)*Math.cos(g3d.camPhi)*g3d.camDistance,cy=py+Math.sin(g3d.camPhi)*g3d.camDistance,cz=pz+Math.cos(g3d.camTheta)*Math.cos(g3d.camPhi)*g3d.camDistance;g3d.camera.position.lerp(new THREE.Vector3(cx,cy,cz),6*dt);g3d.camera.lookAt(new THREE.Vector3(px,py-0.5,pz));}}
+
+// ── Build zone marker ──
+var bzMarker=null;
+function createBuildZoneMarker(){bzMarker=new THREE.Group();var ring=new THREE.Mesh(new THREE.TorusGeometry(BUILD_RADIUS,0.3,8,32),new THREE.MeshBasicMaterial({color:0x4ade80,transparent:true,opacity:0.35,depthTest:true}));ring.rotation.x=-Math.PI/2;ring.position.y=0.05;bzMarker.add(ring);var ring2=new THREE.Mesh(new THREE.TorusGeometry(BUILD_RADIUS-0.5,0.15,8,32),new THREE.MeshBasicMaterial({color:0x22c55e,transparent:true,opacity:0.2,depthTest:true}));ring2.rotation.x=-Math.PI/2;ring2.position.y=0.06;bzMarker.add(ring2);bzMarker.position.copy(BUILD_ZONE);g3d.scene.add(bzMarker);}
+function animateBZMarker(){if(!bzMarker||!g3d.gameActive)return;var pulse=0.3+Math.sin(Date.now()*0.003)*0.15;for(var i=0;i<bzMarker.children.length;i++)bzMarker.children[i].material.opacity=pulse;var dist=g3d.player.position.distanceTo(BUILD_ZONE);document.getElementById('build-zone-indicator').style.display=dist<=BUILD_RADIUS+5?'block':'none';}
+
+// ── Init & Loop ──
+function initPhase2Scene(cfg){g3d.levelConfig=cfg;g3d.woodRequired=cfg.woodRequired;g3d.screwsRequired=cfg.screwsRequired||5;g3d.woodCount=0;g3d.money=0;g3d.screws=0;g3d.axeLevel=1;g3d.trees=[];g3d.woodDrops=[];g3d.particles=[];g3d.buildingMode=false;g3d.placedPlanks=0;g3d.freeDesign=false;g3d.shiftLock=false;g3d.shopOpen=false;g3d.houseGroup=null;g3d.blueprintGroup=null;g3d.plankTargets=[];g3d.chopCooldown=0;g3d.animFrameId=null;g3d.shakeIntensity=0;g3d.shakeDuration=0;g3d.camTheta=0;g3d.camPhi=0.55;g3d.camDistance=18;g3d.targetCamTheta=0;g3d.targetCamPhi=0.55;g3d.targetCamDistance=18;g3d.scene=new THREE.Scene();g3d.scene.background=new THREE.Color(0x87CEEB);g3d.scene.fog=new THREE.Fog(0x9ab89a,70,180);var vp=document.getElementById('viewport3d'),w=vp.clientWidth,h=vp.clientHeight;g3d.camera=new THREE.PerspectiveCamera(60,w/h,0.5,300);g3d.camera.position.set(0,18,24);g3d.renderer=new THREE.WebGLRenderer({antialias:true});g3d.renderer.setSize(w,h);g3d.renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));g3d.renderer.shadowMap.enabled=true;g3d.renderer.shadowMap.type=THREE.PCFSoftShadowMap;g3d.renderer.toneMapping=THREE.ACESFilmicToneMapping;g3d.renderer.toneMappingExposure=1.1;vp.appendChild(g3d.renderer.domElement);var sun=new THREE.DirectionalLight(0xfff5e6,3.5);sun.position.set(40,50,30);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.near=0.5;sun.shadow.camera.far=200;sun.shadow.camera.left=-70;sun.shadow.camera.right=70;sun.shadow.camera.top=70;sun.shadow.camera.bottom=-70;sun.shadow.bias=-0.0004;g3d.scene.add(sun);g3d.scene.add(new THREE.AmbientLight(0x889977,1.0));g3d.scene.add(new THREE.HemisphereLight(0x87CEEB,0x446633,0.7));var ground=new THREE.Mesh(new THREE.PlaneGeometry(WORLD_SIZE_3D,WORLD_SIZE_3D),new THREE.MeshStandardMaterial({color:0x3d6b2e,roughness:0.85}));ground.rotation.x=-Math.PI/2;ground.position.y=-0.05;ground.receiveShadow=true;g3d.scene.add(ground);for(var i=0;i<400;i++){var x=(Math.random()-0.5)*WORLD_SIZE_3D*0.95,z=(Math.random()-0.5)*WORLD_SIZE_3D*0.95;if(Math.abs(x)<3&&Math.abs(z)<3)continue;var tuft=new THREE.Mesh(new THREE.ConeGeometry(0.15,0.4+Math.random()*0.6,4),new THREE.MeshStandardMaterial({color:new THREE.Color().setHSL(0.22+Math.random()*0.08,0.7,0.25+Math.random()*0.2),roughness:0.8}));tuft.position.set(x,0.15,z);tuft.castShadow=true;g3d.scene.add(tuft);}spawnTrees3D(cfg.treeCount);createPlayer3D();createBuildZoneMarker();g3d.clock=new THREE.Clock();}
+
+function initPhase2Controls(){var canvas=g3d.renderer.domElement;canvas.addEventListener('mousedown',function(e){if(e.button===0){g3d.mouse.down=true;if(g3d.buildingMode)handleBuildClick3D();else handleChop3D();}else if(e.button===2&&!g3d.shiftLock){g3d.isDragging=true;g3d.lastMouseX=e.clientX;g3d.lastMouseY=e.clientY;}});canvas.addEventListener('mousemove',function(e){g3d.mouseNDC.x=(e.clientX/window.innerWidth)*2-1;g3d.mouseNDC.y=-(e.clientY/window.innerHeight)*2+1;if(g3d.isDragging){var dx=e.clientX-g3d.lastMouseX,dy=e.clientY-g3d.lastMouseY;g3d.targetCamTheta-=dx*0.005;g3d.targetCamPhi=Math.max(0.1,Math.min(1.3,g3d.targetCamPhi-dy*0.005));g3d.lastMouseX=e.clientX;g3d.lastMouseY=e.clientY;}});canvas.addEventListener('mouseup',function(e){if(e.button===0)g3d.mouse.down=false;if(e.button===2)g3d.isDragging=false;});canvas.addEventListener('contextmenu',function(e){e.preventDefault();});canvas.addEventListener('wheel',function(e){g3d.targetCamDistance=Math.max(6,Math.min(40,g3d.targetCamDistance+e.deltaY*0.02));e.preventDefault();},{passive:false});}
+
+var _shiftToggle=false;
+window.addEventListener('keydown',function(e){g3d.keys[e.code]=true;if(['KeyW','KeyA','KeyS','KeyD','Space'].includes(e.code))e.preventDefault();if(e.code==='KeyB')toggleShop();if(e.code==='ShiftLeft'||e.code==='ShiftRight'){if(!_shiftToggle){_shiftToggle=true;g3d.shiftLock=!g3d.shiftLock;playTone3D(g3d.shiftLock?800:400,'sine',0.1,0.05);}}if(e.code==='Escape'){if(g3d.buildingMode){if(g3d.freeDesign){completeHouse3D();}else{cancelBuilding3D();}}else if(g3d.shopOpen){toggleShop();}}});
+window.addEventListener('keyup',function(e){g3d.keys[e.code]=false;if(e.code==='ShiftLeft'||e.code==='ShiftRight')_shiftToggle=false;});
+
+function phase2Loop(){if(!g3d.gameActive)return;g3d.animFrameId=requestAnimationFrame(phase2Loop);var dt=Math.min(g3d.clock.getDelta(),0.1);updatePlayer3D(dt);updateCamera3D(dt);updateWoodDrops3D(dt);updateFallingTrees3D(dt);updateParticles3D(dt);animatePlanks3D(dt);animateBZMarker();updateTutorial();g3d.treeRespawnTimer+=dt;if(g3d.treeRespawnTimer>12&&g3d.trees.length<g3d.levelConfig.treeCount){g3d.treeRespawnTimer=0;var v=false,x,z;for(var a=0;a<20&&!v;a++){x=(Math.random()-0.5)*(WORLD_SIZE_3D-10);z=(Math.random()-0.5)*(WORLD_SIZE_3D-10);if(Math.abs(x)<6&&Math.abs(z)<6)continue;if(g3d.player.position.distanceTo(new THREE.Vector3(x,0,z))<8)continue;v=true;for(var j=0;j<g3d.trees.length;j++){if(g3d.trees[j].position.distanceTo(new THREE.Vector3(x,0,z))<6){v=false;break;}}}if(v)spawnTree3D(x,z);}if(g3d.blueprintGroup&&g3d.buildingMode){var pulse=0.2+Math.sin(Date.now()*0.004)*0.1;for(var i=0;i<g3d.blueprintGroup.children.length;i++)g3d.blueprintGroup.children[i].material.opacity=pulse;}if(g3d.shakeDuration>0){g3d.shakeDuration-=dt;var s=g3d.shakeIntensity*(g3d.shakeDuration/Math.max(0.01,g3d.shakeDuration+0.1));g3d.camera.position.x+=(Math.random()-0.5)*s*2;g3d.camera.position.y+=(Math.random()-0.5)*s*2;g3d.camera.position.z+=(Math.random()-0.5)*s*2;if(g3d.shakeDuration<=0)g3d.shakeIntensity=0;}g3d.renderer.render(g3d.scene,g3d.camera);renderPreview3D();}
+
+// ── Public API ──
+window.initPhase2Game=function(phase,level){document.getElementById('viewport').style.display='none';var vp3d=document.getElementById('viewport3d');vp3d.classList.add('active');vp3d.style.display='block';document.getElementById('completion-overlay-3d').classList.remove('show');document.getElementById('build-mode-banner').classList.remove('show');document.getElementById('shop-modal').classList.remove('show');document.getElementById('build-btn').style.display='';document.getElementById('design-btn').style.display='';document.getElementById('upgrade-panel').style.display='';document.getElementById('play-screen').classList.add('game-mode');var cfg=HOUSE_CONFIGS[level.houseSize];cfg.houseName=level.houseName;cfg.woodRequired=level.woodRequired;cfg.screwsRequired=level.screwsRequired;cfg.treeCount=level.treeCount;initPhase2Scene(cfg);initPhase2Controls();setupPreview3D();updateUI3D();document.getElementById('build-btn').onclick=startBuilding3D;document.getElementById('shop-sell-wood').onclick=sellAllWood;document.getElementById('shop-buy-screw').onclick=buyScrew;document.getElementById('shop-upgrade-axe').onclick=upgradeAxe;document.getElementById('shop-close').onclick=toggleShop;document.getElementById('design-btn').onclick=function(){g3d.freeDesign=!g3d.freeDesign;this.classList.toggle('active',g3d.freeDesign);this.textContent=g3d.freeDesign?'🎨 Free Design ON':'🎨 Free Design';playTone3D(g3d.freeDesign?500:350,'sine',0.1,0.05);};
+// Tutorial for Phase 2 Level 1
+_tutorialActive=(level.num===1);_tutorialStep=0;if(_tutorialActive)showTutorial('start');
+// Player always faces forward
+// Player faces movement direction automatically
+var uh=function(){ensureAudio3D();if(g3d.audioCtx&&g3d.audioCtx.state==='suspended')g3d.audioCtx.resume();};
+// unlock MP3 Audio objects + start BGM
+[sfxChop,sfxBuild].forEach(function(a){a.play().then(function(){a.pause();}).catch(function(){});a.currentTime=0;});bgMusic.play().catch(function(){});
+g3d.renderer.domElement.addEventListener('click',uh,{once:true});g3d.gameActive=true;g3d.animFrameId=requestAnimationFrame(phase2Loop);};
+
+window.stopPhase2Game=function(){g3d.gameActive=false;if(g3d.animFrameId){cancelAnimationFrame(g3d.animFrameId);g3d.animFrameId=null;}bgMusic.pause();bgMusic.currentTime=0;function dg(g){if(!g)return;g3d.scene.remove(g);while(g.children.length>0){var c=g.children[0];if(c.geometry)c.geometry.dispose();if(c.material)c.material.dispose();g.remove(c);}}dg(g3d.houseGroup);g3d.houseGroup=null;dg(g3d.blueprintGroup);g3d.blueprintGroup=null;dg(bzMarker);bzMarker=null;for(var i=0;i<g3d.trees.length;i++)g3d.scene.remove(g3d.trees[i]);g3d.trees=[];for(var i=0;i<g3d.woodDrops.length;i++){g3d.scene.remove(g3d.woodDrops[i]);g3d.woodDrops[i].geometry.dispose();}g3d.woodDrops=[];for(var i=0;i<g3d.particles.length;i++){g3d.scene.remove(g3d.particles[i]);g3d.particles[i].geometry.dispose();g3d.particles[i].material.dispose();}g3d.particles=[];if(g3d.player){g3d.scene.remove(g3d.player);g3d.player=null;}if(g3d.renderer){var vp3d=document.getElementById('viewport3d');if(vp3d&&g3d.renderer.domElement.parentNode===vp3d)vp3d.removeChild(g3d.renderer.domElement);g3d.renderer.dispose();g3d.renderer=null;}if(g3d.previewRenderer){var pv=document.getElementById('preview-viewport');if(pv&&g3d.previewRenderer.domElement.parentNode===pv)pv.removeChild(g3d.previewRenderer.domElement);g3d.previewRenderer.dispose();g3d.previewRenderer=null;}document.getElementById('shop-modal').classList.remove('show');document.getElementById('viewport3d').classList.remove('active');document.getElementById('viewport3d').style.display='none';document.getElementById('viewport').style.display='';};
+
+window.finish3DLevel=function(){window.stopPhase2Game();window.markComplete();document.getElementById('play-screen').classList.remove('game-mode');var pid=+document.getElementById('play-screen').dataset.phaseId;if(pid)window.openPhase(pid);else window.showScreen('phase-select');};
+</script>
+
+<!-- ═══════ UI LOGIC ═══════ -->
+
+
 <!-- ═══════ UI LOGIC ═══════ -->
 <script>
 window.saveState = function() { const r={}; for(const[p,s] of Object.entries(window.completed)) r[p]=[...s]; localStorage.setItem('instabuild2d', JSON.stringify(r)); };
 window.loadState = function() { try { const r=JSON.parse(localStorage.getItem('instabuild2d')); if(r) for(const[p,a] of Object.entries(r)) window.completed[p]=new Set(a); } catch(e){} };
+
+// ── Navigation history ──
+window._history = [];
+window.goBack = function() {
+  if (window._history.length < 2) { window.showScreen('title'); return; }
+  window._history.pop(); // remove current
+  var prev = window._history[window._history.length-1];
+  window._navigatingBack = true;
+  window.showScreen(prev.screen, prev.arg);
+  window._navigatingBack = false;
+};
 
 window.showDialog = function() {
   const dlg = document.getElementById('dialog-overlay');
@@ -838,11 +1564,23 @@ window.startGame = function() {
   setTimeout(() => { window.showScreen('phase-select'); }, 100);
 };
 
-window.showScreen = function(name) {
+window.showScreen = function(name, arg) {
+  if (!window._navigatingBack) {
+    // Don't push duplicates
+    var last = window._history[window._history.length-1];
+    if (!last || last.screen !== name) {
+      window._history.push({screen:name, arg:arg});
+    }
+  }
+  // Show/hide back button (hide on title/dialog screens)
+  var bb = document.getElementById('back-btn');
+  bb.classList.toggle('show', name !== 'title');
+
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   const el = document.getElementById(name+'-screen');
   if (el) el.classList.add('active');
   if (window.stopGame3D) window.stopGame3D();
+  if (window.stopPhase2Game) window.stopPhase2Game();
   document.getElementById('play-screen').classList.remove('game-mode');
   if (name==='phase-select') window.renderPhaseSelect();
   if (name==='level') window.renderLevelGrid(window.currentPhase);
@@ -885,6 +1623,9 @@ window.openLevel = function(pid, lnum) {
   if (pid===1) {
     document.getElementById('placeholder-container').style.display = 'none';
     window.initGame3D(p, l);
+  } else if (pid===2) {
+    document.getElementById('placeholder-container').style.display = 'none';
+    window.initPhase2Game(p, l);
   } else {
     document.getElementById('placeholder-container').style.display = 'flex';
     document.getElementById('play-screen').classList.remove('game-mode');
@@ -893,6 +1634,7 @@ window.openLevel = function(pid, lnum) {
 
 window.goBackToLevelGrid = function() {
   if(window.stopGame3D) window.stopGame3D();
+  if(window.stopPhase2Game) window.stopPhase2Game();
   document.getElementById('play-screen').classList.remove('game-mode');
   const pid=+document.getElementById('play-screen').dataset.phaseId;
   pid?window.openPhase(pid):window.showScreen('phase-select');
