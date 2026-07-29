@@ -394,6 +394,1267 @@
   }
   #design-btn:hover { background: rgba(96,165,250,0.25); }
   #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
+
+  /* ── Phase 3: Timber Slide v2 ── */
+  #ts-viewport { position: absolute; inset: 0; display: none; background: #1a0e06; overflow: hidden; }
+  #ts-viewport.active { display: block; }
+  #ts-canvas { display: block; width: 100%; height: 100%; }
+
+  .ts-hud {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%); z-index: 12;
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(20,10,4,0.9); border: 2px solid #5c3d2e;
+    border-radius: 20px; padding: 4px 16px;
+    font-family: 'Orbitron', sans-serif; font-size: 10px;
+  }
+  .ts-hud .ts-stat { text-align: center; }
+  .ts-hud .ts-val { color: #d4a574; font-weight: 700; font-size: 14px; }
+  .ts-hud .ts-lbl { color: #6b5540; font-size: 7px; text-transform: uppercase; letter-spacing: 1.5px; }
+  .ts-hud .ts-combo { color: #fbbf24 !important; font-size: 18px !important; }
+
+  .ts-powerup-bar {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 12;
+    display: flex; gap: 8px;
+  }
+  .ts-powerup-bar .ts-pw {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: rgba(20,10,4,0.85); border: 2px solid #374151;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; transition: all 0.2s;
+  }
+  .ts-powerup-bar .ts-pw.active { border-color: #fbbf24; box-shadow: 0 0 14px rgba(251,191,36,0.3); }
+
+  .ts-vignette {
+    position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    box-shadow: inset 0 0 80px 40px rgba(0,0,0,0.5);
+  }
+
+  .ts-toast {
+    position: absolute; top: 38%; left: 50%; transform: translate(-50%,-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+    opacity: 0; pointer-events: none; transition: all 0.3s;
+    text-shadow: 0 0 20px currentColor;
+  }
+  .ts-toast.show { opacity: 1; }
+  .ts-toast.good { color: #fbbf24; }
+  .ts-toast.bad { color: #f87171; }
+  .ts-toast.combo { color: #4ade80; font-size: 36px; }
+
+  .ts-overlay {
+    position: absolute; inset: 0; z-index: 30;
+    background: rgba(0,0,0,0.85); display: none;
+    align-items: center; justify-content: center; flex-direction: column;
+    font-family: 'Orbitron', sans-serif;
+  }
+  .ts-overlay.show { display: flex; }
+  .ts-overlay .ts-emoji { font-size: 64px; margin-bottom: 8px; }
+  .ts-overlay .ts-title { font-size: 32px; font-weight: 900; margin-bottom: 4px; }
+  .ts-overlay .ts-sub { font-size: 14px; color: #9ca3af; margin-bottom: 6px; }
+  .ts-overlay .ts-points { font-size: 22px; color: #fbbf24; font-weight: 700; margin-bottom: 20px; }
+  .ts-overlay.win .ts-title { color: #4ade80; }
+  .ts-overlay.lose .ts-title { color: #f87171; }
+  .ts-overlay .ts-btn-row { display: flex; gap: 12px; }
+  .ts-overlay button {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 10px 22px; border-radius: 14px; cursor: pointer; transition: all 0.2s;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.12); color: #4ade80;
+  }
+  .ts-overlay button:hover { background: rgba(74,222,128,0.3); }
+  .ts-overlay button.back { border-color: #6b7280; color: #9ca3af; background: rgba(107,114,128,0.1); }
+  .ts-overlay button.back:hover { background: rgba(107,114,128,0.25); }
+  /* ── Phase 2: 3D Woodcutting HUD ── */
+  #viewport3d { position: absolute; inset: 0; display: none; }
+  #viewport3d.active { display: block; }
+  #viewport3d canvas { display: block; width: 100%; height: 100%; }
+
+  #wood-panel {
+    position: absolute; top: 14px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #wood-icon { font-size: 28px; }
+  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
+  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  #house-panel {
+    position: absolute; top: 14px; right: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  #preview-viewport {
+    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
+    border: 2px solid #4a5568;
+    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
+  }
+  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
+  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
+  #build-cost.has-enough { color: #4ade80; }
+  #build-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
+    transition: all 0.3s ease; letter-spacing: 1px;
+  }
+  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
+
+  #build-mode-banner {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
+    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
+    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
+  }
+  #build-mode-banner.show { display: block; }
+  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
+  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
+
+  #completion-overlay-3d {
+    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
+    display: none; justify-content: center; align-items: center; flex-direction: column;
+    backdrop-filter: blur(4px);
+  }
+  #completion-overlay-3d.show { display: flex; }
+  #completion-card-3d {
+    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
+    border-radius: 18px; padding: 30px 40px; text-align: center;
+    box-shadow: 0 0 60px rgba(251,191,36,0.25);
+  }
+  #completion-emoji { font-size: 64px; }
+  #completion-title-3d {
+    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
+  }
+  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
+  .btn-gold {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
+    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
+  }
+  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
+
+  #phase2-instructions {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
+  }
+  #phase2-instructions span { color: #4ade80; font-weight: 700; }
+
+  /* ── Leave button ── */
+  .leave-btn {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,100,100,0.4); background: rgba(255,60,60,0.12);
+    color: #f87171; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(6px);
+  }
+  .leave-btn:hover { background: rgba(255,60,60,0.3); border-color: #f87171; box-shadow: 0 0 14px rgba(255,60,60,0.25); }
+
+  /* ── Universal back button ── */
+  #back-btn {
+    position: fixed; top: 10px; left: 10px; z-index: 200;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15); background: rgba(15,17,15,0.85);
+    color: #9ca3af; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(8px);
+    display: none;
+  }
+  #back-btn.show { display: block; }
+  #back-btn:hover { background: rgba(74,222,128,0.15); border-color: #4ade80; color: #4ade80; }
+
+  /* ── Build plank button ── */
+  #place-plank-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.2);
+    color: #4ade80; cursor: pointer; transition: all 0.2s;
+    margin-top: 8px; display: none;
+  }
+  #place-plank-btn.show { display: inline-block; }
+  #place-plank-btn:hover { background: rgba(74,222,128,0.4); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+
+  /* ── Tutorial prompts ── */
+  #tutorial-overlay {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 25;
+    background: rgba(15,17,15,0.94); border: 2px solid #fbbf24; border-radius: 14px;
+    padding: 12px 22px; text-align: center; display: none;
+    box-shadow: 0 0 30px rgba(251,191,36,0.2);
+  }
+  #tutorial-overlay.show { display: block; animation: fadeInSlide 0.5s ease; }
+  @keyframes fadeInSlide { from{opacity:0;transform:translateX(-50%)translateY(10px)} to{opacity:1;transform:translateX(-50%)translateY(0)} }
+  #tutorial-text { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #fbbf24; }
+  #tutorial-hint { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+  /* ── Money & Screws HUD ── */
+  #money-panel {
+    position: absolute; top: 70px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #fbbf24;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #fbbf24;
+  }
+  #screws-panel {
+    position: absolute; top: 110px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #9ca3af;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #d1d5db;
+  }
+
+  /* ── Shop modal ── */
+  #shop-modal {
+    position: absolute; inset: 0; z-index: 40;
+    background: rgba(0,0,0,0.8); display: none;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  #shop-modal.show { display: flex; }
+  #shop-card {
+    background: #1a1c1a; border: 2px solid #fbbf24; border-radius: 16px;
+    padding: 24px 30px; text-align: center; max-width: 320px; width: 90%;
+    box-shadow: 0 0 40px rgba(251,191,36,0.2);
+    position: relative;
+  }
+  #shop-card h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fbbf24; margin-bottom: 14px; }
+  .shop-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #232623; color: #d1d5db; font-size: 13px; }
+  .shop-row .price { color: #fbbf24; font-weight: 700; }
+  .shop-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.12); color: #4ade80; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .shop-btn:hover { background: rgba(74,222,128,0.25); }
+  .shop-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .shop-close { margin-top: 12px; }
+
+  /* ── Upgrade panel ── */
+  #upgrade-panel {
+    position: absolute; top: 150px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #a855f7;
+    border-radius: 10px; padding: 6px 14px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px; color: #c084fc;
+    display: none; /* shown during game */
+  }
+
+  /* ── Build zone marker ── */
+  #build-zone-indicator {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4);
+    border-radius: 20px; padding: 6px 16px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4ade80;
+    display: none;
+  }
+
+  /* ── Design mode button ── */
+  #design-btn {
+    position: absolute; bottom: 50px; right: 14px; z-index: 12;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 8px 16px; border-radius: 20px;
+    border: 2px solid #60a5fa; background: rgba(96,165,250,0.12);
+    color: #60a5fa; cursor: pointer; transition: all 0.2s;
+    display: none;
+  }
+  #design-btn:hover { background: rgba(96,165,250,0.25); }
+  #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
+
+  /* ── Phase 3: Timber Slide ── */
+  #ts-viewport { position: absolute; inset: 0; display: none; background: #2a1f14; }
+  #ts-viewport.active { display: block; }
+  #ts-canvas { display: block; width: 100%; height: 100%; }
+
+  .ts-hud {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%); z-index: 12;
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(30,18,10,0.92); border: 2px solid #5c3d2e;
+    border-radius: 18px; padding: 5px 18px;
+    font-family: 'Orbitron', sans-serif; font-size: 11px;
+  }
+  .ts-hud .ts-stat { text-align: center; }
+  .ts-hud .ts-val { color: #d4a574; font-weight: 700; font-size: 15px; }
+  .ts-hud .ts-lbl { color: #8b7355; font-size: 7px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+  .ts-toast {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900;
+    opacity: 0; pointer-events: none; transition: all 0.4s;
+  }
+  .ts-toast.show { opacity: 1; }
+  .ts-toast.good { color: #d4a574; }
+  .ts-toast.bad { color: #f87171; }
+  /* ── Phase 2: 3D Woodcutting HUD ── */
+  #viewport3d { position: absolute; inset: 0; display: none; }
+  #viewport3d.active { display: block; }
+  #viewport3d canvas { display: block; width: 100%; height: 100%; }
+
+  #wood-panel {
+    position: absolute; top: 14px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #wood-icon { font-size: 28px; }
+  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
+  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  #house-panel {
+    position: absolute; top: 14px; right: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  #preview-viewport {
+    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
+    border: 2px solid #4a5568;
+    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
+  }
+  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
+  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
+  #build-cost.has-enough { color: #4ade80; }
+  #build-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
+    transition: all 0.3s ease; letter-spacing: 1px;
+  }
+  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
+
+  #build-mode-banner {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
+    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
+    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
+  }
+  #build-mode-banner.show { display: block; }
+  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
+  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
+
+  #completion-overlay-3d {
+    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
+    display: none; justify-content: center; align-items: center; flex-direction: column;
+    backdrop-filter: blur(4px);
+  }
+  #completion-overlay-3d.show { display: flex; }
+  #completion-card-3d {
+    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
+    border-radius: 18px; padding: 30px 40px; text-align: center;
+    box-shadow: 0 0 60px rgba(251,191,36,0.25);
+  }
+  #completion-emoji { font-size: 64px; }
+  #completion-title-3d {
+    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
+  }
+  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
+  .btn-gold {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
+    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
+  }
+  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
+
+  #phase2-instructions {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
+  }
+  #phase2-instructions span { color: #4ade80; font-weight: 700; }
+
+  /* ── Leave button ── */
+  .leave-btn {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,100,100,0.4); background: rgba(255,60,60,0.12);
+    color: #f87171; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(6px);
+  }
+  .leave-btn:hover { background: rgba(255,60,60,0.3); border-color: #f87171; box-shadow: 0 0 14px rgba(255,60,60,0.25); }
+
+  /* ── Universal back button ── */
+  #back-btn {
+    position: fixed; top: 10px; left: 10px; z-index: 200;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15); background: rgba(15,17,15,0.85);
+    color: #9ca3af; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(8px);
+    display: none;
+  }
+  #back-btn.show { display: block; }
+  #back-btn:hover { background: rgba(74,222,128,0.15); border-color: #4ade80; color: #4ade80; }
+
+  /* ── Build plank button ── */
+  #place-plank-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.2);
+    color: #4ade80; cursor: pointer; transition: all 0.2s;
+    margin-top: 8px; display: none;
+  }
+  #place-plank-btn.show { display: inline-block; }
+  #place-plank-btn:hover { background: rgba(74,222,128,0.4); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+
+  /* ── Tutorial prompts ── */
+  #tutorial-overlay {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 25;
+    background: rgba(15,17,15,0.94); border: 2px solid #fbbf24; border-radius: 14px;
+    padding: 12px 22px; text-align: center; display: none;
+    box-shadow: 0 0 30px rgba(251,191,36,0.2);
+  }
+  #tutorial-overlay.show { display: block; animation: fadeInSlide 0.5s ease; }
+  @keyframes fadeInSlide { from{opacity:0;transform:translateX(-50%)translateY(10px)} to{opacity:1;transform:translateX(-50%)translateY(0)} }
+  #tutorial-text { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #fbbf24; }
+  #tutorial-hint { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+  /* ── Money & Screws HUD ── */
+  #money-panel {
+    position: absolute; top: 70px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #fbbf24;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #fbbf24;
+  }
+  #screws-panel {
+    position: absolute; top: 110px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #9ca3af;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #d1d5db;
+  }
+
+  /* ── Shop modal ── */
+  #shop-modal {
+    position: absolute; inset: 0; z-index: 40;
+    background: rgba(0,0,0,0.8); display: none;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  #shop-modal.show { display: flex; }
+  #shop-card {
+    background: #1a1c1a; border: 2px solid #fbbf24; border-radius: 16px;
+    padding: 24px 30px; text-align: center; max-width: 320px; width: 90%;
+    box-shadow: 0 0 40px rgba(251,191,36,0.2);
+    position: relative;
+  }
+  #shop-card h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fbbf24; margin-bottom: 14px; }
+  .shop-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #232623; color: #d1d5db; font-size: 13px; }
+  .shop-row .price { color: #fbbf24; font-weight: 700; }
+  .shop-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.12); color: #4ade80; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .shop-btn:hover { background: rgba(74,222,128,0.25); }
+  .shop-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .shop-close { margin-top: 12px; }
+
+  /* ── Upgrade panel ── */
+  #upgrade-panel {
+    position: absolute; top: 150px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #a855f7;
+    border-radius: 10px; padding: 6px 14px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px; color: #c084fc;
+    display: none; /* shown during game */
+  }
+
+  /* ── Build zone marker ── */
+  #build-zone-indicator {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4);
+    border-radius: 20px; padding: 6px 16px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4ade80;
+    display: none;
+  }
+
+  /* ── Design mode button ── */
+  #design-btn {
+    position: absolute; bottom: 50px; right: 14px; z-index: 12;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 8px 16px; border-radius: 20px;
+    border: 2px solid #60a5fa; background: rgba(96,165,250,0.12);
+    color: #60a5fa; cursor: pointer; transition: all 0.2s;
+    display: none;
+  }
+  #design-btn:hover { background: rgba(96,165,250,0.25); }
+  #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
+
+  /* ── Phase 3: Line Builder ── */
+  #lb-viewport { position: absolute; inset: 0; display: none; background: #111613; }
+  #lb-viewport.active { display: block; }
+  #lb-canvas { display: block; width: 100%; height: 100%; cursor: pointer; }
+
+  .lb-hud {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%); z-index: 12;
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(8,10,8,0.94); border: 2px solid #374151;
+    border-radius: 18px; padding: 5px 18px;
+    font-family: 'Orbitron', sans-serif; font-size: 11px;
+  }
+  .lb-hud .lb-stat { text-align: center; }
+  .lb-hud .lb-val { color: #4ade80; font-weight: 700; font-size: 15px; }
+  .lb-hud .lb-lbl { color: #6b7280; font-size: 7px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+  .lb-order-card {
+    position: absolute; top: 55px; right: 10px; z-index: 14;
+    background: rgba(8,10,8,0.95); border: 2px solid #fbbf24;
+    border-radius: 14px; padding: 12px 16px; width: 200px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .lb-order-card h4 { font-family: 'Orbitron', sans-serif; font-size: 12px; color: #fbbf24; margin-bottom: 6px; text-align: center; }
+  .lb-recipe-step {
+    display: flex; align-items: center; gap: 6px; padding: 4px 8px;
+    font-size: 11px; color: #d1d5db;
+  }
+  .lb-recipe-step .lb-arrow { color: #4ade80; }
+
+  .lb-palette {
+    position: absolute; bottom: 10px; left: 10px; z-index: 14;
+    display: flex; gap: 6px;
+  }
+  .lb-palette button {
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 8px 14px; border-radius: 12px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.1);
+    color: #4ade80; cursor: pointer; transition: all 0.15s;
+  }
+  .lb-palette button:hover { background: rgba(74,222,128,0.3); }
+  .lb-palette button.selected { background: rgba(74,222,128,0.35); border-color: #fff; color: #fff; }
+  .lb-palette button.danger { border-color: #f87171; color: #f87171; background: rgba(248,113,113,0.1); }
+  .lb-palette button.danger:hover { background: rgba(248,113,113,0.3); }
+
+  .lb-upgrade-panel {
+    position: absolute; top: 55px; left: 10px; z-index: 14;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .lb-upgrade-panel button {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px; font-weight: 700;
+    padding: 6px 12px; border-radius: 10px;
+    border: 2px solid #fbbf24; background: rgba(251,191,36,0.1);
+    color: #fbbf24; cursor: pointer; transition: all 0.15s; text-align: left;
+  }
+  .lb-upgrade-panel button:hover { background: rgba(251,191,36,0.25); }
+  .lb-upgrade-panel button:disabled { opacity: 0.25; cursor: not-allowed; }
+
+  .lb-toast {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900;
+    opacity: 0; pointer-events: none; transition: all 0.4s;
+  }
+  .lb-toast.show { opacity: 1; }
+  .lb-toast.good { color: #4ade80; }
+  .lb-toast.bad { color: #f87171; }
+  /* ── Phase 2: 3D Woodcutting HUD ── */
+  #viewport3d { position: absolute; inset: 0; display: none; }
+  #viewport3d.active { display: block; }
+  #viewport3d canvas { display: block; width: 100%; height: 100%; }
+
+  #wood-panel {
+    position: absolute; top: 14px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #wood-icon { font-size: 28px; }
+  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
+  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  #house-panel {
+    position: absolute; top: 14px; right: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  #preview-viewport {
+    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
+    border: 2px solid #4a5568;
+    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
+  }
+  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
+  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
+  #build-cost.has-enough { color: #4ade80; }
+  #build-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
+    transition: all 0.3s ease; letter-spacing: 1px;
+  }
+  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
+
+  #build-mode-banner {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
+    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
+    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
+  }
+  #build-mode-banner.show { display: block; }
+  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
+  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
+
+  #completion-overlay-3d {
+    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
+    display: none; justify-content: center; align-items: center; flex-direction: column;
+    backdrop-filter: blur(4px);
+  }
+  #completion-overlay-3d.show { display: flex; }
+  #completion-card-3d {
+    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
+    border-radius: 18px; padding: 30px 40px; text-align: center;
+    box-shadow: 0 0 60px rgba(251,191,36,0.25);
+  }
+  #completion-emoji { font-size: 64px; }
+  #completion-title-3d {
+    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
+  }
+  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
+  .btn-gold {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
+    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
+  }
+  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
+
+  #phase2-instructions {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
+  }
+  #phase2-instructions span { color: #4ade80; font-weight: 700; }
+
+  /* ── Leave button ── */
+  .leave-btn {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,100,100,0.4); background: rgba(255,60,60,0.12);
+    color: #f87171; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(6px);
+  }
+  .leave-btn:hover { background: rgba(255,60,60,0.3); border-color: #f87171; box-shadow: 0 0 14px rgba(255,60,60,0.25); }
+
+  /* ── Universal back button ── */
+  #back-btn {
+    position: fixed; top: 10px; left: 10px; z-index: 200;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15); background: rgba(15,17,15,0.85);
+    color: #9ca3af; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(8px);
+    display: none;
+  }
+  #back-btn.show { display: block; }
+  #back-btn:hover { background: rgba(74,222,128,0.15); border-color: #4ade80; color: #4ade80; }
+
+  /* ── Build plank button ── */
+  #place-plank-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.2);
+    color: #4ade80; cursor: pointer; transition: all 0.2s;
+    margin-top: 8px; display: none;
+  }
+  #place-plank-btn.show { display: inline-block; }
+  #place-plank-btn:hover { background: rgba(74,222,128,0.4); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+
+  /* ── Tutorial prompts ── */
+  #tutorial-overlay {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 25;
+    background: rgba(15,17,15,0.94); border: 2px solid #fbbf24; border-radius: 14px;
+    padding: 12px 22px; text-align: center; display: none;
+    box-shadow: 0 0 30px rgba(251,191,36,0.2);
+  }
+  #tutorial-overlay.show { display: block; animation: fadeInSlide 0.5s ease; }
+  @keyframes fadeInSlide { from{opacity:0;transform:translateX(-50%)translateY(10px)} to{opacity:1;transform:translateX(-50%)translateY(0)} }
+  #tutorial-text { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #fbbf24; }
+  #tutorial-hint { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+  /* ── Money & Screws HUD ── */
+  #money-panel {
+    position: absolute; top: 70px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #fbbf24;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #fbbf24;
+  }
+  #screws-panel {
+    position: absolute; top: 110px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #9ca3af;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #d1d5db;
+  }
+
+  /* ── Shop modal ── */
+  #shop-modal {
+    position: absolute; inset: 0; z-index: 40;
+    background: rgba(0,0,0,0.8); display: none;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  #shop-modal.show { display: flex; }
+  #shop-card {
+    background: #1a1c1a; border: 2px solid #fbbf24; border-radius: 16px;
+    padding: 24px 30px; text-align: center; max-width: 320px; width: 90%;
+    box-shadow: 0 0 40px rgba(251,191,36,0.2);
+    position: relative;
+  }
+  #shop-card h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fbbf24; margin-bottom: 14px; }
+  .shop-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #232623; color: #d1d5db; font-size: 13px; }
+  .shop-row .price { color: #fbbf24; font-weight: 700; }
+  .shop-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.12); color: #4ade80; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .shop-btn:hover { background: rgba(74,222,128,0.25); }
+  .shop-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .shop-close { margin-top: 12px; }
+
+  /* ── Upgrade panel ── */
+  #upgrade-panel {
+    position: absolute; top: 150px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #a855f7;
+    border-radius: 10px; padding: 6px 14px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px; color: #c084fc;
+    display: none; /* shown during game */
+  }
+
+  /* ── Build zone marker ── */
+  #build-zone-indicator {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4);
+    border-radius: 20px; padding: 6px 16px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4ade80;
+    display: none;
+  }
+
+  /* ── Design mode button ── */
+  #design-btn {
+    position: absolute; bottom: 50px; right: 14px; z-index: 12;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 8px 16px; border-radius: 20px;
+    border: 2px solid #60a5fa; background: rgba(96,165,250,0.12);
+    color: #60a5fa; cursor: pointer; transition: all 0.2s;
+    display: none;
+  }
+  #design-btn:hover { background: rgba(96,165,250,0.25); }
+  #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
+
+  /* ── Phase 3: Factory Line ── */
+  #ib-viewport { position: absolute; inset: 0; display: none; background: #0d0f0d; }
+  #ib-viewport.active { display: block; }
+  #ib-canvas { display: block; width: 100%; height: 100%; }
+
+  .ib-hud {
+    position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 12;
+    display: flex; align-items: center; gap: 20px;
+    background: rgba(10,12,10,0.92); border: 2px solid #374151;
+    border-radius: 20px; padding: 6px 20px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px;
+  }
+  .ib-hud .ib-stat { text-align: center; }
+  .ib-hud .ib-val { color: #4ade80; font-weight: 700; font-size: 16px; }
+  .ib-hud .ib-lbl { color: #6b7280; font-size: 8px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+  .ib-upgrade {
+    position: absolute; z-index: 14; display: flex; flex-direction: column; gap: 6px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .ib-upgrade button {
+    font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700;
+    padding: 5px 12px; border-radius: 10px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.1);
+    color: #4ade80; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .ib-upgrade button:hover { background: rgba(74,222,128,0.3); box-shadow: 0 0 12px rgba(74,222,128,0.2); }
+  .ib-upgrade button:disabled { opacity: 0.25; cursor: not-allowed; border-color: #374151; color: #4b5563; }
+
+  .ib-shop-btn {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 14;
+    display: flex; gap: 10px;
+  }
+  .ib-shop-btn button {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 10px 22px; border-radius: 14px;
+    border: 2px solid #fbbf24; background: rgba(251,191,36,0.12);
+    color: #fbbf24; cursor: pointer; transition: all 0.2s;
+  }
+  .ib-shop-btn button:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 18px rgba(251,191,36,0.2); }
+  .ib-shop-btn button:disabled { opacity: 0.25; cursor: not-allowed; }
+
+  .ib-toast {
+    position: absolute; top: 90px; left: 50%; transform: translateX(-50%); z-index: 20;
+    background: rgba(10,12,10,0.95); border: 2px solid #4ade80; border-radius: 12px;
+    padding: 8px 20px; font-family: 'Share Tech Mono', monospace; font-size: 12px;
+    color: #4ade80; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .ib-toast.show { opacity: 1; }
+  /* ── Phase 2: 3D Woodcutting HUD ── */
+  #viewport3d { position: absolute; inset: 0; display: none; }
+  #viewport3d.active { display: block; }
+  #viewport3d canvas { display: block; width: 100%; height: 100%; }
+
+  #wood-panel {
+    position: absolute; top: 14px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #wood-icon { font-size: 28px; }
+  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
+  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  #house-panel {
+    position: absolute; top: 14px; right: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  #preview-viewport {
+    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
+    border: 2px solid #4a5568;
+    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
+  }
+  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
+  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
+  #build-cost.has-enough { color: #4ade80; }
+  #build-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
+    transition: all 0.3s ease; letter-spacing: 1px;
+  }
+  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
+
+  #build-mode-banner {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
+    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
+    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
+  }
+  #build-mode-banner.show { display: block; }
+  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
+  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
+
+  #completion-overlay-3d {
+    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
+    display: none; justify-content: center; align-items: center; flex-direction: column;
+    backdrop-filter: blur(4px);
+  }
+  #completion-overlay-3d.show { display: flex; }
+  #completion-card-3d {
+    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
+    border-radius: 18px; padding: 30px 40px; text-align: center;
+    box-shadow: 0 0 60px rgba(251,191,36,0.25);
+  }
+  #completion-emoji { font-size: 64px; }
+  #completion-title-3d {
+    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
+  }
+  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
+  .btn-gold {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
+    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
+  }
+  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
+
+  #phase2-instructions {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
+  }
+  #phase2-instructions span { color: #4ade80; font-weight: 700; }
+
+  /* ── Leave button ── */
+  .leave-btn {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,100,100,0.4); background: rgba(255,60,60,0.12);
+    color: #f87171; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(6px);
+  }
+  .leave-btn:hover { background: rgba(255,60,60,0.3); border-color: #f87171; box-shadow: 0 0 14px rgba(255,60,60,0.25); }
+
+  /* ── Universal back button ── */
+  #back-btn {
+    position: fixed; top: 10px; left: 10px; z-index: 200;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15); background: rgba(15,17,15,0.85);
+    color: #9ca3af; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(8px);
+    display: none;
+  }
+  #back-btn.show { display: block; }
+  #back-btn:hover { background: rgba(74,222,128,0.15); border-color: #4ade80; color: #4ade80; }
+
+  /* ── Build plank button ── */
+  #place-plank-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.2);
+    color: #4ade80; cursor: pointer; transition: all 0.2s;
+    margin-top: 8px; display: none;
+  }
+  #place-plank-btn.show { display: inline-block; }
+  #place-plank-btn:hover { background: rgba(74,222,128,0.4); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+
+  /* ── Tutorial prompts ── */
+  #tutorial-overlay {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 25;
+    background: rgba(15,17,15,0.94); border: 2px solid #fbbf24; border-radius: 14px;
+    padding: 12px 22px; text-align: center; display: none;
+    box-shadow: 0 0 30px rgba(251,191,36,0.2);
+  }
+  #tutorial-overlay.show { display: block; animation: fadeInSlide 0.5s ease; }
+  @keyframes fadeInSlide { from{opacity:0;transform:translateX(-50%)translateY(10px)} to{opacity:1;transform:translateX(-50%)translateY(0)} }
+  #tutorial-text { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #fbbf24; }
+  #tutorial-hint { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+  /* ── Money & Screws HUD ── */
+  #money-panel {
+    position: absolute; top: 70px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #fbbf24;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #fbbf24;
+  }
+  #screws-panel {
+    position: absolute; top: 110px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #9ca3af;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #d1d5db;
+  }
+
+  /* ── Shop modal ── */
+  #shop-modal {
+    position: absolute; inset: 0; z-index: 40;
+    background: rgba(0,0,0,0.8); display: none;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  #shop-modal.show { display: flex; }
+  #shop-card {
+    background: #1a1c1a; border: 2px solid #fbbf24; border-radius: 16px;
+    padding: 24px 30px; text-align: center; max-width: 320px; width: 90%;
+    box-shadow: 0 0 40px rgba(251,191,36,0.2);
+    position: relative;
+  }
+  #shop-card h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fbbf24; margin-bottom: 14px; }
+  .shop-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #232623; color: #d1d5db; font-size: 13px; }
+  .shop-row .price { color: #fbbf24; font-weight: 700; }
+  .shop-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.12); color: #4ade80; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .shop-btn:hover { background: rgba(74,222,128,0.25); }
+  .shop-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .shop-close { margin-top: 12px; }
+
+  /* ── Upgrade panel ── */
+  #upgrade-panel {
+    position: absolute; top: 150px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #a855f7;
+    border-radius: 10px; padding: 6px 14px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px; color: #c084fc;
+    display: none; /* shown during game */
+  }
+
+  /* ── Build zone marker ── */
+  #build-zone-indicator {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4);
+    border-radius: 20px; padding: 6px 16px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4ade80;
+    display: none;
+  }
+
+  /* ── Design mode button ── */
+  #design-btn {
+    position: absolute; bottom: 50px; right: 14px; z-index: 12;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 8px 16px; border-radius: 20px;
+    border: 2px solid #60a5fa; background: rgba(96,165,250,0.12);
+    color: #60a5fa; cursor: pointer; transition: all 0.2s;
+    display: none;
+  }
+  #design-btn:hover { background: rgba(96,165,250,0.25); }
+  #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
+
+  /* ── Phase 3: Merge & Build ── */
+  #merge-viewport { position: absolute; inset: 0; display: none; background: #1a1c1a; }
+  #merge-viewport.active { display: flex; }
+  #merge-canvas { display: block; cursor: grab; }
+  #merge-canvas:active { cursor: grabbing; }
+
+  .mg-hud-top {
+    position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 12;
+    display: flex; align-items: center; gap: 20px;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 24px; padding: 8px 22px;
+    font-family: 'Orbitron', sans-serif; font-size: 13px;
+  }
+  .mg-hud-top .mg-stat { text-align: center; }
+  .mg-hud-top .mg-stat .mg-val { color: #4ade80; font-weight: 700; font-size: 15px; }
+  .mg-hud-top .mg-stat .mg-lbl { color: #6b7280; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .mg-house-panel {
+    position: absolute; top: 60px; right: 14px; z-index: 14;
+    background: rgba(15,17,15,0.94); border: 2px solid #fbbf24;
+    border-radius: 14px; padding: 14px 18px; width: 180px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .mg-house-panel h4 {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; color: #fbbf24;
+    margin-bottom: 10px; text-align: center; letter-spacing: 1px;
+  }
+  .mg-bp-slot {
+    display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+    margin-bottom: 6px; border-radius: 10px;
+    background: #232623; border: 2px solid #374151;
+    font-size: 12px; color: #6b7280; transition: all 0.3s;
+  }
+  .mg-bp-slot.done { border-color: #4ade80; color: #4ade80; background: #0d2818; }
+  .mg-bp-slot .mg-slot-icon { font-size: 24px; }
+  .mg-bp-slot .mg-slot-name { flex:1; }
+
+  .mg-shop {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 14;
+    display: flex; gap: 8px;
+  }
+  .mg-shop-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 10px 20px; border-radius: 14px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.15);
+    color: #4ade80; cursor: pointer; transition: all 0.2s;
+  }
+  .mg-shop-btn:hover { background: rgba(74,222,128,0.3); box-shadow: 0 0 16px rgba(74,222,128,0.2); }
+  .mg-shop-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
+
+  .mg-toast {
+    position: absolute; top: 100px; left: 50%; transform: translateX(-50%); z-index: 20;
+    background: rgba(15,17,15,0.95); border: 2px solid #fbbf24; border-radius: 12px;
+    padding: 8px 20px; font-family: 'Share Tech Mono', monospace; font-size: 12px;
+    color: #fbbf24; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .mg-toast.show { opacity: 1; }
+  /* ── Phase 2: 3D Woodcutting HUD ── */
+  #viewport3d { position: absolute; inset: 0; display: none; }
+  #viewport3d.active { display: block; }
+  #viewport3d canvas { display: block; width: 100%; height: 100%; }
+
+  #wood-panel {
+    position: absolute; top: 14px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #wood-icon { font-size: 28px; }
+  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
+  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  #house-panel {
+    position: absolute; top: 14px; right: 14px; z-index: 12;
+    background: rgba(15,17,15,0.92); border: 2px solid #374151;
+    border-radius: 12px; padding: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  #preview-viewport {
+    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
+    border: 2px solid #4a5568;
+    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
+  }
+  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
+  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
+  #build-cost.has-enough { color: #4ade80; }
+  #build-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
+    transition: all 0.3s ease; letter-spacing: 1px;
+  }
+  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
+
+  #build-mode-banner {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
+    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
+    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
+  }
+  #build-mode-banner.show { display: block; }
+  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
+  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
+
+  #completion-overlay-3d {
+    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
+    display: none; justify-content: center; align-items: center; flex-direction: column;
+    backdrop-filter: blur(4px);
+  }
+  #completion-overlay-3d.show { display: flex; }
+  #completion-card-3d {
+    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
+    border-radius: 18px; padding: 30px 40px; text-align: center;
+    box-shadow: 0 0 60px rgba(251,191,36,0.25);
+  }
+  #completion-emoji { font-size: 64px; }
+  #completion-title-3d {
+    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
+  }
+  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
+  .btn-gold {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
+    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
+  }
+  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
+
+  #phase2-instructions {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
+  }
+  #phase2-instructions span { color: #4ade80; font-weight: 700; }
+
+  /* ── Leave button ── */
+  .leave-btn {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,100,100,0.4); background: rgba(255,60,60,0.12);
+    color: #f87171; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(6px);
+  }
+  .leave-btn:hover { background: rgba(255,60,60,0.3); border-color: #f87171; box-shadow: 0 0 14px rgba(255,60,60,0.25); }
+
+  /* ── Universal back button ── */
+  #back-btn {
+    position: fixed; top: 10px; left: 10px; z-index: 200;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15); background: rgba(15,17,15,0.85);
+    color: #9ca3af; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; backdrop-filter: blur(8px);
+    display: none;
+  }
+  #back-btn.show { display: block; }
+  #back-btn:hover { background: rgba(74,222,128,0.15); border-color: #4ade80; color: #4ade80; }
+
+  /* ── Build plank button ── */
+  #place-plank-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 24px; border-radius: 50px;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.2);
+    color: #4ade80; cursor: pointer; transition: all 0.2s;
+    margin-top: 8px; display: none;
+  }
+  #place-plank-btn.show { display: inline-block; }
+  #place-plank-btn:hover { background: rgba(74,222,128,0.4); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
+
+  /* ── Tutorial prompts ── */
+  #tutorial-overlay {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 25;
+    background: rgba(15,17,15,0.94); border: 2px solid #fbbf24; border-radius: 14px;
+    padding: 12px 22px; text-align: center; display: none;
+    box-shadow: 0 0 30px rgba(251,191,36,0.2);
+  }
+  #tutorial-overlay.show { display: block; animation: fadeInSlide 0.5s ease; }
+  @keyframes fadeInSlide { from{opacity:0;transform:translateX(-50%)translateY(10px)} to{opacity:1;transform:translateX(-50%)translateY(0)} }
+  #tutorial-text { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #fbbf24; }
+  #tutorial-hint { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+  /* ── Money & Screws HUD ── */
+  #money-panel {
+    position: absolute; top: 70px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #fbbf24;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #fbbf24;
+  }
+  #screws-panel {
+    position: absolute; top: 110px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #9ca3af;
+    border-radius: 10px; padding: 6px 14px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px;
+    font-family: 'Orbitron', sans-serif; color: #d1d5db;
+  }
+
+  /* ── Shop modal ── */
+  #shop-modal {
+    position: absolute; inset: 0; z-index: 40;
+    background: rgba(0,0,0,0.8); display: none;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  #shop-modal.show { display: flex; }
+  #shop-card {
+    background: #1a1c1a; border: 2px solid #fbbf24; border-radius: 16px;
+    padding: 24px 30px; text-align: center; max-width: 320px; width: 90%;
+    box-shadow: 0 0 40px rgba(251,191,36,0.2);
+    position: relative;
+  }
+  #shop-card h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fbbf24; margin-bottom: 14px; }
+  .shop-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #232623; color: #d1d5db; font-size: 13px; }
+  .shop-row .price { color: #fbbf24; font-weight: 700; }
+  .shop-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px; border: 2px solid #4ade80;
+    background: rgba(74,222,128,0.12); color: #4ade80; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .shop-btn:hover { background: rgba(74,222,128,0.25); }
+  .shop-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .shop-close { margin-top: 12px; }
+
+  /* ── Upgrade panel ── */
+  #upgrade-panel {
+    position: absolute; top: 150px; left: 14px; z-index: 12;
+    background: rgba(15,17,15,0.9); border: 2px solid #a855f7;
+    border-radius: 10px; padding: 6px 14px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px; color: #c084fc;
+    display: none; /* shown during game */
+  }
+
+  /* ── Build zone marker ── */
+  #build-zone-indicator {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 11;
+    background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4);
+    border-radius: 20px; padding: 6px 16px;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4ade80;
+    display: none;
+  }
+
+  /* ── Design mode button ── */
+  #design-btn {
+    position: absolute; bottom: 50px; right: 14px; z-index: 12;
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 8px 16px; border-radius: 20px;
+    border: 2px solid #60a5fa; background: rgba(96,165,250,0.12);
+    color: #60a5fa; cursor: pointer; transition: all 0.2s;
+    display: none;
+  }
+  #design-btn:hover { background: rgba(96,165,250,0.25); }
+  #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
+
+
+
+
 </style>
 </head>
 <body>
@@ -577,7 +1838,48 @@
       </div>
     </div>
 
-    <div id="placeholder-container" style="display:none; flex:1; align-items:center; justify-content:center;">
+    
+    <!-- Phase 3: Timber Slide v2 -->
+    <div id="ts-viewport">
+      <canvas id="ts-canvas"></canvas>
+      <div class="ts-vignette"></div>
+      <div class="ts-hud">
+        <div class="ts-stat"><div class="ts-val ts-combo" id="ts-combo">x1</div><div class="ts-lbl">Combo</div></div>
+        <div class="ts-stat"><div class="ts-val" id="ts-size">100%</div><div class="ts-lbl">Module</div></div>
+        <div class="ts-stat"><div class="ts-val" id="ts-coins">🪙 0</div><div class="ts-lbl">Coins</div></div>
+        <div class="ts-stat"><div class="ts-val" id="ts-dist">0m</div><div class="ts-lbl">Distance</div></div>
+      </div>
+      <div class="ts-powerup-bar">
+        <div class="ts-pw" id="ts-pw-magnet">🧲</div>
+        <div class="ts-pw" id="ts-pw-shield">🛡️</div>
+        <div class="ts-pw" id="ts-pw-boost">⚡</div>
+      </div>
+      <div class="ts-toast" id="ts-toast"></div>
+      <!-- Win overlay -->
+      <div class="ts-overlay win" id="ts-win">
+        <div class="ts-emoji">🏆</div>
+        <div class="ts-title">YOU WIN!</div>
+        <div class="ts-sub">Module delivered!</div>
+        <div class="ts-points" id="ts-win-points">0 points</div>
+        <div class="ts-btn-row">
+          <button class="back" onclick="TS.goBack()">← Back</button>
+          <button onclick="TS.nextLevel()">Next Level →</button>
+        </div>
+      </div>
+      <!-- Lose overlay -->
+      <div class="ts-overlay lose" id="ts-lose">
+        <div class="ts-emoji">💀</div>
+        <div class="ts-title">YOU LOST!</div>
+        <div class="ts-sub">The block was destroyed</div>
+        <div class="ts-points" id="ts-lose-points">0 points</div>
+        <div class="ts-btn-row">
+          <button class="back" onclick="TS.goBack()">← Back</button>
+          <button onclick="TS.playAgain()">🔄 Play Again</button>
+        </div>
+      </div>
+    </div>
+
+        <div id="placeholder-container" style="display:none; flex:1; align-items:center; justify-content:center;">
       <div class="placeholder-box">[ Phase content coming soon ]</div>
     </div>
 
@@ -606,7 +1908,11 @@ window.GAME = {
         { num: 2, title: 'Farmhouse', info: 'Build a farmhouse — 30 Wood + 7 Screws', woodRequired: 30, screwsRequired: 7, houseSize: 'medium', treeCount: 18, houseName: 'Farmhouse' },
         { num: 3, title: 'Luxury Villa', info: 'Build a luxury villa — 40 Wood + 10 Screws', woodRequired: 40, screwsRequired: 10, houseSize: 'large', treeCount: 24, houseName: 'Luxury Villa' },
       ] },
-    { id: 3, name: 'The Reckoning', desc: 'Phase 3 — coming soon', levels: Array.from({length:3},(_,i)=>({num:i+1,title:`Level ${i+1}`,info:`Challenge ${i+1} of 3`})) },
+    { id: 3, name: 'Timber Slide', desc: 'Dodge saws, collect wood, chain combos. Survive if you can.', levels: [
+    { num: 1, title: 'Pine Workshop', info: 'Collect 15 points. Dodge the bombs!', speed: 1.0, obstacleRate: 0.4, collectRate: 1.0, powerupRate: 0.08, goalPoints: 15 },
+    { num: 2, title: 'Oak Factory', info: 'Collect 20 points. More bombs, tighter spacing.', speed: 1.15, obstacleRate: 0.55, collectRate: 0.8, powerupRate: 0.06, goalPoints: 20 },
+    { num: 3, title: 'Mahogany Mill', info: 'Collect 25 points. Bomb squad. Good luck!', speed: 1.3, obstacleRate: 0.7, collectRate: 0.6, powerupRate: 0.04, goalPoints: 25 }
+  ] },
   ]
 };
 
@@ -627,7 +1933,7 @@ let roadSampledC = [];       // road 2 (center)
 let roadSampledR = [];       // road 3 (right)
 let roadSegments = [];       // {x1,z1,x2,z2,dir} for scenery placement
 let roadLength = 0;
-const ROAD_HALF_W = 22.0;   // wide lanes
+const ROAD_HALF_W = 28.0;   // wider lanes (easier Phase 1)
 const TRACK_GAP = 30;        // wider spacing
 const BLOCK_SIZE = 220;      // distance between intersections
 const HOUSE_OFFSET = 38;     // houses beside road edge
@@ -649,6 +1955,10 @@ let pickupDist = 120;
 let dropoffDist = 0;
 let crashCount = 0;
 let crashCooldown = 0;
+let score = 0;
+let obstacles = [];
+let coins = [];
+let particles_p1 = [];
 
 // House/tree data
 let sceneryItems = [];
@@ -770,6 +2080,34 @@ function findClosestRoadPoint(cx, cz) {
 // ═══════════════════════════════════════
 //  SCENERY — houses beside grid roads with front yards
 // ═══════════════════════════════════════
+function generateObstacles() {
+  obstacles = [];
+  if (roadSampledC.length < 20) return;
+  const step = Math.floor(roadSampledC.length / Math.max(1, Math.floor(targetDist / 300)));
+  for (let i = step; i < roadSampledC.length - step; i += step) {
+    const pt = roadSampledC[i];
+    // Place obstacle randomly left or right of center, but ON the road
+    const side = Math.random() > 0.5 ? 1 : -1;
+    const offset = (ROAD_HALF_W * 0.3 + Math.random() * ROAD_HALF_W * 0.5) * side;
+    const ox = pt.x + Math.cos(pt.angle + Math.PI/2) * offset;
+    const oz = pt.z + Math.sin(pt.angle + Math.PI/2) * offset;
+    obstacles.push({ x: ox, z: oz, r: 2.5 + Math.random() * 3 });
+  }
+}
+function generateCoins() {
+  coins = [];
+  if (roadSampledC.length < 10) return;
+  const step = Math.floor(roadSampledC.length / Math.max(1, Math.floor(targetDist / 150)));
+  for (let i = step; i < roadSampledC.length - step; i += step) {
+    const pt = roadSampledC[i];
+    // Place coin on the road, alternating sides
+    const side = (i % 2 === 0) ? 1 : -1;
+    const offset = ROAD_HALF_W * 0.2 * side;
+    const cx = pt.x + Math.cos(pt.angle + Math.PI/2) * offset;
+    const cz = pt.z + Math.sin(pt.angle + Math.PI/2) * offset;
+    coins.push({ x: cx, z: cz, collected: false });
+  }
+}
 function generateScenery() {
   sceneryItems = [];
   mountains = [];
@@ -778,33 +2116,7 @@ function generateScenery() {
   const SPACING = 50;
   const houseColors = ['#c4a882','#d4c5b9','#b8a88a','#ccbb99','#c9b896','#bfa88a'];
 
-  // ── Mountains in the distance ──
-  // Find world bounds from road segments
-  let minX=Infinity,maxX=-Infinity,minZ=Infinity,maxZ=-Infinity;
-  for(const seg of roadSegments){
-    if(seg.x1<minX)minX=seg.x1;if(seg.x2<minX)minX=seg.x2;
-    if(seg.x1>maxX)maxX=seg.x1;if(seg.x2>maxX)maxX=seg.x2;
-    if(seg.z1<minZ)minZ=seg.z1;if(seg.z2<minZ)minZ=seg.z2;
-    if(seg.z1>maxZ)maxZ=seg.z1;if(seg.z2>maxZ)maxZ=seg.z2;
-  }
-  const pad = 400; // mountain ring distance from road
-  minX -= pad; maxX += pad; minZ -= pad; maxZ += pad;
-  // Place mountains along each edge of the bounding box
-  const edgeLen = (maxX-minX)+(maxZ-minZ);
-  const count = Math.floor(edgeLen / 60); // one mountain every ~60 units
-  for(let i=0;i<count;i++){
-    const t = i/count;
-    let mx, mz, edge;
-    if(t<0.25){edge=0;mx=minX+t*4*(maxX-minX);mz=minZ;}        // top edge
-    else if(t<0.5){edge=1;mx=maxX;mz=minZ+(t-0.25)*4*(maxZ-minZ);} // right
-    else if(t<0.75){edge=2;mx=maxX-(t-0.5)*4*(maxX-minX);mz=maxZ;} // bottom
-    else{edge=3;mx=minX;mz=maxZ-(t-0.75)*4*(maxZ-minZ);}           // left
-    // Add some jitter
-    mx+=(Math.random()-0.5)*40;mz+=(Math.random()-0.5)*40;
-    const h = 30+Math.random()*60; // mountain height
-    const w = 25+Math.random()*35; // mountain width
-    mountains.push({x:mx,z:mz,h,w,edge});
-  }
+  // ── Mountains removed — Phase 1 is easier without distant obstacles ──
 
   // ── Houses + trees along road ──
   for (const seg of roadSegments) {
@@ -892,6 +2204,9 @@ function initGame2D(phase, level) {
   }
 
   generateScenery();
+  generateObstacles();
+  generateCoins();
+  score = 0; particles_p1 = [];
 
   document.getElementById('complete-overlay').classList.remove('show');
   document.getElementById('game-container') && (document.getElementById('game-container').style.display = 'block');
@@ -933,7 +2248,7 @@ function update(dt) {
   carSteer += (steerInput - carSteer) * 0.25;
 
   // Apply steering to car angle — faster steering, full turns
-  const steerRate = 1.8 * (carSpeed / 35);
+  const steerRate = 2.2 * (Math.max(carSpeed, 10) / 35);  // easier: faster steering, min speed floor
   carAngle += carSteer * steerRate * dt;
 
   // Move car
@@ -950,6 +2265,55 @@ function update(dt) {
   // CRASH CHECK — if car is off the road
   if (lateralDist > ROAD_HALF_W + 0.8 && crashCooldown <= 0) {
     crash();
+  }
+
+  // Obstacle collision
+  if (crashCooldown <= 0) {
+    for (const obs of obstacles) {
+      const dx = carX - obs.x, dz = carZ - obs.z;
+      const dist = Math.sqrt(dx*dx + dz*dz);
+      if (dist < obs.r + 3) {
+        crashCooldown = 0.8;
+        carSpeed *= 0.5;
+        targetSpeed *= 0.5;
+        // Push car away from obstacle
+        if (dist > 0.01) {
+          carX += dx/dist * 4;
+          carZ += dz/dist * 4;
+        }
+        // Sparks
+        for (let p=0;p<8;p++) particles_p1.push({
+          x: carX, z: carZ,
+          vx: (Math.random()-0.5)*60, vz: (Math.random()-0.5)*60,
+          life: 0.4, age: 0, color: '#fbbf24'
+        });
+        break;
+      }
+    }
+  }
+
+  // Coin collection
+  for (const coin of coins) {
+    if (coin.collected) continue;
+    const dx = carX - coin.x, dz = carZ - coin.z;
+    if (Math.sqrt(dx*dx + dz*dz) < 8) {
+      coin.collected = true;
+      score += 100;
+      for (let p=0;p<5;p++) particles_p1.push({
+        x: coin.x, z: coin.z,
+        vx: (Math.random()-0.5)*40, vz: (Math.random()-0.5)*40,
+        life: 0.5, age: 0, color: '#fbbf24'
+      });
+    }
+  }
+
+  // Update particles
+  for (let i=particles_p1.length-1;i>=0;i--) {
+    const p = particles_p1[i];
+    p.age += dt;
+    p.x += p.vx * dt;
+    p.z += p.vz * dt;
+    if (p.age >= p.life) particles_p1.splice(i,1);
   }
 
   // Pickup check
@@ -974,7 +2338,7 @@ function crash() {
   targetSpeed = 0;
 
   const track = getActiveTrack();
-  const backIdx = Math.max(0, closestRoadIdx - 35);
+  const backIdx = Math.max(0, closestRoadIdx - 15);
   carX = track[backIdx].x;
   carZ = track[backIdx].z;
   carAngle = track[backIdx].angle;
@@ -990,7 +2354,7 @@ function crash() {
   setTimeout(() => { flash.classList.remove('show'); text.classList.remove('show'); }, 600);
 
   // If crashed 3+ times, lose level
-  if (crashCount >= 3) {
+  if (crashCount >= 5) {
     levelDone = true;
     setTimeout(() => {
       document.getElementById('complete-overlay').querySelector('.check').textContent = '✗';
@@ -1006,7 +2370,7 @@ function completeLevel() {
   const elapsed = (performance.now() - startTime) / 1000;
   document.getElementById('complete-overlay').querySelector('.check').textContent = '✓';
   document.getElementById('complete-overlay').querySelector('.msg').textContent = 'DELIVERED';
-  document.getElementById('overlay-time').textContent = `Time: ${elapsed.toFixed(1)}s · Crashes: ${crashCount} · ${(distanceDriven/1000).toFixed(1)}km`;
+  document.getElementById('overlay-time').textContent = `Time: ${elapsed.toFixed(1)}s · Crashes: ${crashCount} · ${(distanceDriven/1000).toFixed(1)}km · Score: ${score}`;
   document.getElementById('complete-overlay').classList.add('show');
   window.completed[phaseData.id].add(levelData.num);
   window.saveState();
@@ -1017,6 +2381,7 @@ function updateHUD() {
   document.getElementById('hud-remain').textContent = remain >= 1000 ? (remain/1000).toFixed(1)+'km' : remain+'m';
   document.getElementById('hud-speed').textContent = Math.round(Math.abs(carSpeed));
   document.getElementById('hud-time').textContent = ((performance.now() - startTime) / 1000).toFixed(1) + 's';
+  document.getElementById('hud-status-text').textContent = 'SCORE: ' + score;
 
   const status = levelDone ? 'DELIVERED' : (carryingWood ? 'HAULING → SITE' : 'PICK UP WOOD');
   document.getElementById('hud-status-text').textContent = status;
@@ -1050,11 +2415,37 @@ function draw() {
     ctx.fillRect(wp.x - hw, wp.z - hw, hw * 2, hw * 2);
   }
 
-  // ── Mountains (background) ──
-  for (const m of mountains) {
-    if (!isVisibleWorld(m.x, m.z, 120)) continue;
-    drawMountain(m.x, m.z, m.w, m.h);
+  // ── Mountains removed ──
+
+  // ── Obstacles ──
+  for (const obs of obstacles) {
+    if (!isVisibleWorld(obs.x, obs.z, 40)) continue;
+    ctx.fillStyle = '#555';
+    ctx.beginPath(); ctx.arc(obs.x, obs.z, obs.r, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#333';
+    ctx.beginPath(); ctx.arc(obs.x-1, obs.z-1, obs.r*0.6, 0, Math.PI*2); ctx.fill();
   }
+
+  // ── Coins ──
+  for (const coin of coins) {
+    if (coin.collected) continue;
+    if (!isVisibleWorld(coin.x, coin.z, 30)) continue;
+    const pulse = 1 + Math.sin(Date.now()*0.01 + coin.x) * 0.2;
+    ctx.fillStyle = '#fbbf24';
+    ctx.beginPath(); ctx.arc(coin.x, coin.z, 3*pulse, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(coin.x-0.5, coin.z-1, 1.5*pulse, 0, Math.PI*2); ctx.fill();
+  }
+
+  // ── Particles ──
+  for (const p of particles_p1) {
+    if (!isVisibleWorld(p.x, p.z, 20)) continue;
+    const alpha = 1 - p.age/p.life;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.z, 2, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
 
   // ── Scenery ──
   for (const item of sceneryItems) {
@@ -1146,6 +2537,21 @@ function draw() {
   ctx.fillRect(carW/2 - 5, -carH/2, 3, 3);
   ctx.restore();
 
+  // Speed lines — when going fast
+  if (Math.abs(carSpeed) > 60) {
+    const intensity = (Math.abs(carSpeed) - 60) / 140;
+    for (let i=0;i<Math.floor(intensity*12);i++) {
+      const sy = cy + (Math.random()-0.5)*ch*0.6;
+      const sx = cx + (Math.random()>0.5?1:-1)*(cw*0.3 + Math.random()*cw*0.2);
+      ctx.strokeStyle = `rgba(74,222,128,${intensity*0.5})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(sx + (Math.random()>0.5?1:-1)*20*intensity, sy);
+      ctx.stroke();
+    }
+  }
+
   // Wood load
   if (carryingWood && !levelDone) {
     ctx.fillStyle = '#a0522d';
@@ -1159,7 +2565,7 @@ function draw() {
     ctx.fillStyle = '#ff4444';
     ctx.font = `${Math.max(10, 14*camZoom)}px "Share Tech Mono", monospace`;
     ctx.textAlign = 'center';
-    ctx.fillText(`Crashes: ${crashCount}/3`, cw/2, 44);
+    ctx.fillText(`Crashes: ${crashCount}/5`, cw/2, 44);
     ctx.textAlign = 'start';
   }
 }
@@ -1217,38 +2623,7 @@ function isVisibleWorld(wx, wz, pad) {
   return Math.abs(wx - carX) < cw/camZoom + pad && Math.abs(wz - carZ) < ch/camZoom + pad;
 }
 
-function drawMountain(mx, mz, mw, mh) {
-  var hw2 = mw / 2;
-  // Shadow
-  ctx.fillStyle = '#4a5568';
-  ctx.beginPath();
-  ctx.moveTo(mx - hw2 - 2, mz + 2);
-  ctx.lineTo(mx, mz - mh - 2);
-  ctx.lineTo(mx + hw2 + 2, mz + 2);
-  ctx.closePath(); ctx.fill();
-  // Body
-  ctx.fillStyle = '#718096';
-  ctx.beginPath();
-  ctx.moveTo(mx - hw2, mz);
-  ctx.lineTo(mx, mz - mh);
-  ctx.lineTo(mx + hw2, mz);
-  ctx.closePath(); ctx.fill();
-  // Snow cap
-  var snowH = mh * 0.35;
-  ctx.fillStyle = '#e2e8f0';
-  ctx.beginPath();
-  ctx.moveTo(mx - hw2 * 0.35, mz - mh + snowH);
-  ctx.lineTo(mx, mz - mh);
-  ctx.lineTo(mx + hw2 * 0.35, mz - mh + snowH);
-  ctx.closePath(); ctx.fill();
-  // Snow highlight
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.moveTo(mx - hw2 * 0.15, mz - mh + snowH * 0.6);
-  ctx.lineTo(mx, mz - mh);
-  ctx.lineTo(mx + hw2 * 0.05, mz - mh + snowH * 0.5);
-  ctx.closePath(); ctx.fill();
-}
+// drawMountain removed — mountains erased from Phase 1
 
 // ═══════════════════════════════════════
 //  MINIMAP
@@ -1485,11 +2860,13 @@ function createPlayer3D(){g3d.player=new THREE.Group();g3d.player.position.set(0
 function handleChop3D(){if(!g3d.gameActive||g3d.buildingMode||g3d.chopCooldown>0||g3d.shopOpen)return;ensureAudio3D();g3d.chopCooldown=CHOP_COOLDOWN_3D;g3d.axeGroup.rotation.z=-1.8;var closest=null,closestDist=4.5;for(var i=0;i<g3d.trees.length;i++){var t=g3d.trees[i];if(!t.userData.alive||t.userData.falling)continue;var d=g3d.player.position.distanceTo(t.position);if(d<closestDist){closestDist=d;closest=t;}}if(closest)damageTree3D(closest);playChop3D();setTimeout(function(){g3d.axeGroup.rotation.z=-0.4;},180);}
 function handleBuildClick3D(){if(!g3d.buildingMode)return;if(g3d.freeDesign){ensureAudio3D();placeFreePlank();return;}if(g3d.placedPlanks>=g3d.plankTargets.length)return;ensureAudio3D();if(g3d.player.position.distanceTo(BUILD_ZONE)>BUILD_RADIUS){playTone3D(150,'square',0.1,0.04);return;}placeNextPlank3D();}
 
-// ── Player Movement (WASD relative to facing) ──
+// ── Player Movement (WASD absolute: W=↑ A=← S=↓ D=→) ──
 function updatePlayer3D(dt){if(!g3d.gameActive||g3d.shopOpen)return;
-// WASD = movement relative to player facing: W=forward, A=left, S=back, D=right
-var fwd=new THREE.Vector3(0,0,-1);fwd.applyQuaternion(g3d.player.quaternion);fwd.y=0;fwd.normalize();
-var right=new THREE.Vector3(1,0,0);right.applyQuaternion(g3d.player.quaternion);right.y=0;right.normalize();
+// WASD = camera-relative (screen-absolute): W=cam forward, A=cam left, S=cam back, D=cam right
+var camDir=new THREE.Vector3();g3d.camera.getWorldDirection(camDir);
+camDir.y=0;camDir.normalize();
+var fwd=camDir;
+var right=new THREE.Vector3();right.crossVectors(camDir,new THREE.Vector3(0,1,0)).normalize();
 var mx=0,mz=0;
 if(g3d.keys['KeyW']){mx+=fwd.x;mz+=fwd.z;}if(g3d.keys['KeyS']){mx-=fwd.x;mz-=fwd.z;}
 if(g3d.keys['KeyA']){mx-=right.x;mz-=right.z;}if(g3d.keys['KeyD']){mx+=right.x;mz+=right.z;}
@@ -1538,6 +2915,504 @@ window.finish3DLevel=function(){window.stopPhase2Game();window.markComplete();do
 <!-- ═══════ UI LOGIC ═══════ -->
 
 
+
+<!-- ═══════ PHASE 3: Timber Slide v2 ═══════ -->
+<script>
+// ═══════════════════════════════════════════════════════
+//  Timber Slide v2 — premium wood block runner
+//  Parallax, combos, power-ups, dynamic track, juice
+// ═══════════════════════════════════════════════════════
+const TS = {
+  // ── Player ──
+  lane: 1, targetLane: 1, x: 0, vx: 0,
+  blockSize: 100, maxSize: 150, minSize: 25,
+  coins: 0, distance: 0, points: 0, goalPoints: 20,
+  speed: 0, baseSpeed: 220,
+  alive: true, finished: false, gameActive: false, animId: null,
+
+  // ── Combo ──
+  combo: 1, comboTimer: 0, maxCombo: 1,
+
+  // ── Power-ups ──
+  magnetActive: false, magnetTimer: 0,
+  shieldActive: false, shieldHits: 0,
+  boostActive: false, boostTimer: 0,
+
+  // ── Obstacles & Collectibles ──
+  obstacles: [], collectibles: [], powerups: [],
+  obstacleTimer: 0, obstacleRate: 1.0,
+  milestoneIdx: 0, milestones: [],
+
+  // ── Parallax ──
+  bgLayers: [{speed:0.3, y:0},{speed:0.6, y:0},{speed:1.0, y:0}],
+
+  // ── Particles ──
+  particles: [], floats: [], trail: [],
+
+  // ── Canvas ──
+  canvas: null, ctx: null, cw: 0, ch: 0,
+  laneXs: [0,0,0], laneW: 0, laneGap: 0,
+  lastFrame: 0, shakeAmount: 0, blockScale: 1, glowPulse: 0,
+
+  init(level) {
+    this.levelCfg = level;
+    this.baseSpeed = 180 * (level.speed||1.0);
+    this.obstacleRate = level.obstacleRate||1.0;
+    this.goalDist = 400 + (level.num-1)*150;
+    this.lane=1; this.targetLane=1; this.x=0; this.vx=0;
+    this.blockSize=100; this.coins=0; this.distance=0; this.points=0;
+    this.goalPoints=level.goalPoints||20;
+    this.collectRate=level.collectRate||0.8;
+    this.powerupRate=level.powerupRate||0.06;
+    this.alive=true; this.finished=false; this.speed=this.baseSpeed;
+    this.combo=1; this.comboTimer=0; this.maxCombo=1;
+    this.magnetActive=false; this.magnetTimer=0;
+    this.shieldActive=false; this.shieldHits=0;
+    this.boostActive=false; this.boostTimer=0;
+    this.obstacles=[]; this.collectibles=[]; this.powerups=[];
+    this.particles=[]; this.floats=[]; this.trail=[];
+    this.obstacleTimer=0; this.milestoneIdx=0;
+    this.shakeAmount=0; this.blockScale=1; this.glowPulse=0;
+    this.milestones = [this.goalDist*0.25, this.goalDist*0.5, this.goalDist*0.75];
+    this.gameActive=true; this.lastFrame=performance.now();
+
+    this.canvas = document.getElementById('ts-canvas');
+    this.ctx = this.canvas.getContext('2d');
+    document.getElementById('ts-viewport').classList.add('active');
+    this.resize();
+    this.renderHUD();
+    this.setupInput();
+    this.animId = requestAnimationFrame(t=>this.loop(t));
+  },
+
+  resize() {
+    const vp = document.getElementById('ts-viewport');
+    this.cw = vp.clientWidth||400; this.ch = vp.clientHeight||700;
+    this.canvas.width = this.cw; this.canvas.height = this.ch;
+    this.laneW = this.cw * 0.2;
+    this.laneGap = this.cw * 0.12;
+    const cx = this.cw/2;
+    this.laneXs = [cx-this.laneW-this.laneGap, cx, cx+this.laneW+this.laneGap];
+    this.x = this.laneXs[this.lane];
+  },
+
+  // ═══ INPUT ═══
+  setupInput() {
+    const h = (d) => { if(this.alive&&!this.finished) this.targetLane=Math.max(0,Math.min(2,this.targetLane+d)); };
+    window.addEventListener('keydown', e => {
+      if(!this.gameActive)return;
+      if(e.code==='KeyA'||e.code==='ArrowLeft')h(-1);
+      if(e.code==='KeyD'||e.code==='ArrowRight')h(1);
+    });
+    this.canvas.addEventListener('click', e => {
+      if(!this.alive||this.finished)return;
+      h(e.clientX-this.canvas.getBoundingClientRect().left < this.cw/2 ? -1 : 1);
+    });
+    window.addEventListener('resize',()=>{if(this.gameActive)this.resize();});
+  },
+
+  // ═══ LOOP ═══
+  loop(ts) {
+    if(!this.gameActive)return;
+    this.animId=requestAnimationFrame(t=>this.loop(t));
+    const dt=Math.min(0.05,(ts-this.lastFrame)/1000);
+    this.lastFrame=ts;
+    if(this.alive&&!this.finished)this.update(dt);
+    this.draw();
+  },
+
+  update(dt) {
+    // Smooth lane movement
+    const tx=this.laneXs[this.targetLane];
+    this.vx+=(tx-this.x)*15*dt;
+    this.vx*=0.85;
+    this.x+=this.vx;
+
+    // Speed ramp — increases over distance
+    this.speed = this.baseSpeed + this.distance*0.06;
+    this.distance += this.speed*dt;
+
+    // Parallax
+    for(const l of this.bgLayers) l.y = (l.y + this.speed*l.speed*dt) % this.ch;
+
+    // Combo decay
+    this.comboTimer-=dt;
+    if(this.comboTimer<=0&&this.combo>1){this.combo=1;this.comboTimer=0;this.toast('Combo lost!','bad');this.renderHUD();}
+
+    // Power-up timers
+    if(this.magnetActive){this.magnetTimer-=dt;if(this.magnetTimer<=0){this.magnetActive=false;document.getElementById('ts-pw-magnet').classList.remove('active');}}
+    if(this.boostActive){this.boostTimer-=dt;if(this.boostTimer<=0){this.boostActive=false;document.getElementById('ts-pw-boost').classList.remove('active');}}
+
+    // Obstacle spawning — patterns at higher difficulty
+    this.obstacleTimer+=dt;
+    const spawnInterval = 2.5/this.obstacleRate;
+    if(this.obstacleTimer>spawnInterval){
+      this.obstacleTimer=0;
+      this.spawnObstaclePattern();
+    }
+
+    // Collectible spawning — per-level rate
+    if(Math.random()<dt*this.collectRate) this.spawnCollectible();
+    // Power-up spawning (rare) — per-level rate
+    if(Math.random()<dt*this.powerupRate) this.spawnPowerup();
+
+    // Move & check everything
+    for(let i=this.obstacles.length-1;i>=0;i--){
+      const o=this.obstacles[i];
+      o.y+=this.speed*dt;
+      // Moving obstacles
+      if(o.moveAmp){o.ox=(o.ox||o.x); o.x=o.ox+Math.sin(this.distance*o.moveFreq)*o.moveAmp;}
+      if(o.y>this.ch+80){this.obstacles.splice(i,1);continue;}
+      if(this.alive)this.checkObstacle(o,i);
+    }
+    for(let i=this.collectibles.length-1;i>=0;i--){
+      const cl=this.collectibles[i];
+      cl.y+=this.speed*dt;
+      if(cl.y>this.ch+40){this.collectibles.splice(i,1);continue;}
+      if(this.alive)this.checkCollectible(cl,i);
+    }
+    for(let i=this.powerups.length-1;i>=0;i--){
+      const pw=this.powerups[i];
+      pw.y+=this.speed*dt;
+      if(pw.y>this.ch+40){this.powerups.splice(i,1);continue;}
+      if(this.alive)this.checkPowerup(pw,i);
+    }
+
+    // Milestone checkpoints
+    if(this.milestoneIdx<this.milestones.length&&this.distance>=this.milestones[this.milestoneIdx]){
+      this.coins+=10+this.milestoneIdx*5;
+      this.toast('📍 Checkpoint! +'+(10+this.milestoneIdx*5)+' coins','good');
+      this.milestoneIdx++;
+    }
+
+    // Trail
+    if(this.speed>50){
+      this.trail.push({x:this.x, y:this.ch*0.76, life:0.3, age:0});
+    }
+
+    // Particles & floats
+    for(let i=this.particles.length-1;i>=0;i--){const p=this.particles[i];p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=80*dt;if(p.age>=p.life)this.particles.splice(i,1);}
+    for(let i=this.floats.length-1;i>=0;i--){const f=this.floats[i];f.age+=dt;f.y-=50*dt;if(f.age>=f.life)this.floats.splice(i,1);}
+    for(let i=this.trail.length-1;i>=0;i--){const t=this.trail[i];t.age+=dt;if(t.age>=t.life)this.trail.splice(i,1);}
+
+    this.blockScale+=(1-this.blockScale)*10*dt;
+    this.shakeAmount*=0.9;
+    this.glowPulse+=dt*4;
+
+    // Win condition — points goal
+    if(this.points>=this.goalPoints&&!this.finished){
+      this.finished=true;
+      this.gameActive=false;
+      document.getElementById('ts-win-points').textContent=this.points+' points · Combo x'+this.maxCombo;
+      document.getElementById('ts-win').classList.add('show');
+      this.toast('🏆 YOU WIN!','combo');
+    }
+
+    // Death — show lose overlay
+    if(this.blockSize<this.minSize&&this.alive){
+      this.alive=false;
+      this.gameActive=false;
+      document.getElementById('ts-lose-points').textContent=this.points+' / '+this.goalPoints+' points';
+      document.getElementById('ts-lose').classList.add('show');
+      this.toast('💀 Destroyed!','bad');
+    }
+
+    this.renderHUD();
+  },
+
+  // ═══ SPAWNING ═══
+  spawnObstaclePattern() {
+    // Only bombs — single or paired
+    const r=Math.random();
+    if(r<0.4){
+      this.obstacles.push(this.makeObstacle(Math.floor(Math.random()*3),'bomb',-50));
+    }else if(r<0.7){
+      const open=Math.floor(Math.random()*3);
+      for(let l=0;l<3;l++)if(l!==open)this.obstacles.push(this.makeObstacle(l,'bomb',-50-(l-open)*10));
+    }else{
+      this.obstacles.push(this.makeObstacle(Math.floor(Math.random()*3),'bomb',-50,30,0.015));
+    }
+  },
+
+  makeObstacle(lane,type,y,moveAmp,moveFreq){
+    return {lane,type,x:this.laneXs[lane],y,r:type==='barrier'?20:type==='spike'?13:type==='bomb'?14:16,hit:false,moveAmp:moveAmp||0,moveFreq:moveFreq||0,ox:0};
+  },
+
+  spawnCollectible() {
+    const lane=Math.floor(Math.random()*3);
+    this.collectibles.push({lane,type:'point',x:this.laneXs[lane],y:-30,r:11,collected:false});
+  },
+
+  spawnPowerup() {
+    const types=['magnet','shield','boost'];
+    const type=types[Math.floor(Math.random()*types.length)];
+    const lane=Math.floor(Math.random()*3);
+    this.powerups.push({type,lane,x:this.laneXs[lane],y:-30,r:14});
+  },
+
+  // ═══ COLLISION ═══
+  checkObstacle(o,idx) {
+    if(o.hit)return;
+    const py=this.ch*0.75;
+    const bw=70*(this.blockSize/100), bh=90*(this.blockSize/100);
+    const dx=Math.abs(o.x-this.x), dy=Math.abs(o.y-py);
+    if(dx<bw/2+o.r&&dy<bh/2+o.r){
+      if(this.boostActive)return; // invincible during boost
+      if(this.shieldActive){this.shieldHits++;o.hit=true;this.obstacles.splice(idx,1);
+        this.toast('🛡️ Blocked!','good');
+        if(this.shieldHits>=1){this.shieldActive=false;document.getElementById('ts-pw-shield').classList.remove('active');}
+        return;
+      }
+      o.hit=true;
+      const dmg={saw:35,sander:10,spike:25,barrier:55,bomb:40}[o.type];
+      this.blockSize=Math.max(this.minSize,this.blockSize-dmg);
+      if(o.type==='bomb'){this.blockSize=0;this.alive=false;this.shakeAmount=60;for(let i=0;i<30;i++)this.particles.push({x:o.x,y:o.y,vx:(Math.random()-.5)*250,vy:(Math.random()-.5)*200-80,life:.6+Math.random()*.7,age:0,color:'#ff4444',size:3+Math.random()*6});}
+      this.combo=1;this.comboTimer=0;
+      this.blockScale=0.9;this.shakeAmount=dmg*0.1;
+      for(let i=0;i<15;i++)this.particles.push({x:o.x,y:o.y,vx:(Math.random()-.5)*150,vy:(Math.random()-.5)*100-50,life:.4+Math.random()*.5,age:0,color:'#d4a574',size:2+Math.random()*4});
+      this.floats.push({x:o.x,y:o.y-12,text:'-'+dmg+'%',life:.7,age:0});
+      this.renderHUD();
+    }
+  },
+
+  checkCollectible(cl,idx) {
+    if(cl.collected)return;
+    const py=this.ch*0.75;
+    const dist=Math.hypot(cl.x-this.x,cl.y-py);
+    const range=this.magnetActive?70:32;
+    if(dist<range){
+      if(this.magnetActive){cl.x+=(this.x-cl.x)*8*0.016;cl.y+=(py-cl.y)*8*0.016;}
+      if(dist<35){
+        cl.collected=true;
+        if(cl.type==='point'){
+          this.points+=this.combo;
+          this.floats.push({x:cl.x,y:cl.y-10,text:'+'+this.combo+' pt',life:.6,age:0});
+        }
+        for(let i=0;i<6;i++)this.particles.push({x:cl.x,y:cl.y,vx:(Math.random()-.5)*70,vy:(Math.random()-.5)*70-25,life:.3+Math.random()*.3,age:0,color:'#4ade80',size:2+Math.random()*2});
+        this.collectibles.splice(idx,1);
+        this.renderHUD();
+      }
+    }
+  },
+
+  checkPowerup(pw,idx) {
+    const py=this.ch*0.75;
+    if(Math.hypot(pw.x-this.x,pw.y-py)<35){
+      if(pw.type==='magnet'){this.magnetActive=true;this.magnetTimer=5;document.getElementById('ts-pw-magnet').classList.add('active');this.toast('🧲 Magnet!','good');}
+      else if(pw.type==='shield'){this.shieldActive=true;this.shieldHits=0;document.getElementById('ts-pw-shield').classList.add('active');this.toast('🛡️ Shield!','good');}
+      else if(pw.type==='boost'){this.boostActive=true;this.boostTimer=3;document.getElementById('ts-pw-boost').classList.add('active');this.toast('⚡ Boost!','good');}
+      this.powerups.splice(idx,1);
+      for(let i=0;i<10;i++)this.particles.push({x:pw.x,y:pw.y,vx:(Math.random()-.5)*100,vy:(Math.random()-.5)*100-30,life:.4+Math.random()*.4,age:0,color:'#fbbf24',size:2+Math.random()*3});
+    }
+  },
+
+  // ═══ DRAWING ═══
+  draw() {
+    const ctx=this.ctx,W=this.cw,H=this.ch;
+    // Workshop background — warm brown gradient
+    const bg=ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#120802');bg.addColorStop(0.5,'#1f1108');bg.addColorStop(1,'#120802');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+    // Parallax layers
+    for(let li=0;li<3;li++){
+      const l=this.bgLayers[li];
+      const alpha=[0.03,0.05,0.06][li];
+      ctx.strokeStyle=`rgba(139,115,85,${alpha})`;
+      ctx.lineWidth=[1,2,3][li];
+      const spacing=[80,50,35][li];
+      for(let y=l.y%spacing;y<H;y+=spacing){
+        ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+      }
+    }
+
+    // Lane guides
+    for(let i=0;i<3;i++){
+      const lx=this.laneXs[i];
+      ctx.strokeStyle='rgba(180,150,120,0.08)';
+      ctx.setLineDash([3,10]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(lx,0);ctx.lineTo(lx,H);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Collectibles
+    for(const cl of this.collectibles){
+      if(cl.collected)continue;
+      const pulse=1+Math.sin(this.glowPulse+cl.x)*0.2;
+      ctx.fillStyle='#4ade80';
+      ctx.shadowColor=colors[cl.type];ctx.shadowBlur=8;
+      ctx.beginPath();ctx.arc(cl.x,cl.y,cl.r*pulse,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+      ctx.font='14px sans-serif';ctx.textAlign='center';
+      ctx.fillText('⭐',cl.x,cl.y+5);
+    }
+
+    // Power-ups
+    for(const pw of this.powerups){
+      const pulse=1+Math.sin(this.glowPulse*2+pw.x)*0.3;
+      ctx.fillStyle='#fbbf24';ctx.shadowColor='#fbbf24';ctx.shadowBlur=15;
+      ctx.beginPath();ctx.arc(pw.x,pw.y,pw.r*pulse,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+      ctx.font='18px sans-serif';ctx.textAlign='center';
+      ctx.fillText({magnet:'🧲',shield:'🛡️',boost:'⚡'}[pw.type],pw.x,pw.y+6);
+    }
+
+    // Obstacles
+    for(const o of this.obstacles){
+      if(o.hit)continue;
+      const r=o.r;
+       if(o.type==='bomb'){
+        const bp=1+Math.sin(this.glowPulse*4+o.x)*0.15;
+        ctx.fillStyle='#222';ctx.beginPath();ctx.arc(o.x,o.y,r*bp,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#ff4444';ctx.beginPath();ctx.arc(o.x,o.y,r*0.7*bp,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('💣',o.x,o.y+5);
+      }else{
+        ctx.fillStyle='#f87171';ctx.fillRect(o.x-r*0.6,o.y-r*0.8,r*1.2,r*1.6);
+        ctx.fillStyle='#fff';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('⚠',o.x,o.y+5);
+      }
+    }
+
+    // Trail
+    for(const t of this.trail){
+      ctx.fillStyle=`rgba(180,140,100,${0.3*(1-t.age/t.life)})`;
+      ctx.beginPath();ctx.arc(t.x,t.y,3,0,Math.PI*2);ctx.fill();
+    }
+
+    // Player block — at bottom-center
+    const bx=this.x, by=H*0.75;
+    const bw=70*(this.blockSize/100)*this.blockScale;
+    const bh=90*(this.blockSize/100)*this.blockScale;
+    const sx=bx+(Math.random()-.5)*this.shakeAmount;
+    const sy=by+(Math.random()-.5)*this.shakeAmount;
+
+    // Glow when powered up
+    if(this.boostActive||this.shieldActive){
+      ctx.shadowColor=this.boostActive?'#fbbf24':'#60a5fa';
+      ctx.shadowBlur=20+Math.sin(this.glowPulse*3)*10;
+    }
+
+    // Shadow
+    ctx.fillStyle='rgba(0,0,0,0.4)';
+    ctx.fillRect(sx-bw/2+4,sy-bh/2+4,bw,bh);
+
+    // Block — rich wood gradient
+    const wg=ctx.createLinearGradient(sx-bw/2,sy-bh/2,sx+bw/2,sy+bh/2);
+    wg.addColorStop(0,'#8B6914');wg.addColorStop(0.25,'#c4a882');
+    wg.addColorStop(0.5,'#e8d5c0');wg.addColorStop(0.75,'#c4a882');
+    wg.addColorStop(1,'#6B4226');
+    ctx.fillStyle=wg;ctx.fillRect(sx-bw/2,sy-bh/2,bw,bh);
+
+    // Wood grain
+    ctx.strokeStyle='rgba(80,50,20,0.25)';
+    for(let gy=sy-bh/2+6;gy<sy+bh/2;gy+=7){
+      ctx.beginPath();ctx.moveTo(sx-bw/2+3,gy);
+      ctx.quadraticCurveTo(sx-bw/2+bw*.25,gy+2,sx-bw/2+bw*.55,gy-1);
+      ctx.quadraticCurveTo(sx-bw/2+bw*.8,gy+1,sx+bw/2-3,gy);
+      ctx.stroke();
+    }
+    // Outline — bright for visibility
+    ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=3;
+    ctx.strokeRect(sx-bw/2,sy-bh/2,bw,bh);
+    ctx.strokeStyle='rgba(212,165,116,0.8)';ctx.lineWidth=1.5;
+    ctx.strokeRect(sx-bw/2+1,sy-bh/2+1,bw-2,bh-2);
+
+    ctx.shadowBlur=0;
+
+    // Size label
+    ctx.fillStyle='rgba(0,0,0,0.7)';ctx.font='bold 11px "Share Tech Mono", monospace';ctx.textAlign='center';
+    ctx.fillText(Math.round(this.blockSize)+'%',sx,sy+5);
+
+    // Particles & floats
+    for(const p of this.particles){ctx.globalAlpha=1-p.age/p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();}
+    ctx.globalAlpha=1;
+    for(const f of this.floats){
+      const a=1-f.age/f.life;
+      ctx.fillStyle=f.text.startsWith('-')?`rgba(248,113,113,${a})`:f.text.includes('x')?`rgba(74,222,128,${a})`:`rgba(212,165,116,${a})`;
+      ctx.font='bold 14px "Orbitron", sans-serif';ctx.textAlign='center';
+      ctx.fillText(f.text,f.x,f.y);
+    }
+
+    // Progress bar
+    const prog=Math.min(1,this.points/this.goalPoints);
+    const barH=6,barW=W*0.75,barX=(W-barW)/2,barY=H-barH-8;
+    ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(barX,barY,barW,barH);
+    const pGrad=ctx.createLinearGradient(barX,0,barX+barW,0);
+    pGrad.addColorStop(0,'#8B6914');pGrad.addColorStop(0.5,'#d4a574');pGrad.addColorStop(1,'#4ade80');
+    ctx.fillStyle=pGrad;ctx.fillRect(barX,barY,barW*prog,barH);
+    for(const m of this.milestones){
+      if(!m)continue;
+      const mx=barX+(m/this.goalDist)*barW;
+      if(mx>barX&&mx<barX+barW){
+        ctx.fillStyle='#fff';ctx.fillRect(mx-1,barY-3,2,barH+6);
+      }
+    }
+    ctx.fillStyle='#fff';ctx.font='8px "Share Tech Mono", monospace';ctx.textAlign='center';
+    ctx.fillText(Math.round(prog*100)+'%',W/2,barY-3);
+
+    // Finish banner
+    if(this.distance>this.goalDist-60){
+      const fy=Math.max(20,H*0.08+(this.goalDist-this.distance)*1.5);
+      ctx.fillStyle='rgba(212,165,116,0.15)';ctx.fillRect(0,fy,W,28);
+      ctx.fillStyle='#fbbf24';ctx.font='bold 13px "Orbitron", sans-serif';
+      ctx.fillText('🏁 FINISH LINE',W/2,fy+20);
+    }
+  },
+
+  // ═══ HUD ═══
+  renderHUD() {
+    document.getElementById('ts-combo').textContent='x'+this.combo;
+    document.getElementById('ts-combo').style.color=this.combo>=5?'#4ade80':this.combo>=3?'#fbbf24':'#d4a574';
+    document.getElementById('ts-size').textContent='🟫 '+Math.round(this.blockSize)+'%';
+    document.getElementById('ts-size').style.color=this.blockSize<40?'#f87171':this.blockSize<70?'#fbbf24':'#4ade80';
+    document.getElementById('ts-coins').textContent='⭐ '+this.points+'/'+this.goalPoints;
+    document.getElementById('ts-dist').textContent='🪙 '+this.coins;
+  },
+
+  toast(msg,type){
+    const el=document.getElementById('ts-toast');
+    el.textContent=msg;el.className='ts-toast show '+(type||'good');
+    clearTimeout(this._tt);this._tt=setTimeout(()=>el.classList.remove('show'),1200);
+  },
+
+  goBack(){
+    this.stop();window.showScreen('phase-select');
+  },
+  nextLevel(){
+    const pid=3,ln=+document.getElementById('play-screen').dataset.levelNum;
+    window.completed[pid].add(ln);window.saveState();
+    this.stop();
+    const nextLn=ln+1;
+    const phase=window.GAME.phases.find(p=>p.id===pid);
+    if(nextLn<=phase.levels.length){
+      document.getElementById('play-screen').dataset.levelNum=nextLn;
+      window.initPhase3(phase,phase.levels[nextLn-1]);
+    }else{
+      window.openPhase(pid);
+    }
+  },
+  playAgain(){
+    this.stop();
+    const pid=3,ln=+document.getElementById('play-screen').dataset.levelNum;
+    const phase=window.GAME.phases.find(p=>p.id===pid);
+    document.getElementById('play-screen').dataset.levelNum=ln;
+    window.initPhase3(phase,phase.levels[ln-1]);
+  },
+
+  stop(){
+    this.gameActive=false;if(this.animId){cancelAnimationFrame(this.animId);this.animId=null;}
+    this.obstacles=[];this.collectibles=[];this.powerups=[];this.particles=[];this.trail=[];
+    document.getElementById('ts-viewport').classList.remove('active');
+    document.getElementById('ts-win').classList.remove('show');
+    document.getElementById('ts-lose').classList.remove('show');
+  },
+};
+
+window.initPhase3=function(p,l){document.getElementById('placeholder-container').style.display='none';document.getElementById('viewport').style.display='none';document.getElementById('viewport3d').style.display='none';document.getElementById('play-screen').classList.add('game-mode');requestAnimationFrame(()=>TS.init(l));};
+window.stopPhase3=function(){if(TS)TS.stop();};
+console.log('Timber Slide v2 — Phase 3 ready');
+</script>
+
+
 <!-- ═══════ UI LOGIC ═══════ -->
 <script>
 window.saveState = function() { const r={}; for(const[p,s] of Object.entries(window.completed)) r[p]=[...s]; localStorage.setItem('instabuild2d', JSON.stringify(r)); };
@@ -1581,6 +3456,7 @@ window.showScreen = function(name, arg) {
   if (el) el.classList.add('active');
   if (window.stopGame3D) window.stopGame3D();
   if (window.stopPhase2Game) window.stopPhase2Game();
+  if (window.stopPhase3) window.stopPhase3();
   document.getElementById('play-screen').classList.remove('game-mode');
   if (name==='phase-select') window.renderPhaseSelect();
   if (name==='level') window.renderLevelGrid(window.currentPhase);
@@ -1626,6 +3502,9 @@ window.openLevel = function(pid, lnum) {
   } else if (pid===2) {
     document.getElementById('placeholder-container').style.display = 'none';
     window.initPhase2Game(p, l);
+  } else if (pid===3) {
+    document.getElementById('placeholder-container').style.display = 'none';
+    window.initPhase3(p, l);
   } else {
     document.getElementById('placeholder-container').style.display = 'flex';
     document.getElementById('play-screen').classList.remove('game-mode');
@@ -1635,6 +3514,7 @@ window.openLevel = function(pid, lnum) {
 window.goBackToLevelGrid = function() {
   if(window.stopGame3D) window.stopGame3D();
   if(window.stopPhase2Game) window.stopPhase2Game();
+  if(window.stopPhase3) window.stopPhase3();
   document.getElementById('play-screen').classList.remove('game-mode');
   const pid=+document.getElementById('play-screen').dataset.phaseId;
   pid?window.openPhase(pid):window.showScreen('phase-select');
