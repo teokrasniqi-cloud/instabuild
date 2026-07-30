@@ -395,73 +395,175 @@
   #design-btn:hover { background: rgba(96,165,250,0.25); }
   #design-btn.active { background: rgba(96,165,250,0.3); border-color: #93c5fd; }
 
-  /* ── Phase 3: Timber Slide v2 ── */
-  #ts-viewport { position: absolute; inset: 0; display: none; background: #1a0e06; overflow: hidden; }
+  /* ── Phase 3: House Builder ── */
+  #ts-viewport { position: absolute; inset: 0; display: none; background: #1a1c1a; overflow: hidden; }
   #ts-viewport.active { display: block; }
-  #ts-canvas { display: block; width: 100%; height: 100%; }
+  #ts-canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
 
-  .ts-hud {
+  .hb-hud-top {
     position: absolute; top: 6px; left: 50%; transform: translateX(-50%); z-index: 12;
-    display: flex; align-items: center; gap: 14px;
-    background: rgba(20,10,4,0.9); border: 2px solid #5c3d2e;
-    border-radius: 20px; padding: 4px 16px;
-    font-family: 'Orbitron', sans-serif; font-size: 10px;
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(15,17,15,0.94); border: 2px solid #374151;
+    border-radius: 22px; padding: 4px 6px;
+    font-family: 'Orbitron', sans-serif;
   }
-  .ts-hud .ts-stat { text-align: center; }
-  .ts-hud .ts-val { color: #d4a574; font-weight: 700; font-size: 14px; }
-  .ts-hud .ts-lbl { color: #6b5540; font-size: 7px; text-transform: uppercase; letter-spacing: 1.5px; }
-  .ts-hud .ts-combo { color: #fbbf24 !important; font-size: 18px !important; }
+  .hb-mode-btn {
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 7px 16px; border-radius: 18px; border: 2px solid transparent;
+    background: transparent; color: #6b7280; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .hb-mode-btn.active { background: rgba(74,222,128,0.15); border-color: #4ade80; color: #4ade80; }
+  .hb-mode-btn:hover:not(.active) { color: #9ca3af; border-color: #374151; }
 
-  .ts-powerup-bar {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 12;
-    display: flex; gap: 8px;
+  .hb-hud-bottom {
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 12;
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(15,17,15,0.94); border: 2px solid #374151;
+    border-radius: 20px; padding: 6px 10px;
+    font-family: 'Share Tech Mono', monospace;
   }
-  .ts-powerup-bar .ts-pw {
-    width: 42px; height: 42px; border-radius: 12px;
-    background: rgba(20,10,4,0.85); border: 2px solid #374151;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; transition: all 0.2s;
+  .hb-tool-btn {
+    font-family: 'Share Tech Mono', monospace; font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 14px; border: 2px solid transparent;
+    background: transparent; color: #6b7280; cursor: pointer;
+    transition: all 0.2s; white-space: nowrap;
   }
-  .ts-powerup-bar .ts-pw.active { border-color: #fbbf24; box-shadow: 0 0 14px rgba(251,191,36,0.3); }
+  .hb-tool-btn.active { background: rgba(251,191,36,0.15); border-color: #fbbf24; color: #fbbf24; }
+  .hb-tool-btn:hover:not(.active) { color: #9ca3af; border-color: #374151; }
+  .hb-tool-btn.erase { color: #f87171; }
+  .hb-tool-btn.erase.active { background: rgba(248,113,113,0.15); border-color: #f87171; }
 
-  .ts-vignette {
-    position: absolute; inset: 0; z-index: 5; pointer-events: none;
-    box-shadow: inset 0 0 80px 40px rgba(0,0,0,0.5);
+  .hb-catalog {
+    position: absolute; top: 60px; right: 8px; z-index: 14;
+    background: rgba(15,17,15,0.95); border: 2px solid #60a5fa;
+    border-radius: 14px; padding: 12px; width: 170px;
+    font-family: 'Share Tech Mono', monospace;
+    display: none; flex-direction: column; gap: 4px;
+    max-height: calc(100vh - 140px); overflow-y: auto;
   }
-
-  .ts-toast {
-    position: absolute; top: 38%; left: 50%; transform: translate(-50%,-50%); z-index: 20;
-    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
-    opacity: 0; pointer-events: none; transition: all 0.3s;
-    text-shadow: 0 0 20px currentColor;
+  .hb-catalog.show { display: flex; }
+  .hb-catalog h4 {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; color: #60a5fa;
+    margin: 0 0 4px; text-align: center; letter-spacing: 1px;
   }
-  .ts-toast.show { opacity: 1; }
-  .ts-toast.good { color: #fbbf24; }
-  .ts-toast.bad { color: #f87171; }
-  .ts-toast.combo { color: #4ade80; font-size: 36px; }
+  .hb-cat-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 8px; border-radius: 8px; cursor: pointer;
+    border: 2px solid transparent; transition: all 0.15s;
+    font-size: 11px; color: #9ca3af;
+  }
+  .hb-cat-item:hover { background: #232623; border-color: #374151; color: #d1d5db; }
+  .hb-cat-item.selected { background: rgba(96,165,250,0.15); border-color: #60a5fa; color: #60a5fa; }
+  .hb-cat-item .hb-cat-icon { font-size: 18px; width: 24px; text-align: center; }
+  .hb-cat-item .hb-cat-name { flex: 1; }
 
-  .ts-overlay {
+  .hb-save-btn {
+    position: absolute; top: 8px; right: 8px; z-index: 15;
+    font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+    padding: 7px 14px; border-radius: 14px; cursor: pointer;
+    border: 2px solid #fbbf24; background: rgba(251,191,36,0.12); color: #fbbf24;
+    transition: all 0.2s; letter-spacing: 1px;
+  }
+  .hb-save-btn:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 12px rgba(251,191,36,0.2); }
+
+  /* ── Project list modal ── */
+  .hb-project-overlay {
+    position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.85);
+    display: none; align-items: center; justify-content: center;
+  }
+  .hb-project-overlay.show { display: flex; }
+  .hb-project-box {
+    background: #1a1c1a; border: 2px solid #4ade80; border-radius: 18px;
+    padding: 20px 24px; max-width: 420px; width: 90%; max-height: 70vh; overflow-y: auto;
+  }
+  .hb-project-box h3 {
+    font-family: 'Orbitron', sans-serif; font-size: 16px; color: #4ade80;
+    text-align: center; margin-bottom: 12px;
+  }
+  .hb-project-item {
+    display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+    margin-bottom: 6px; border-radius: 10px; cursor: pointer;
+    border: 2px solid #374151; background: #232623;
+    font-family: 'Share Tech Mono', monospace; font-size: 12px;
+    color: #d1d5db; transition: all 0.15s;
+  }
+  .hb-project-item:hover { border-color: #4ade80; background: #1a2e1a; }
+  .hb-project-item .hb-pj-name { flex: 1; }
+  .hb-project-item .hb-pj-info { color: #6b7280; font-size: 10px; }
+  .hb-project-item .hb-pj-del {
+    color: #f87171; cursor: pointer; padding: 2px 8px; border-radius: 6px;
+    border: 1px solid transparent; font-size: 14px;
+  }
+  .hb-project-item .hb-pj-del:hover { border-color: #f87171; background: rgba(248,113,113,0.1); }
+  .hb-project-new {
+    display: block; width: 100%; margin-top: 8px;
+    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 10px; border-radius: 12px; cursor: pointer;
+    border: 2px solid #4ade80; background: rgba(74,222,128,0.12); color: #4ade80;
+    transition: all 0.2s; text-align: center;
+  }
+  .hb-project-new:hover { background: rgba(74,222,128,0.3); }
+
+  .hb-status {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 13;
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    color: #6b7280; text-align: center;
+    background: rgba(15,17,15,0.9); border: 1px solid #374151;
+    border-radius: 12px; padding: 6px 16px;
+    pointer-events: none;
+  }
+  .hb-status .hb-done { color: #4ade80; font-weight: 700; }
+
+  .hb-toast {
+    position: absolute; top: 45%; left: 50%; transform: translate(-50%,-50%); z-index: 20;
+    font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900;
+    color: #fbbf24; opacity: 0; pointer-events: none; transition: all 0.3s;
+    text-shadow: 0 0 20px rgba(251,191,36,0.5);
+    text-align: center;
+  }
+  .hb-toast.show { opacity: 1; }
+
+  .hb-win-overlay {
     position: absolute; inset: 0; z-index: 30;
-    background: rgba(0,0,0,0.85); display: none;
+    background: rgba(0,0,0,0.88); display: none;
     align-items: center; justify-content: center; flex-direction: column;
     font-family: 'Orbitron', sans-serif;
   }
-  .ts-overlay.show { display: flex; }
-  .ts-overlay .ts-emoji { font-size: 64px; margin-bottom: 8px; }
-  .ts-overlay .ts-title { font-size: 32px; font-weight: 900; margin-bottom: 4px; }
-  .ts-overlay .ts-sub { font-size: 14px; color: #9ca3af; margin-bottom: 6px; }
-  .ts-overlay .ts-points { font-size: 22px; color: #fbbf24; font-weight: 700; margin-bottom: 20px; }
-  .ts-overlay.win .ts-title { color: #4ade80; }
-  .ts-overlay.lose .ts-title { color: #f87171; }
-  .ts-overlay .ts-btn-row { display: flex; gap: 12px; }
-  .ts-overlay button {
-    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
-    padding: 10px 22px; border-radius: 14px; cursor: pointer; transition: all 0.2s;
+  .hb-win-overlay.show { display: flex; }
+  .hb-win-overlay .hb-win-emoji { font-size: 64px; margin-bottom: 8px; }
+  .hb-win-overlay .hb-win-title { font-size: 28px; font-weight: 900; color: #4ade80; margin-bottom: 4px; }
+  .hb-win-overlay .hb-win-sub { font-size: 13px; color: #9ca3af; margin-bottom: 16px; }
+  .hb-win-overlay .hb-win-btn-row { display: flex; gap: 10px; }
+  .hb-win-overlay button {
+    font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+    padding: 9px 20px; border-radius: 14px; cursor: pointer; transition: all 0.2s;
     border: 2px solid #4ade80; background: rgba(74,222,128,0.12); color: #4ade80;
   }
-  .ts-overlay button:hover { background: rgba(74,222,128,0.3); }
-  .ts-overlay button.back { border-color: #6b7280; color: #9ca3af; background: rgba(107,114,128,0.1); }
-  .ts-overlay button.back:hover { background: rgba(107,114,128,0.25); }
+  .hb-win-overlay button:hover { background: rgba(74,222,128,0.3); }
+  .hb-win-overlay button.back-btn { border-color: #6b7280; color: #9ca3af; background: rgba(107,114,128,0.1); }
+  .hb-win-overlay button.back-btn:hover { background: rgba(107,114,128,0.25); }
+
+  /* ── Requirements panel ── */
+  .hb-req-panel {
+    position: absolute; top: 60px; left: 8px; z-index: 14;
+    background: rgba(15,17,15,0.95); border: 2px solid #fbbf24;
+    border-radius: 14px; padding: 12px 14px; width: 155px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .hb-req-panel h4 {
+    font-family: 'Orbitron', sans-serif; font-size: 10px; color: #fbbf24;
+    margin: 0 0 8px; text-align: center; letter-spacing: 1px;
+  }
+  .hb-req-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 6px; border-radius: 6px; font-size: 11px;
+    color: #6b7280; transition: all 0.2s;
+  }
+  .hb-req-item.done { color: #4ade80; text-decoration: line-through; opacity: 0.6; }
+  .hb-req-item .hb-req-icon { font-size: 16px; width: 22px; text-align: center; }
+  .hb-req-item .hb-req-name { flex: 1; }
+  .hb-req-item .hb-req-count { color: #fbbf24; font-weight: 700; }
   /* ── Phase 2: 3D Woodcutting HUD ── */
   #viewport3d { position: absolute; inset: 0; display: none; }
   #viewport3d.active { display: block; }
@@ -1839,42 +1941,38 @@
     </div>
 
     
-    <!-- Phase 3: Timber Slide v2 -->
+    <!-- Phase 3: House Builder -->
     <div id="ts-viewport">
       <canvas id="ts-canvas"></canvas>
-      <div class="ts-vignette"></div>
-      <div class="ts-hud">
-        <div class="ts-stat"><div class="ts-val ts-combo" id="ts-combo">x1</div><div class="ts-lbl">Combo</div></div>
-        <div class="ts-stat"><div class="ts-val" id="ts-size">100%</div><div class="ts-lbl">Module</div></div>
-        <div class="ts-stat"><div class="ts-val" id="ts-coins">🪙 0</div><div class="ts-lbl">Coins</div></div>
-        <div class="ts-stat"><div class="ts-val" id="ts-dist">0m</div><div class="ts-lbl">Distance</div></div>
+      <div class="hb-hud-top" id="hb-hud-top">
+        <button class="hb-mode-btn active" data-mode="build">🏗️ Build</button>
+        <button class="hb-mode-btn" data-mode="furnish">🛋️ Furnish</button>
+        <button class="hb-mode-btn" data-mode="walk">🚶 Walk</button>
       </div>
-      <div class="ts-powerup-bar">
-        <div class="ts-pw" id="ts-pw-magnet">🧲</div>
-        <div class="ts-pw" id="ts-pw-shield">🛡️</div>
-        <div class="ts-pw" id="ts-pw-boost">⚡</div>
+      <div class="hb-hud-bottom" id="hb-tools">
+        <button class="hb-tool-btn active" data-tool="wall">🧱 Wall</button>
+        <button class="hb-tool-btn" data-tool="floor">🪨 Floor</button>
+        <button class="hb-tool-btn" data-tool="door">🚪 Door</button>
+        <button class="hb-tool-btn erase" data-tool="erase">❌ Erase</button>
       </div>
-      <div class="ts-toast" id="ts-toast"></div>
-      <!-- Win overlay -->
-      <div class="ts-overlay win" id="ts-win">
-        <div class="ts-emoji">🏆</div>
-        <div class="ts-title">YOU WIN!</div>
-        <div class="ts-sub">Module delivered!</div>
-        <div class="ts-points" id="ts-win-points">0 points</div>
-        <div class="ts-btn-row">
-          <button class="back" onclick="TS.goBack()">← Back</button>
-          <button onclick="TS.nextLevel()">Next Level →</button>
-        </div>
+      <div class="hb-catalog" id="hb-catalog">
+        <h4>🛋️ Furniture</h4>
+        <div id="hb-cat-items"></div>
       </div>
-      <!-- Lose overlay -->
-      <div class="ts-overlay lose" id="ts-lose">
-        <div class="ts-emoji">💀</div>
-        <div class="ts-title">YOU LOST!</div>
-        <div class="ts-sub">The block was destroyed</div>
-        <div class="ts-points" id="ts-lose-points">0 points</div>
-        <div class="ts-btn-row">
-          <button class="back" onclick="TS.goBack()">← Back</button>
-          <button onclick="TS.playAgain()">🔄 Play Again</button>
+      <button class="hb-save-btn" id="hb-save-btn" onclick="HB.savePrompt()" title="Save Project">💾 Save</button>
+      <div class="hb-req-panel" id="hb-req-panel">
+        <h4>📋 Required</h4>
+        <div id="hb-req-list"></div>
+      </div>
+      <div class="hb-status" id="hb-status">Click grid edges to place walls — create rooms!</div>
+      <div class="hb-toast" id="hb-toast"></div>
+      <div class="hb-win-overlay" id="hb-win">
+        <div class="hb-win-emoji">🏠</div>
+        <div class="hb-win-title">HOUSE COMPLETE!</div>
+        <div class="hb-win-sub" id="hb-win-sub"></div>
+        <div class="hb-win-btn-row">
+          <button class="back-btn" onclick="HB.goBack()">← Back</button>
+          <button onclick="HB.nextLevel()">Next Level →</button>
         </div>
       </div>
     </div>
@@ -1908,10 +2006,8 @@ window.GAME = {
         { num: 2, title: 'Farmhouse', info: 'Build a farmhouse — 30 Wood + 7 Screws', woodRequired: 30, screwsRequired: 7, houseSize: 'medium', treeCount: 18, houseName: 'Farmhouse' },
         { num: 3, title: 'Luxury Villa', info: 'Build a luxury villa — 40 Wood + 10 Screws', woodRequired: 40, screwsRequired: 10, houseSize: 'large', treeCount: 24, houseName: 'Luxury Villa' },
       ] },
-    { id: 3, name: 'Timber Slide', desc: 'Dodge saws, collect wood, chain combos. Survive if you can.', levels: [
-    { num: 1, title: 'Pine Workshop', info: 'Collect 15 points. Dodge the bombs!', speed: 1.0, obstacleRate: 0.4, collectRate: 1.0, powerupRate: 0.08, goalPoints: 15 },
-    { num: 2, title: 'Oak Factory', info: 'Collect 20 points. More bombs, tighter spacing.', speed: 1.15, obstacleRate: 0.55, collectRate: 0.8, powerupRate: 0.06, goalPoints: 20 },
-    { num: 3, title: 'Mahogany Mill', info: 'Collect 25 points. Bomb squad. Good luck!', speed: 1.3, obstacleRate: 0.7, collectRate: 0.6, powerupRate: 0.04, goalPoints: 25 }
+        { id: 3, name: 'House Builder', desc: 'Free build — design your dream house with no limits.', levels: [
+    { num: 1, title: 'Sandbox', info: 'Open canvas — build anything!', gridRows: 24, gridCols: 30, requiredItems: [], minRooms: 0 }
   ] },
   ]
 };
@@ -2916,500 +3012,998 @@ window.finish3DLevel=function(){window.stopPhase2Game();window.markComplete();do
 
 
 
-<!-- ═══════ PHASE 3: Timber Slide v2 ═══════ -->
+<!-- ═══════ PHASE 3: House Builder ═══════ -->
 <script>
-// ═══════════════════════════════════════════════════════
-//  Timber Slide v2 — premium wood block runner
-//  Parallax, combos, power-ups, dynamic track, juice
-// ═══════════════════════════════════════════════════════
-const TS = {
-  // ── Player ──
-  lane: 1, targetLane: 1, x: 0, vx: 0,
-  blockSize: 100, maxSize: 150, minSize: 25,
-  coins: 0, distance: 0, points: 0, goalPoints: 20,
-  speed: 0, baseSpeed: 220,
-  alive: true, finished: false, gameActive: false, animId: null,
+// ══════════════════════════════════════════════════════
+//  HOUSE BUILDER — Phase 3
+//  Build walls, lay floors, furnish rooms
+// ══════════════════════════════════════════════════════
+const HB = {
+  // ─── State ───
+  rows: 8, cols: 8,
+  walls: null, floors: null, doors: null,
+  furniture: [],
+  mode: 'build', buildTool: 'wall', selectedItem: null,
+  playerR: 0, playerC: 0,
+  levelData: null, requiredItems: [],
+  gameActive: false, animId: null, winShown: false,
 
-  // ── Combo ──
-  combo: 1, comboTimer: 0, maxCombo: 1,
+  // ─── Three.js ───
+  scene: null, camera: null, renderer: null,
+  raycaster: null, mouse: null,
+  groundPlane: null, gridGroup: null,
+  floorGroup: null, wallGroup: null, furnGroup: null,
+  hoverMesh: null, hoverEdgeMesh: null,
 
-  // ── Power-ups ──
-  magnetActive: false, magnetTimer: 0,
-  shieldActive: false, shieldHits: 0,
-  boostActive: false, boostTimer: 0,
+  // Camera orbit
+  camAngle: -0.6, camElev: 1.05, camDist: 16,
+  camTarget: null,
+  isDragging: false, dragButton: 0, lastMX: 0, lastMY: 0,
 
-  // ── Obstacles & Collectibles ──
-  obstacles: [], collectibles: [], powerups: [],
-  obstacleTimer: 0, obstacleRate: 1.0,
-  milestoneIdx: 0, milestones: [],
+  hoverR: -1, hoverC: -1, hoverEdge: null,
 
-  // ── Parallax ──
-  bgLayers: [{speed:0.3, y:0},{speed:0.6, y:0},{speed:1.0, y:0}],
+  catalog: [
+    { name:'Bed', icon:'🛏️', w:2, h:1, color:'#e8b4b8', cat:'bedroom' },
+    { name:'Table', icon:'🪑', w:1, h:1, color:'#8B4513', cat:'dining' },
+    { name:'Chair', icon:'🪑', w:1, h:1, color:'#A0522D', cat:'dining' },
+    { name:'Sofa', icon:'🛋️', w:2, h:1, color:'#556B2F', cat:'living' },
+    { name:'TV', icon:'📺', w:1, h:1, color:'#333', cat:'living' },
+    { name:'Bookshelf', icon:'📚', w:1, h:1, color:'#6B3A2E', cat:'living' },
+    { name:'Fridge', icon:'🧊', w:1, h:1, color:'#C0C0C0', cat:'kitchen' },
+    { name:'Stove', icon:'🍳', w:1, h:1, color:'#444', cat:'kitchen' },
+    { name:'Sink', icon:'🚰', w:1, h:1, color:'#B0C4DE', cat:'kitchen' },
+    { name:'Toilet', icon:'🚽', w:1, h:1, color:'#F5F5F5', cat:'bathroom' },
+    { name:'Bathtub', icon:'🛁', w:2, h:1, color:'#F0F8FF', cat:'bathroom' },
+    { name:'Lamp', icon:'💡', w:1, h:1, color:'#FFD700', cat:'decor' },
+    { name:'Plant', icon:'🪹', w:1, h:1, color:'#228B22', cat:'decor' },
+    { name:'Rug', icon:'🧶', w:2, h:2, color:'#CD853F', cat:'decor' },
+    { name:'Desk', icon:'🖥️', w:2, h:1, color:'#8B7355', cat:'living' },
+    { name:'Mirror', icon:'🪞', w:1, h:1, color:'#E8E8E8', cat:'bedroom' },
+  ],
 
-  // ── Particles ──
-  particles: [], floats: [], trail: [],
-
-  // ── Canvas ──
-  canvas: null, ctx: null, cw: 0, ch: 0,
-  laneXs: [0,0,0], laneW: 0, laneGap: 0,
-  lastFrame: 0, shakeAmount: 0, blockScale: 1, glowPulse: 0,
-
+  // ══════════ INIT ══════════
   init(level) {
-    this.levelCfg = level;
-    this.baseSpeed = 180 * (level.speed||1.0);
-    this.obstacleRate = level.obstacleRate||1.0;
-    this.goalDist = 400 + (level.num-1)*150;
-    this.lane=1; this.targetLane=1; this.x=0; this.vx=0;
-    this.blockSize=100; this.coins=0; this.distance=0; this.points=0;
-    this.goalPoints=level.goalPoints||20;
-    this.collectRate=level.collectRate||0.8;
-    this.powerupRate=level.powerupRate||0.06;
-    this.alive=true; this.finished=false; this.speed=this.baseSpeed;
-    this.combo=1; this.comboTimer=0; this.maxCombo=1;
-    this.magnetActive=false; this.magnetTimer=0;
-    this.shieldActive=false; this.shieldHits=0;
-    this.boostActive=false; this.boostTimer=0;
-    this.obstacles=[]; this.collectibles=[]; this.powerups=[];
-    this.particles=[]; this.floats=[]; this.trail=[];
-    this.obstacleTimer=0; this.milestoneIdx=0;
-    this.shakeAmount=0; this.blockScale=1; this.glowPulse=0;
-    this.milestones = [this.goalDist*0.25, this.goalDist*0.5, this.goalDist*0.75];
-    this.gameActive=true; this.lastFrame=performance.now();
+    this.levelData = level;
+    this.rows = level.gridRows || 8;
+    this.cols = level.gridCols || 8;
+    this.requiredItems = [...(level.requiredItems || [])];
+    this.walls = new Set();
+    this.floors = new Set();
+    this.doors = new Set();
+    this.furniture = [];
+    this.mode = 'build';
+    this.buildTool = 'wall';
+    this.selectedItem = null;
+    this.playerR = Math.floor(this.rows/2);
+    this.playerC = Math.floor(this.cols/2);
+    this.hoverR = -1; this.hoverC = -1; this.hoverEdge = null;
+    this.winShown = false;
+    this.gameActive = true;
+    this.isDragging = false;
 
-    this.canvas = document.getElementById('ts-canvas');
-    this.ctx = this.canvas.getContext('2d');
+    // ── Three.js setup ──
+    // Dispose old scene/renderer if re-initializing
+    if (this.renderer) { this.renderer.dispose(); this.renderer = null; }
+    if (this.scene) { this.scene.traverse(obj => { if(obj.geometry)obj.geometry.dispose(); if(obj.material){if(Array.isArray(obj.material))obj.material.forEach(m=>m.dispose());else obj.material.dispose();} }); }
+    const vp = document.getElementById('ts-viewport');
+    const W = vp.clientWidth, H = vp.clientHeight;
+
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color('#1a1c1a');
+    this.scene.fog = new THREE.Fog('#1a1c1a', 10, 45);
+
+    this.camera = new THREE.PerspectiveCamera(50, W/H||1, 0.5, 80);
+    this.camTarget = new THREE.Vector3(this.cols/2, 0, this.rows/2);
+    this.updateCamera();
+
+    // Renderer — reuse existing canvas
+    const canvas = document.getElementById('ts-canvas');
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    this.renderer.setSize(W, H);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.shadowMap.enabled = true;
+
+    // Lighting — warm sun with soft fill
+    this.scene.add(new THREE.AmbientLight(0x8899aa, 0.5));
+    const sun = new THREE.DirectionalLight(0xfff5e8, 1.4);
+    sun.position.set(12, 18, 6);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 60;
+    sun.shadow.camera.left = -20; sun.shadow.camera.right = 20;
+    sun.shadow.camera.top = 20; sun.shadow.camera.bottom = -20;
+    this.scene.add(sun);
+    const fill = new THREE.DirectionalLight(0xaaccff, 0.25);
+    fill.position.set(-6, 4, -4);
+    this.scene.add(fill);
+    const hemi = new THREE.HemisphereLight(0x87ceeb, 0x4a8c2a, 0.3);
+    this.scene.add(hemi);
+
+    // Ground — realistic grass (large plane, subtle green-brown variation)
+    const groundSize = Math.max(this.cols, this.rows) + 8;
+    const gGeo = new THREE.PlaneGeometry(groundSize, groundSize);
+    const gMat = new THREE.MeshStandardMaterial({ color: 0x4a8c2a, roughness: 0.85, metalness: 0 });
+    const ground = new THREE.Mesh(gGeo, gMat);
+    ground.rotation.x = -Math.PI/2;
+    ground.position.set(this.cols/2, -0.08, this.rows/2);
+    ground.receiveShadow = true;
+    this.scene.add(ground);
+
+    // Invisible plane for raycaster (match ground size)
+    const rGeo = new THREE.PlaneGeometry(groundSize, groundSize);
+    this.groundPlane = new THREE.Mesh(rGeo, new THREE.MeshBasicMaterial({ visible: false }));
+    this.groundPlane.rotation.x = -Math.PI/2;
+    this.groundPlane.position.copy(ground.position);
+    this.scene.add(this.groundPlane);
+
+    // Grid lines on ground
+    this.gridGroup = new THREE.Group();
+    this.scene.add(this.gridGroup);
+    const gridMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1 });
+    for (let r = 0; r <= this.rows; r++) {
+      const g = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0.001, r), new THREE.Vector3(this.cols, 0.001, r)
+      ]);
+      this.gridGroup.add(new THREE.Line(g, gridMat));
+    }
+    for (let c = 0; c <= this.cols; c++) {
+      const g = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(c, 0.001, 0), new THREE.Vector3(c, 0.001, this.rows)
+      ]);
+      this.gridGroup.add(new THREE.Line(g, gridMat));
+    }
+
+    // Mesh groups
+    this.floorGroup = new THREE.Group(); this.scene.add(this.floorGroup);
+    this.wallGroup = new THREE.Group(); this.scene.add(this.wallGroup);
+    this.furnGroup = new THREE.Group(); this.scene.add(this.furnGroup);
+
+    // Hover indicator
+    const hGeo = new THREE.BoxGeometry(0.94, 0.02, 0.94);
+    const hMat = new THREE.MeshBasicMaterial({ color: 0x4ade80, transparent: true, opacity: 0.5, depthTest: false });
+    this.hoverMesh = new THREE.Mesh(hGeo, hMat);
+    this.hoverMesh.renderOrder = 999;
+    this.hoverMesh.visible = false;
+    this.scene.add(this.hoverMesh);
+    // Edge hover (for wall tool)
+    const eGeo = new THREE.BoxGeometry(1, 0.04, 0.06);
+    const eMat = new THREE.MeshBasicMaterial({ color: 0x4ade80, transparent: true, opacity: 0.6, depthTest: false });
+    this.hoverEdgeMesh = new THREE.Mesh(eGeo, eMat);
+    this.hoverEdgeMesh.renderOrder = 998;
+    this.hoverEdgeMesh.visible = false;
+    this.scene.add(this.hoverEdgeMesh);
+
+    // Raycaster
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+
+    // Build the scene
+    this.rebuildScene();
+    this.buildCatalog();
+    this.updateUI();
+    this.updateStatus();
+    this.buildReqPanel();
+
     document.getElementById('ts-viewport').classList.add('active');
-    this.resize();
-    this.renderHUD();
-    this.setupInput();
-    this.animId = requestAnimationFrame(t=>this.loop(t));
+    document.getElementById('hb-catalog').classList.remove('show');
+    document.getElementById('hb-win').classList.remove('show');
+
+    // Events
+    window.addEventListener('resize', this._rh = () => this.resize());
+    this.renderer.domElement.addEventListener('mousedown', this._mh = (e) => this.handleMouseDown(e));
+    this.renderer.domElement.addEventListener('mousemove', this._mmh = (e) => this.handleMouseMove(e));
+    this.renderer.domElement.addEventListener('wheel', this._wh = (e) => { e.preventDefault(); this.camDist = Math.max(5, Math.min(35, this.camDist + e.deltaY*0.01)); this.updateCamera(); }, {passive:false});
+    this.renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
+    window.addEventListener('keydown', this._kh = (e) => this.handleKey(e));
+    // Touch
+    this.renderer.domElement.addEventListener('touchstart', this._th = (e) => {
+      if (e.touches.length === 2) { this.isDragging = true; this.lastMX = e.touches[0].clientX; this.lastMY = e.touches[0].clientY; return; }
+      e.preventDefault();
+      const t = e.touches[0]; const r = this.renderer.domElement.getBoundingClientRect();
+      this.mouse.x = ((t.clientX-r.left)/r.width)*2-1;
+      this.mouse.y = -((t.clientY-r.top)/r.height)*2+1;
+      this.handleClick();
+    }, {passive:false});
+    this.renderer.domElement.addEventListener('touchmove', this._tmh = (e) => {
+      if (this.isDragging && e.touches.length >= 2) {
+        const dx = e.touches[0].clientX - this.lastMX;
+        this.camAngle -= dx * 0.005;
+        this.lastMX = e.touches[0].clientX;
+        this.lastMY = e.touches[0].clientY;
+        this.updateCamera();
+      }
+    });
+
+    if (this.animId) cancelAnimationFrame(this.animId);
+    requestAnimationFrame(() => {
+      this.resize();
+      this.animId = requestAnimationFrame((ts) => this.loop(ts));
+    });
   },
 
+  updateCamera() {
+    const t = this.camTarget;
+    const d = this.camDist, el = this.camElev, az = this.camAngle;
+    this.camera.position.set(
+      t.x + d*Math.cos(el)*Math.sin(az),
+      d*Math.sin(el),
+      t.z + d*Math.cos(el)*Math.cos(az)
+    );
+    this.camera.lookAt(t);
+  },
+
+  // ══════════ RESIZE ══════════
   resize() {
     const vp = document.getElementById('ts-viewport');
-    this.cw = vp.clientWidth||400; this.ch = vp.clientHeight||700;
-    this.canvas.width = this.cw; this.canvas.height = this.ch;
-    this.laneW = this.cw * 0.2;
-    this.laneGap = this.cw * 0.12;
-    const cx = this.cw/2;
-    this.laneXs = [cx-this.laneW-this.laneGap, cx, cx+this.laneW+this.laneGap];
-    this.x = this.laneXs[this.lane];
+    const W = vp.clientWidth, H = vp.clientHeight;
+    if (!W || !H) return;
+    this.renderer.setSize(W, H);
+    this.camera.aspect = W/H;
+    this.camera.updateProjectionMatrix();
   },
 
-  // ═══ INPUT ═══
-  setupInput() {
-    const h = (d) => { if(this.alive&&!this.finished) this.targetLane=Math.max(0,Math.min(2,this.targetLane+d)); };
-    window.addEventListener('keydown', e => {
-      if(!this.gameActive)return;
-      if(e.code==='KeyA'||e.code==='ArrowLeft')h(-1);
-      if(e.code==='KeyD'||e.code==='ArrowRight')h(1);
-    });
-    this.canvas.addEventListener('click', e => {
-      if(!this.alive||this.finished)return;
-      h(e.clientX-this.canvas.getBoundingClientRect().left < this.cw/2 ? -1 : 1);
-    });
-    window.addEventListener('resize',()=>{if(this.gameActive)this.resize();});
-  },
-
-  // ═══ LOOP ═══
+  // ══════════ LOOP ══════════
   loop(ts) {
-    if(!this.gameActive)return;
-    this.animId=requestAnimationFrame(t=>this.loop(t));
-    const dt=Math.min(0.05,(ts-this.lastFrame)/1000);
-    this.lastFrame=ts;
-    if(this.alive&&!this.finished)this.update(dt);
-    this.draw();
+    if (!this.gameActive) return;
+    this.animId = requestAnimationFrame((t) => this.loop(t));
+    this.renderer.render(this.scene, this.camera);
   },
 
-  update(dt) {
-    // Smooth lane movement
-    const tx=this.laneXs[this.targetLane];
-    this.vx+=(tx-this.x)*15*dt;
-    this.vx*=0.85;
-    this.x+=this.vx;
+  // ══════════ SCENE REBUILD ══════════
+  rebuildScene() {
+    // Clear groups
+    while(this.floorGroup.children.length) this.floorGroup.remove(this.floorGroup.children[0]);
+    while(this.wallGroup.children.length) this.wallGroup.remove(this.wallGroup.children[0]);
+    while(this.furnGroup.children.length) this.furnGroup.remove(this.furnGroup.children[0]);
 
-    // Speed ramp — increases over distance
-    this.speed = this.baseSpeed + this.distance*0.06;
-    this.distance += this.speed*dt;
-
-    // Parallax
-    for(const l of this.bgLayers) l.y = (l.y + this.speed*l.speed*dt) % this.ch;
-
-    // Combo decay
-    this.comboTimer-=dt;
-    if(this.comboTimer<=0&&this.combo>1){this.combo=1;this.comboTimer=0;this.toast('Combo lost!','bad');this.renderHUD();}
-
-    // Power-up timers
-    if(this.magnetActive){this.magnetTimer-=dt;if(this.magnetTimer<=0){this.magnetActive=false;document.getElementById('ts-pw-magnet').classList.remove('active');}}
-    if(this.boostActive){this.boostTimer-=dt;if(this.boostTimer<=0){this.boostActive=false;document.getElementById('ts-pw-boost').classList.remove('active');}}
-
-    // Obstacle spawning — patterns at higher difficulty
-    this.obstacleTimer+=dt;
-    const spawnInterval = 2.5/this.obstacleRate;
-    if(this.obstacleTimer>spawnInterval){
-      this.obstacleTimer=0;
-      this.spawnObstaclePattern();
-    }
-
-    // Collectible spawning — per-level rate
-    if(Math.random()<dt*this.collectRate) this.spawnCollectible();
-    // Power-up spawning (rare) — per-level rate
-    if(Math.random()<dt*this.powerupRate) this.spawnPowerup();
-
-    // Move & check everything
-    for(let i=this.obstacles.length-1;i>=0;i--){
-      const o=this.obstacles[i];
-      o.y+=this.speed*dt;
-      // Moving obstacles
-      if(o.moveAmp){o.ox=(o.ox||o.x); o.x=o.ox+Math.sin(this.distance*o.moveFreq)*o.moveAmp;}
-      if(o.y>this.ch+80){this.obstacles.splice(i,1);continue;}
-      if(this.alive)this.checkObstacle(o,i);
-    }
-    for(let i=this.collectibles.length-1;i>=0;i--){
-      const cl=this.collectibles[i];
-      cl.y+=this.speed*dt;
-      if(cl.y>this.ch+40){this.collectibles.splice(i,1);continue;}
-      if(this.alive)this.checkCollectible(cl,i);
-    }
-    for(let i=this.powerups.length-1;i>=0;i--){
-      const pw=this.powerups[i];
-      pw.y+=this.speed*dt;
-      if(pw.y>this.ch+40){this.powerups.splice(i,1);continue;}
-      if(this.alive)this.checkPowerup(pw,i);
-    }
-
-    // Milestone checkpoints
-    if(this.milestoneIdx<this.milestones.length&&this.distance>=this.milestones[this.milestoneIdx]){
-      this.coins+=10+this.milestoneIdx*5;
-      this.toast('📍 Checkpoint! +'+(10+this.milestoneIdx*5)+' coins','good');
-      this.milestoneIdx++;
-    }
-
-    // Trail
-    if(this.speed>50){
-      this.trail.push({x:this.x, y:this.ch*0.76, life:0.3, age:0});
-    }
-
-    // Particles & floats
-    for(let i=this.particles.length-1;i>=0;i--){const p=this.particles[i];p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=80*dt;if(p.age>=p.life)this.particles.splice(i,1);}
-    for(let i=this.floats.length-1;i>=0;i--){const f=this.floats[i];f.age+=dt;f.y-=50*dt;if(f.age>=f.life)this.floats.splice(i,1);}
-    for(let i=this.trail.length-1;i>=0;i--){const t=this.trail[i];t.age+=dt;if(t.age>=t.life)this.trail.splice(i,1);}
-
-    this.blockScale+=(1-this.blockScale)*10*dt;
-    this.shakeAmount*=0.9;
-    this.glowPulse+=dt*4;
-
-    // Win condition — points goal
-    if(this.points>=this.goalPoints&&!this.finished){
-      this.finished=true;
-      this.gameActive=false;
-      document.getElementById('ts-win-points').textContent=this.points+' points · Combo x'+this.maxCombo;
-      document.getElementById('ts-win').classList.add('show');
-      this.toast('🏆 YOU WIN!','combo');
-    }
-
-    // Death — show lose overlay
-    if(this.blockSize<this.minSize&&this.alive){
-      this.alive=false;
-      this.gameActive=false;
-      document.getElementById('ts-lose-points').textContent=this.points+' / '+this.goalPoints+' points';
-      document.getElementById('ts-lose').classList.add('show');
-      this.toast('💀 Destroyed!','bad');
-    }
-
-    this.renderHUD();
-  },
-
-  // ═══ SPAWNING ═══
-  spawnObstaclePattern() {
-    // Only bombs — single or paired
-    const r=Math.random();
-    if(r<0.4){
-      this.obstacles.push(this.makeObstacle(Math.floor(Math.random()*3),'bomb',-50));
-    }else if(r<0.7){
-      const open=Math.floor(Math.random()*3);
-      for(let l=0;l<3;l++)if(l!==open)this.obstacles.push(this.makeObstacle(l,'bomb',-50-(l-open)*10));
-    }else{
-      this.obstacles.push(this.makeObstacle(Math.floor(Math.random()*3),'bomb',-50,30,0.015));
-    }
-  },
-
-  makeObstacle(lane,type,y,moveAmp,moveFreq){
-    return {lane,type,x:this.laneXs[lane],y,r:type==='barrier'?20:type==='spike'?13:type==='bomb'?14:16,hit:false,moveAmp:moveAmp||0,moveFreq:moveFreq||0,ox:0};
-  },
-
-  spawnCollectible() {
-    const lane=Math.floor(Math.random()*3);
-    this.collectibles.push({lane,type:'point',x:this.laneXs[lane],y:-30,r:11,collected:false});
-  },
-
-  spawnPowerup() {
-    const types=['magnet','shield','boost'];
-    const type=types[Math.floor(Math.random()*types.length)];
-    const lane=Math.floor(Math.random()*3);
-    this.powerups.push({type,lane,x:this.laneXs[lane],y:-30,r:14});
-  },
-
-  // ═══ COLLISION ═══
-  checkObstacle(o,idx) {
-    if(o.hit)return;
-    const py=this.ch*0.75;
-    const bw=70*(this.blockSize/100), bh=90*(this.blockSize/100);
-    const dx=Math.abs(o.x-this.x), dy=Math.abs(o.y-py);
-    if(dx<bw/2+o.r&&dy<bh/2+o.r){
-      if(this.boostActive)return; // invincible during boost
-      if(this.shieldActive){this.shieldHits++;o.hit=true;this.obstacles.splice(idx,1);
-        this.toast('🛡️ Blocked!','good');
-        if(this.shieldHits>=1){this.shieldActive=false;document.getElementById('ts-pw-shield').classList.remove('active');}
-        return;
-      }
-      o.hit=true;
-      const dmg={saw:35,sander:10,spike:25,barrier:55,bomb:40}[o.type];
-      this.blockSize=Math.max(this.minSize,this.blockSize-dmg);
-      if(o.type==='bomb'){this.blockSize=0;this.alive=false;this.shakeAmount=60;for(let i=0;i<30;i++)this.particles.push({x:o.x,y:o.y,vx:(Math.random()-.5)*250,vy:(Math.random()-.5)*200-80,life:.6+Math.random()*.7,age:0,color:'#ff4444',size:3+Math.random()*6});}
-      this.combo=1;this.comboTimer=0;
-      this.blockScale=0.9;this.shakeAmount=dmg*0.1;
-      for(let i=0;i<15;i++)this.particles.push({x:o.x,y:o.y,vx:(Math.random()-.5)*150,vy:(Math.random()-.5)*100-50,life:.4+Math.random()*.5,age:0,color:'#d4a574',size:2+Math.random()*4});
-      this.floats.push({x:o.x,y:o.y-12,text:'-'+dmg+'%',life:.7,age:0});
-      this.renderHUD();
-    }
-  },
-
-  checkCollectible(cl,idx) {
-    if(cl.collected)return;
-    const py=this.ch*0.75;
-    const dist=Math.hypot(cl.x-this.x,cl.y-py);
-    const range=this.magnetActive?70:32;
-    if(dist<range){
-      if(this.magnetActive){cl.x+=(this.x-cl.x)*8*0.016;cl.y+=(py-cl.y)*8*0.016;}
-      if(dist<35){
-        cl.collected=true;
-        if(cl.type==='point'){
-          this.points+=this.combo;
-          this.floats.push({x:cl.x,y:cl.y-10,text:'+'+this.combo+' pt',life:.6,age:0});
+    // Grass markers — subtle raised cell on grass (helps see the grid)
+    const grassGeo = new THREE.BoxGeometry(0.96, 0.008, 0.96);
+    const grassMat = new THREE.MeshStandardMaterial({ color: 0x4a7a2e, roughness: 0.9, metalness: 0 });
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        if (!this.floors.has(r+','+c)) {
+          const m = new THREE.Mesh(grassGeo, grassMat);
+          m.position.set(c+0.5, 0.005, r+0.5);
+          m.receiveShadow = true;
+          this.floorGroup.add(m);
         }
-        for(let i=0;i<6;i++)this.particles.push({x:cl.x,y:cl.y,vx:(Math.random()-.5)*70,vy:(Math.random()-.5)*70-25,life:.3+Math.random()*.3,age:0,color:'#4ade80',size:2+Math.random()*2});
-        this.collectibles.splice(idx,1);
-        this.renderHUD();
-      }
-    }
-  },
-
-  checkPowerup(pw,idx) {
-    const py=this.ch*0.75;
-    if(Math.hypot(pw.x-this.x,pw.y-py)<35){
-      if(pw.type==='magnet'){this.magnetActive=true;this.magnetTimer=5;document.getElementById('ts-pw-magnet').classList.add('active');this.toast('🧲 Magnet!','good');}
-      else if(pw.type==='shield'){this.shieldActive=true;this.shieldHits=0;document.getElementById('ts-pw-shield').classList.add('active');this.toast('🛡️ Shield!','good');}
-      else if(pw.type==='boost'){this.boostActive=true;this.boostTimer=3;document.getElementById('ts-pw-boost').classList.add('active');this.toast('⚡ Boost!','good');}
-      this.powerups.splice(idx,1);
-      for(let i=0;i<10;i++)this.particles.push({x:pw.x,y:pw.y,vx:(Math.random()-.5)*100,vy:(Math.random()-.5)*100-30,life:.4+Math.random()*.4,age:0,color:'#fbbf24',size:2+Math.random()*3});
-    }
-  },
-
-  // ═══ DRAWING ═══
-  draw() {
-    const ctx=this.ctx,W=this.cw,H=this.ch;
-    // Workshop background — warm brown gradient
-    const bg=ctx.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#120802');bg.addColorStop(0.5,'#1f1108');bg.addColorStop(1,'#120802');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-
-    // Parallax layers
-    for(let li=0;li<3;li++){
-      const l=this.bgLayers[li];
-      const alpha=[0.03,0.05,0.06][li];
-      ctx.strokeStyle=`rgba(139,115,85,${alpha})`;
-      ctx.lineWidth=[1,2,3][li];
-      const spacing=[80,50,35][li];
-      for(let y=l.y%spacing;y<H;y+=spacing){
-        ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
       }
     }
 
-    // Lane guides
-    for(let i=0;i<3;i++){
-      const lx=this.laneXs[i];
-      ctx.strokeStyle='rgba(180,150,120,0.08)';
-      ctx.setLineDash([3,10]);ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(lx,0);ctx.lineTo(lx,H);ctx.stroke();
-      ctx.setLineDash([]);
-    }
-
-    // Collectibles
-    for(const cl of this.collectibles){
-      if(cl.collected)continue;
-      const pulse=1+Math.sin(this.glowPulse+cl.x)*0.2;
-      ctx.fillStyle='#4ade80';
-      ctx.shadowColor=colors[cl.type];ctx.shadowBlur=8;
-      ctx.beginPath();ctx.arc(cl.x,cl.y,cl.r*pulse,0,Math.PI*2);ctx.fill();
-      ctx.shadowBlur=0;
-      ctx.font='14px sans-serif';ctx.textAlign='center';
-      ctx.fillText('⭐',cl.x,cl.y+5);
-    }
-
-    // Power-ups
-    for(const pw of this.powerups){
-      const pulse=1+Math.sin(this.glowPulse*2+pw.x)*0.3;
-      ctx.fillStyle='#fbbf24';ctx.shadowColor='#fbbf24';ctx.shadowBlur=15;
-      ctx.beginPath();ctx.arc(pw.x,pw.y,pw.r*pulse,0,Math.PI*2);ctx.fill();
-      ctx.shadowBlur=0;
-      ctx.font='18px sans-serif';ctx.textAlign='center';
-      ctx.fillText({magnet:'🧲',shield:'🛡️',boost:'⚡'}[pw.type],pw.x,pw.y+6);
-    }
-
-    // Obstacles
-    for(const o of this.obstacles){
-      if(o.hit)continue;
-      const r=o.r;
-       if(o.type==='bomb'){
-        const bp=1+Math.sin(this.glowPulse*4+o.x)*0.15;
-        ctx.fillStyle='#222';ctx.beginPath();ctx.arc(o.x,o.y,r*bp,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='#ff4444';ctx.beginPath();ctx.arc(o.x,o.y,r*0.7*bp,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='#fff';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('💣',o.x,o.y+5);
-      }else{
-        ctx.fillStyle='#f87171';ctx.fillRect(o.x-r*0.6,o.y-r*0.8,r*1.2,r*1.6);
-        ctx.fillStyle='#fff';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('⚠',o.x,o.y+5);
+    // Floor tiles — rich brown wood (only where player placed them)
+    const fGeo = new THREE.BoxGeometry(0.94, 0.04, 0.94);
+    const fMat = new THREE.MeshStandardMaterial({ color: 0x6b3a2a, roughness: 0.55, metalness: 0.05 });
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        if (this.floors.has(r+','+c)) {
+          const m = new THREE.Mesh(fGeo, fMat);
+          m.position.set(c+0.5, 0.03, r+0.5);
+          m.receiveShadow = true;
+          this.floorGroup.add(m);
+        }
       }
     }
 
-    // Trail
-    for(const t of this.trail){
-      ctx.fillStyle=`rgba(180,140,100,${0.3*(1-t.age/t.life)})`;
-      ctx.beginPath();ctx.arc(t.x,t.y,3,0,Math.PI*2);ctx.fill();
+    // Walls — thin boxes
+    const wallH = 0.7, wallT = 0.06;
+    for (const w of this.walls) {
+      const [rc, dir] = w.split('-');
+      const [r, c] = rc.split(',').map(Number);
+      const isDoor = this.doors.has(w);
+      let wx, wz, ww, wd;
+      if (dir === 'N') { wx=c+0.5; wz=r; ww=1; wd=wallT; }
+      else { wx=c; wz=r+0.5; ww=wallT; wd=1; } // 'W'
+      const geo = new THREE.BoxGeometry(ww, wallH, wd);
+      const mat = new THREE.MeshStandardMaterial({ color: isDoor ? 0x8B7355 : 0x4a3028, roughness: 0.5, metalness: 0.02 });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(wx, wallH/2, wz);
+      mesh.castShadow = true; mesh.receiveShadow = true;
+      this.wallGroup.add(mesh);
     }
 
-    // Player block — at bottom-center
-    const bx=this.x, by=H*0.75;
-    const bw=70*(this.blockSize/100)*this.blockScale;
-    const bh=90*(this.blockSize/100)*this.blockScale;
-    const sx=bx+(Math.random()-.5)*this.shakeAmount;
-    const sy=by+(Math.random()-.5)*this.shakeAmount;
-
-    // Glow when powered up
-    if(this.boostActive||this.shieldActive){
-      ctx.shadowColor=this.boostActive?'#fbbf24':'#60a5fa';
-      ctx.shadowBlur=20+Math.sin(this.glowPulse*3)*10;
+    // Furniture — realistic shapes
+    for (const f of this.furniture) {
+      const ci = this.catalog.find(it => it.name === f.type);
+      if (!ci) continue;
+      const group = this.createFurnitureMesh(ci);
+      let baseY = 0.04;
+      // Lamp sits on top of table
+      if (f.type === 'Lamp') {
+        const under = this.furniture.find(x => x.type === 'Table' && x.r === f.r && x.c === f.c);
+        if (under) baseY = 0.27;
+      }
+      group.position.set(f.c+ci.w/2, baseY, f.r+ci.h/2);
+      group.traverse(ch => { if (ch.isMesh) { ch.castShadow = true; ch.receiveShadow = true; } });
+      this.furnGroup.add(group);
     }
+  },
 
-    // Shadow
-    ctx.fillStyle='rgba(0,0,0,0.4)';
-    ctx.fillRect(sx-bw/2+4,sy-bh/2+4,bw,bh);
+  // ══════════ SAVE / LOAD ══════════
+  saveProject(name) {
+    const data = {
+      name,
+      rows: this.rows, cols: this.cols,
+      walls: [...this.walls],
+      floors: [...this.floors],
+      doors: [...this.doors],
+      furniture: this.furniture.map(f => ({type: f.type, r: f.r, c: f.c})),
+    };
+    let projects = JSON.parse(localStorage.getItem('hb_projects') || '[]');
+    const idx = projects.findIndex(p => p.name === name);
+    if (idx >= 0) projects[idx] = data; else projects.push(data);
+    localStorage.setItem('hb_projects', JSON.stringify(projects));
+    this.toast('Saved: ' + name);
+  },
 
-    // Block — rich wood gradient
-    const wg=ctx.createLinearGradient(sx-bw/2,sy-bh/2,sx+bw/2,sy+bh/2);
-    wg.addColorStop(0,'#8B6914');wg.addColorStop(0.25,'#c4a882');
-    wg.addColorStop(0.5,'#e8d5c0');wg.addColorStop(0.75,'#c4a882');
-    wg.addColorStop(1,'#6B4226');
-    ctx.fillStyle=wg;ctx.fillRect(sx-bw/2,sy-bh/2,bw,bh);
+  savePrompt() {
+    const name = prompt('Project name:', this.levelData?.title || 'My House');
+    if (name && name.trim()) this.saveProject(name.trim());
+  },
 
-    // Wood grain
-    ctx.strokeStyle='rgba(80,50,20,0.25)';
-    for(let gy=sy-bh/2+6;gy<sy+bh/2;gy+=7){
-      ctx.beginPath();ctx.moveTo(sx-bw/2+3,gy);
-      ctx.quadraticCurveTo(sx-bw/2+bw*.25,gy+2,sx-bw/2+bw*.55,gy-1);
-      ctx.quadraticCurveTo(sx-bw/2+bw*.8,gy+1,sx+bw/2-3,gy);
-      ctx.stroke();
-    }
-    // Outline — bright for visibility
-    ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=3;
-    ctx.strokeRect(sx-bw/2,sy-bh/2,bw,bh);
-    ctx.strokeStyle='rgba(212,165,116,0.8)';ctx.lineWidth=1.5;
-    ctx.strokeRect(sx-bw/2+1,sy-bh/2+1,bw-2,bh-2);
+  startNew() {
+    document.getElementById('hb-project-overlay').classList.remove('show');
+    // Switch to play screen directly
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    var ps = document.getElementById('play-screen');
+    ps.classList.add('active', 'game-mode');
+    document.getElementById('back-btn').classList.add('show');
+    var phase = window.GAME.phases.find(p => p.id === 3);
+    setTimeout(() => { window.initPhase3(phase, phase.levels[0]); }, 100);
+  },
 
-    ctx.shadowBlur=0;
+  loadProject(data) {
+    // Stop current game cleanly
+    if (this.gameActive) this.stop();
+    // Re-init via standard flow
+    this.init({
+      gridRows: data.rows, gridCols: data.cols,
+      requiredItems: [], minRooms: 0, num: 1, title: data.name
+    });
+    // Override with saved data
+    this.walls = new Set(data.walls);
+    this.floors = new Set(data.floors);
+    this.doors = new Set(data.doors);
+    this.furniture = data.furniture.map(f => ({type: f.type, r: f.r, c: f.c}));
+    this.requiredItems = [];
+    this.winShown = false;
+    this.rebuildScene();
+    this.buildCatalog();
+    this.updateUI(); this.updateStatus(); this.buildReqPanel();
+  },
 
-    // Size label
-    ctx.fillStyle='rgba(0,0,0,0.7)';ctx.font='bold 11px "Share Tech Mono", monospace';ctx.textAlign='center';
-    ctx.fillText(Math.round(this.blockSize)+'%',sx,sy+5);
+  init3D() {
+    const vp = document.getElementById('ts-viewport');
+    const W = vp.clientWidth, H = vp.clientHeight;
+    if (this.renderer) { this.renderer.dispose(); }
+    if (this.scene) { this.scene.traverse(obj => { if(obj.geometry)obj.geometry.dispose(); if(obj.material){if(Array.isArray(obj.material))obj.material.forEach(m=>m.dispose());else obj.material.dispose();} }); }
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color('#1a1c1a');
+    this.scene.fog = new THREE.Fog('#1a1c1a', 10, 45);
+    this.camera = new THREE.PerspectiveCamera(50, W/H||1, 0.5, 80);
+    this.camTarget = new THREE.Vector3(this.cols/2, 0, this.rows/2);
+    this.camDist = Math.max(8, Math.max(this.cols, this.rows) * 0.7);
+    this.camAngle = -0.6; this.camElev = 1.05;
+    this.updateCamera();
+    const canvas = document.getElementById('ts-canvas');
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    this.renderer.setSize(W, H);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.shadowMap.enabled = true;
+    this.scene.add(new THREE.AmbientLight(0x8899aa, 0.5));
+    const sun = new THREE.DirectionalLight(0xfff5e8, 1.4);
+    sun.position.set(12, 18, 6); sun.castShadow = true;
+    sun.shadow.mapSize.set(2048,2048);
+    sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 60;
+    sun.shadow.camera.left = -20; sun.shadow.camera.right = 20;
+    sun.shadow.camera.top = 20; sun.shadow.camera.bottom = -20;
+    this.scene.add(sun);
+    const fill2 = new THREE.DirectionalLight(0xaaccff, 0.25); fill2.position.set(-6,4,-4); this.scene.add(fill2);
+    this.scene.add(new THREE.HemisphereLight(0x87ceeb, 0x4a8c2a, 0.3));
+    const gs = Math.max(this.cols, this.rows) + 8;
+    const gnd = new THREE.Mesh(new THREE.PlaneGeometry(gs,gs), new THREE.MeshStandardMaterial({color:0x4a8c2a,roughness:0.85,metalness:0}));
+    gnd.rotation.x = -Math.PI/2; gnd.position.set(this.cols/2,-0.08,this.rows/2); gnd.receiveShadow = true; this.scene.add(gnd);
+    this.groundPlane = new THREE.Mesh(new THREE.PlaneGeometry(gs,gs), new THREE.MeshBasicMaterial({visible:false}));
+    this.groundPlane.rotation.x = -Math.PI/2; this.groundPlane.position.copy(gnd.position); this.scene.add(this.groundPlane);
+    this.gridGroup = new THREE.Group(); this.scene.add(this.gridGroup);
+    const gm = new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.1});
+    for(let r=0;r<=this.rows;r++) this.gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0.001,r),new THREE.Vector3(this.cols,0.001,r)]),gm));
+    for(let c=0;c<=this.cols;c++) this.gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(c,0.001,0),new THREE.Vector3(c,0.001,this.rows)]),gm));
+    this.floorGroup = new THREE.Group(); this.scene.add(this.floorGroup);
+    this.wallGroup = new THREE.Group(); this.scene.add(this.wallGroup);
+    this.furnGroup = new THREE.Group(); this.scene.add(this.furnGroup);
+    const hGeo = new THREE.BoxGeometry(0.94,0.02,0.94);
+    this.hoverMesh = new THREE.Mesh(hGeo, new THREE.MeshBasicMaterial({color:0x4ade80,transparent:true,opacity:0.5,depthTest:false}));
+    this.hoverMesh.renderOrder = 999; this.hoverMesh.visible = false; this.scene.add(this.hoverMesh);
+    this.hoverEdgeMesh = new THREE.Mesh(new THREE.BoxGeometry(1,0.04,0.06), new THREE.MeshBasicMaterial({color:0x4ade80,transparent:true,opacity:0.6,depthTest:false}));
+    this.hoverEdgeMesh.renderOrder = 998; this.hoverEdgeMesh.visible = false; this.scene.add(this.hoverEdgeMesh);
+    this.raycaster = new THREE.Raycaster(); this.mouse = new THREE.Vector2();
+  },
 
-    // Particles & floats
-    for(const p of this.particles){ctx.globalAlpha=1-p.age/p.life;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();}
-    ctx.globalAlpha=1;
-    for(const f of this.floats){
-      const a=1-f.age/f.life;
-      ctx.fillStyle=f.text.startsWith('-')?`rgba(248,113,113,${a})`:f.text.includes('x')?`rgba(74,222,128,${a})`:`rgba(212,165,116,${a})`;
-      ctx.font='bold 14px "Orbitron", sans-serif';ctx.textAlign='center';
-      ctx.fillText(f.text,f.x,f.y);
-    }
+  createFurnitureMesh(item) {
+    const g = new THREE.Group();
+    const S = (c, r) => new THREE.MeshStandardMaterial({ color: c, roughness: r || 0.5, metalness: 0.03 });
+    const box = (w, h, d, mat) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); g.add(m); return m; };
+    const cyl = (rTop, rBot, h, mat) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(rTop, rBot, h, 12), mat); g.add(m); return m; };
+    const sphere = (r, mat) => { const m = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), mat); g.add(m); return m; };
 
-    // Progress bar
-    const prog=Math.min(1,this.points/this.goalPoints);
-    const barH=6,barW=W*0.75,barX=(W-barW)/2,barY=H-barH-8;
-    ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(barX,barY,barW,barH);
-    const pGrad=ctx.createLinearGradient(barX,0,barX+barW,0);
-    pGrad.addColorStop(0,'#8B6914');pGrad.addColorStop(0.5,'#d4a574');pGrad.addColorStop(1,'#4ade80');
-    ctx.fillStyle=pGrad;ctx.fillRect(barX,barY,barW*prog,barH);
-    for(const m of this.milestones){
-      if(!m)continue;
-      const mx=barX+(m/this.goalDist)*barW;
-      if(mx>barX&&mx<barX+barW){
-        ctx.fillStyle='#fff';ctx.fillRect(mx-1,barY-3,2,barH+6);
+    const W = item.w, D = item.h; // w=width in X, h=depth in Z
+    const hw = W/2, hd = D/2;     // half-width, half-depth for bounds
+
+    switch(item.name) {
+      case 'Bed': {
+        const b = box(W*0.88, 0.12, D*0.85, S(item.color, 0.6)); b.position.set(0, 0.1, 0);
+        box(W*0.88, 0.22, 0.06, S(0x5c3a21, 0.5)).position.set(0, 0.18, -hd*0.8);
+        box(W*0.6, 0.05, D*0.28, S(0xf5f5f0, 0.7)).position.set(0, 0.16, -hd*0.5);
+        break;
+      }
+      case 'Table': {
+        const top = box(W*0.9, 0.05, D*0.9, S(item.color, 0.4)); top.position.set(0, 0.22, 0);
+        const legM = S(0x3d2b1f, 0.5);
+        [[-0.38,-0.38],[0.38,-0.38],[-0.38,0.38],[0.38,0.38]].forEach(([x,z]) => {
+          cyl(0.035, 0.035, 0.2, legM).position.set(x, 0.1, z);
+        });
+        break;
+      }
+      case 'Chair': {
+        box(W*0.7, 0.05, D*0.7, S(item.color, 0.5)).position.set(0, 0.16, 0);
+        box(W*0.7, 0.18, 0.04, S(item.color, 0.5)).position.set(0, 0.25, -hd*0.64);
+        const legM = S(0x3d2b1f, 0.5);
+        [[-0.28,-0.28],[0.28,-0.28],[-0.28,0.28],[0.28,0.28]].forEach(([x,z]) => {
+          cyl(0.025, 0.025, 0.14, legM).position.set(x, 0.07, z);
+        });
+        break;
+      }
+      case 'Sofa': {
+        box(W*0.9, 0.1, D*0.55, S(item.color, 0.6)).position.set(0, 0.1, 0);
+        box(W*0.9, 0.22, 0.08, S(item.color, 0.55)).position.set(0, 0.25, -hd*0.56);
+        box(0.1, 0.18, D*0.5, S(item.color, 0.55)).position.set(-hw*0.8, 0.15, 0);
+        box(0.1, 0.18, D*0.5, S(item.color, 0.55)).position.set(hw*0.8, 0.15, 0);
+        break;
+      }
+      case 'TV': {
+        box(W*0.5, D*0.6, 0.04, S(0x1a1a1a, 0.3)).position.set(0, D*0.38, 0);
+        box(W*0.3, 0.12, D*0.3, S(0x333, 0.4)).position.set(0, 0.06, 0);
+        break;
+      }
+      case 'Bookshelf': {
+        const bs = box(W*0.8, D*0.7, 0.25, S(item.color, 0.5)); bs.position.set(0, D*0.35, 0);
+        for (let i = 1; i <= 3; i++) {
+          box(W*0.75, 0.015, 0.22, S(0x5c3a21, 0.5)).position.set(0, D*0.17*i, 0);
+        }
+        break;
+      }
+      case 'Fridge': {
+        box(W*0.75, D*0.72, 0.6, S(0xe8e8e8, 0.3)).position.set(0, D*0.36, 0.05);
+        box(0.03, 0.25, 0.02, S(0x888, 0.4)).position.set(hw*0.64, D*0.32, 0.3);
+        break;
+      }
+      case 'Stove': {
+        box(W*0.8, D*0.22, 0.55, S(0x3a3a3a, 0.3)).position.set(0, D*0.11, 0);
+        const burner = S(0x222, 0.4);
+        [[-0.2,-0.15],[0.2,-0.15],[-0.2,0.15],[0.2,0.15]].forEach(([x,z]) => {
+          const c = cyl(0.08, 0.08, 0.01, burner);
+          c.position.set(x, D*0.22, z);
+          c.rotation.x = Math.PI/2;
+        });
+        break;
+      }
+      case 'Sink': {
+        box(W*0.8, D*0.22, 0.55, S(0xd4d4d4, 0.3)).position.set(0, D*0.11, 0);
+        box(W*0.55, 0.015, 0.35, S(0x7ba7cc, 0.2)).position.set(0, D*0.22, 0);
+        break;
+      }
+      case 'Toilet': {
+        box(0.25, 0.2, 0.2, S(0xfafaf5, 0.4)).position.set(0, 0.2, 0.1);
+        box(0.25, 0.22, 0.15, S(0xfafaf5, 0.4)).position.set(0, 0.3, -0.05);
+        box(0.22, 0.04, 0.25, S(0xfafaf5, 0.4)).position.set(0, 0.05, 0.05);
+        cyl(0.1, 0.08, 0.15, S(0xf0f0e8, 0.4)).position.set(0, 0.22, -0.12);
+        break;
+      }
+      case 'Bathtub': {
+        const tub = box(W*0.8, 0.22, D*0.5, S(item.color, 0.3)); tub.position.set(0, 0.18, 0);
+        box(W*0.65, 0.02, D*0.4, S(0x7ba7cc, 0.2)).position.set(0, 0.28, 0);
+        break;
+      }
+      case 'Lamp': {
+        // Table lamp — wide base, thin stem, conical shade
+        cyl(0.1, 0.12, 0.04, S(0x444, 0.4)).position.set(0, 0.02, 0);
+        cyl(0.02, 0.025, 0.1, S(0x666, 0.5)).position.set(0, 0.08, 0);
+        const shadeGeo = new THREE.CylinderGeometry(0.14, 0.06, 0.08, 16);
+        const shade = new THREE.Mesh(shadeGeo, S(0xfff8dc, 0.3));
+        shade.position.set(0, 0.16, 0); g.add(shade);
+        break;
+      }
+      case 'Plant': {
+        cyl(0.1, 0.08, 0.15, S(0x8B4513, 0.6)).position.set(0, 0.08, 0);
+        sphere(0.15, S(0x2d8a2d, 0.7)).position.set(0, 0.2, 0);
+        sphere(0.1, S(0x3aa63a, 0.7)).position.set(0.08, 0.17, 0.05);
+        break;
+      }
+      case 'Rug': {
+        const rug = box(W*0.95, 0.015, D*0.95, S(item.color, 0.8, 0));
+        rug.position.set(0, 0.01, 0);
+        break;
+      }
+      case 'Desk': {
+        box(W*0.92, 0.05, D*0.55, S(item.color, 0.4)).position.set(0, 0.22, 0.05);
+        const legM = S(0x3d2b1f, 0.5);
+        [[-hw*0.84,-0.2],[hw*0.84,-0.2],[-hw*0.84,0.25],[hw*0.84,0.25]].forEach(([x,z]) => {
+          cyl(0.035, 0.035, 0.2, legM).position.set(x, 0.1, z);
+        });
+        break;
+      }
+      case 'Mirror': {
+        box(W*0.15, D*0.55, 0.04, S(0xc8d8e8, 0.2)).position.set(0, D*0.3, 0);
+        box(W*0.18, D*0.58, 0.03, S(0x5c3a21, 0.5)).position.set(0, D*0.3, -0.02);
+        break;
+      }
+      default: {
+        box(W*0.85, 0.15, D*0.85, S(item.color, 0.5)).position.set(0, 0.1, 0);
       }
     }
-    ctx.fillStyle='#fff';ctx.font='8px "Share Tech Mono", monospace';ctx.textAlign='center';
-    ctx.fillText(Math.round(prog*100)+'%',W/2,barY-3);
+    return g;
+  },
 
-    // Finish banner
-    if(this.distance>this.goalDist-60){
-      const fy=Math.max(20,H*0.08+(this.goalDist-this.distance)*1.5);
-      ctx.fillStyle='rgba(212,165,116,0.15)';ctx.fillRect(0,fy,W,28);
-      ctx.fillStyle='#fbbf24';ctx.font='bold 13px "Orbitron", sans-serif';
-      ctx.fillText('🏁 FINISH LINE',W/2,fy+20);
+  // ══════════ MOUSE ══════════
+  worldFromMouse(e) {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.mouse.x = ((e.clientX-rect.left)/rect.width)*2-1;
+    this.mouse.y = -((e.clientY-rect.top)/rect.height)*2+1;
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const hits = this.raycaster.intersectObject(this.groundPlane);
+    if (hits.length === 0) return null;
+    return hits[0].point; // {x, y, z}
+  },
+
+  gridFromPoint(pt) {
+    if (!pt) return { r: -1, c: -1, edge: null };
+    const c = Math.floor(pt.x);
+    const r = Math.floor(pt.z);
+    if (r<0||r>=this.rows||c<0||c>=this.cols) return {r:-1,c:-1,edge:null};
+    const cx = pt.x-c, cz = pt.z-r, t = 0.18;
+    let edge = null;
+    if (cz < t) edge = [r,c,'N'];
+    else if (cz > 1-t) edge = [r,c,'S'];
+    else if (cx < t) edge = [r,c,'W'];
+    else if (cx > 1-t) edge = [r,c,'E'];
+    return {r, c, edge};
+  },
+
+  findFurnitureAt(r, c) {
+    for (const f of this.furniture) {
+      const ci = this.catalog.find(it => it.name === f.type);
+      if (ci && r >= f.r && r < f.r + ci.h && c >= f.c && c < f.c + ci.w) return f;
+    }
+    return null;
+  },
+
+  handleMouseMove(e) {
+    if (this.isDragging) {
+      const dx = e.clientX-this.lastMX, dy = e.clientY-this.lastMY;
+      if (this.dragButton === 2) { // right drag = orbit
+        this.camAngle -= dx*0.005;
+        this.camElev = Math.max(0.2, Math.min(1.4, this.camElev + dy*0.005));
+      } else if (this.dragButton === 1) { // left drag when not building
+        if (this.mode !== 'build') {
+          this.camAngle -= dx*0.005;
+          this.camElev = Math.max(0.2, Math.min(1.4, this.camElev + dy*0.005));
+        }
+      }
+      this.lastMX = e.clientX; this.lastMY = e.clientY;
+      this.updateCamera();
+      return;
+    }
+
+    const pt = this.worldFromMouse(e);
+    const g = this.gridFromPoint(pt);
+    this.hoverR = g.r; this.hoverC = g.c; this.hoverEdge = g.edge;
+
+    // Update hover meshes
+    if (g.r >= 0) {
+      if (this.mode === 'build') {
+        if ((this.buildTool==='wall'||this.buildTool==='door'||this.buildTool==='erase') && g.edge) {
+          let [r,c,dir] = g.edge;
+          this.hoverMesh.visible = false;
+          this.hoverEdgeMesh.visible = true;
+          if (dir==='N') { this.hoverEdgeMesh.position.set(c+0.5, 0.03, r); this.hoverEdgeMesh.scale.set(1,1,1); }
+          else if (dir==='S') { this.hoverEdgeMesh.position.set(c+0.5, 0.03, r+1); this.hoverEdgeMesh.scale.set(1,1,1); }
+          else if (dir==='W') { this.hoverEdgeMesh.position.set(c, 0.03, r+0.5); this.hoverEdgeMesh.scale.set(1,1,1); }
+          else { this.hoverEdgeMesh.position.set(c+1, 0.03, r+0.5); this.hoverEdgeMesh.scale.set(1,1,1); }
+          // Check if wall exists (normalized)
+          let nk = r+','+c+'-'+dir;
+          if (dir==='S') nk = (r+1)+','+c+'-N';
+          else if (dir==='E') nk = r+','+(c+1)+'-W';
+          const isWall = this.walls.has(nk);
+          if (this.buildTool === 'erase') {
+            this.hoverEdgeMesh.material.color.set(isWall ? 0xf87171 : 0x555555);
+            if (!isWall) this.hoverEdgeMesh.visible = false;
+          } else {
+            this.hoverEdgeMesh.material.color.set(isWall ? 0xf87171 : 0x4ade80);
+          }
+        } else if (this.buildTool === 'erase') {
+          this.hoverEdgeMesh.visible = false;
+          const hasFurn = this.findFurnitureAt(g.r, g.c);
+          const hasFloor = this.floors.has(g.r+','+g.c);
+          if (hasFurn || hasFloor) {
+            this.hoverMesh.visible = true;
+            this.hoverMesh.position.set(g.c+0.5, 0.03, g.r+0.5);
+            this.hoverMesh.scale.set(1,1,1);
+            this.hoverMesh.material.color.set(0xf87171);
+          } else {
+            this.hoverMesh.visible = false;
+          }
+        } else {
+          this.hoverEdgeMesh.visible = false;
+          this.hoverMesh.visible = true;
+          this.hoverMesh.position.set(g.c+0.5, 0.03, g.r+0.5);
+          const isErase = this.buildTool==='erase';
+          this.hoverMesh.material.color.set(isErase ? 0xf87171 : 0x4ade80);
+        }
+      } else if (this.mode === 'furnish' && this.selectedItem) {
+        this.hoverEdgeMesh.visible = false;
+        const ci = this.catalog.find(it=>it.name===this.selectedItem);
+        this.hoverMesh.visible = true;
+        this.hoverMesh.position.set(g.c+ci.w/2, 0.03, g.r+ci.h/2);
+        this.hoverMesh.scale.set(ci.w*0.94, 1, ci.h*0.94);
+        this.hoverMesh.material.color.set(0x60a5fa);
+      }
+    } else {
+      this.hoverMesh.visible = false;
+      this.hoverEdgeMesh.visible = false;
     }
   },
 
-  // ═══ HUD ═══
-  renderHUD() {
-    document.getElementById('ts-combo').textContent='x'+this.combo;
-    document.getElementById('ts-combo').style.color=this.combo>=5?'#4ade80':this.combo>=3?'#fbbf24':'#d4a574';
-    document.getElementById('ts-size').textContent='🟫 '+Math.round(this.blockSize)+'%';
-    document.getElementById('ts-size').style.color=this.blockSize<40?'#f87171':this.blockSize<70?'#fbbf24':'#4ade80';
-    document.getElementById('ts-coins').textContent='⭐ '+this.points+'/'+this.goalPoints;
-    document.getElementById('ts-dist').textContent='🪙 '+this.coins;
+  handleMouseDown(e) {
+    if (e.button === 2) { // right click = orbit
+      this.isDragging = true; this.dragButton = 2;
+      this.lastMX = e.clientX; this.lastMY = e.clientY;
+      return;
+    }
+    if (e.button === 1) { // middle click
+      this.isDragging = true; this.dragButton = 1;
+      this.lastMX = e.clientX; this.lastMY = e.clientY;
+      return;
+    }
+    // left click in non-build modes = orbit
+    if (e.button === 0 && this.mode !== 'build' && this.mode !== 'furnish') {
+      this.isDragging = true; this.dragButton = 1;
+      this.lastMX = e.clientX; this.lastMY = e.clientY;
+      return;
+    }
+    // Update mouse position from click event before handling
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    this.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    this.handleClick();
   },
 
-  toast(msg,type){
-    const el=document.getElementById('ts-toast');
-    el.textContent=msg;el.className='ts-toast show '+(type||'good');
-    clearTimeout(this._tt);this._tt=setTimeout(()=>el.classList.remove('show'),1200);
+  handleClick() {
+    if (!this.gameActive || this.winShown) return;
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const hits = this.raycaster.intersectObject(this.groundPlane);
+    if (hits.length === 0) return;
+    const g = this.gridFromPoint(hits[0].point);
+    if (g.r < 0) return;
+
+    if (this.mode === 'build') {
+      if (this.buildTool === 'wall' && g.edge) {
+        let r=g.edge[0],c=g.edge[1],d=g.edge[2];
+        if (d==='S'){r++;d='N';} else if(d==='E'){c++;d='W';}
+        const key = r+','+c+'-'+d;
+        if (this.walls.has(key)) { this.walls.delete(key); this.doors.delete(key); }
+        else this.walls.add(key);
+      } else if (this.buildTool === 'door' && g.edge) {
+        let r=g.edge[0],c=g.edge[1],d=g.edge[2];
+        if (d==='S'){r++;d='N';} else if(d==='E'){c++;d='W';}
+        const key = r+','+c+'-'+d;
+        if (this.walls.has(key)) {
+          if (this.doors.has(key)) this.doors.delete(key); else this.doors.add(key);
+        }
+      } else if (this.buildTool === 'floor') {
+        const key = g.r+','+g.c;
+        if (this.floors.has(key)) this.floors.delete(key); else this.floors.add(key);
+      } else if (this.buildTool === 'erase') {
+        if (g.edge) {
+          // Erase just this wall
+          let r=g.edge[0],c=g.edge[1],d=g.edge[2];
+          if (d==='S'){r++;d='N';} else if(d==='E'){c++;d='W';}
+          const key = r+','+c+'-'+d;
+          this.walls.delete(key); this.doors.delete(key);
+        } else {
+          // Erase furniture at this cell, or floor if no furniture
+          const hit = this.findFurnitureAt(g.r, g.c);
+          if (hit) {
+            this.furniture = this.furniture.filter(f => f !== hit);
+          } else {
+            this.floors.delete(g.r+','+g.c);
+          }
+        }
+      }
+      this.rebuildScene();
+      window.playPop();
+      this.checkWin(); this.updateStatus(); this.buildReqPanel();
+    } else if (this.mode === 'furnish' && this.selectedItem) {
+      const ci = this.catalog.find(it => it.name === this.selectedItem);
+      if (!ci) return;
+      let can = true;
+      // Lamp must be placed on a table
+      if (this.selectedItem === 'Lamp') {
+        const under = this.findFurnitureAt(g.r, g.c);
+        if (!under || under.type !== 'Table') { this.toast('Place on a table!'); return; }
+      }
+      for (let dr=0; dr<ci.h&&can; dr++) {
+        for (let dc=0; dc<ci.w&&can; dc++) {
+          const cr=g.r+dr, cc=g.c+dc;
+          if (cr>=this.rows||cc>=this.cols||!this.floors.has(cr+','+cc)) can=false;
+          for (const f of this.furniture) {
+            if (this.selectedItem === 'Lamp' && f.type === 'Table' && f.r === g.r && f.c === g.c) continue;
+            const fi = this.catalog.find(it=>it.name===f.type);
+            if (fi && cr>=f.r && cr<f.r+fi.h && cc>=f.c && cc<f.c+fi.w) can=false;
+          }
+        }
+      }
+      if (can) {
+        this.furniture.push({type:this.selectedItem, r:g.r, c:g.c});
+        this.toast('Placed '+this.selectedItem+'!');
+        this.rebuildScene();
+        window.playPop();
+        this.checkWin(); this.updateStatus(); this.buildReqPanel();
+      } else { this.toast('Cannot place there!'); }
+    }
   },
 
-  goBack(){
-    this.stop();window.showScreen('phase-select');
+  // Mouse up — end drag
+  _onMouseUp(e) {
+    this.isDragging = false;
   },
+
+  // ══════════ KEYBOARD ══════════
+  handleKey(e) {
+    if (!this.gameActive || this.winShown) return;
+    if (e.key==='1') this.setMode('build');
+    if (e.key==='2') this.setMode('furnish');
+    if (e.key==='3') this.setMode('walk');
+    if (this.mode==='build') {
+      if (e.key==='q'||e.key==='Q') this.setBuildTool('wall');
+      if (e.key==='w'||e.key==='W') this.setBuildTool('floor');
+      if (e.key==='e'||e.key==='E') this.setBuildTool('door');
+      if (e.key==='r'||e.key==='R') this.setBuildTool('erase');
+    }
+    if (this.mode==='walk') {
+      let nr=this.playerR, nc=this.playerC;
+      if (e.key==='w'||e.key==='ArrowUp') nr--;
+      if (e.key==='s'||e.key==='ArrowDown') nr++;
+      if (e.key==='a'||e.key==='ArrowLeft') nc--;
+      if (e.key==='d'||e.key==='ArrowRight') nc++;
+      if (nr>=0&&nr<this.rows&&nc>=0&&nc<this.cols) {
+        let blocked=false;
+        if (nr<this.playerR) blocked=this.walls.has(this.playerR+','+this.playerC+'-N')&&!this.doors.has(this.playerR+','+this.playerC+'-N');
+        if (nr>this.playerR) blocked=this.walls.has(this.playerR+','+this.playerC+'-S')&&!this.doors.has(this.playerR+','+this.playerC+'-S');
+        if (nc<this.playerC) blocked=this.walls.has(this.playerR+','+this.playerC+'-W')&&!this.doors.has(this.playerR+','+this.playerC+'-W');
+        if (nc>this.playerC) blocked=this.walls.has(this.playerR+','+this.playerC+'-E')&&!this.doors.has(this.playerR+','+this.playerC+'-E');
+        if (!blocked&&this.floors.has(nr+','+nc)) { this.playerR=nr; this.playerC=nc; }
+      }
+    }
+    e.preventDefault();
+  },
+
+  setMode(m) {
+    this.mode=m; this.selectedItem=null;
+    document.querySelectorAll('.hb-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+    document.getElementById('hb-tools').style.display=m==='build'?'flex':'none';
+    document.getElementById('hb-catalog').classList.toggle('show',m==='furnish');
+    if (m==='walk') { this.hoverMesh.visible=false; this.hoverEdgeMesh.visible=false; }
+    this.updateUI(); this.updateStatus();
+  },
+
+  setBuildTool(t) {
+    this.buildTool=t;
+    document.querySelectorAll('.hb-tool-btn').forEach(b=>b.classList.toggle('active',b.dataset.tool===t));
+    this.updateStatus();
+  },
+
+  buildCatalog() {
+    const c=document.getElementById('hb-cat-items');
+    c.innerHTML=this.catalog.map(item=>
+      '<div class="hb-cat-item" data-item="'+item.name+'" onclick="HB.selectFurniture(\x27'+item.name+'\x27)">'+
+      '<span class="hb-cat-icon">'+item.icon+'</span>'+
+      '<span class="hb-cat-name">'+item.name+'</span>'+
+      '<\/div>'
+    ).join('');
+  },
+
+  selectFurniture(name) {
+    this.selectedItem=name;
+    document.querySelectorAll('.hb-cat-item').forEach(el=>el.classList.toggle('selected',el.dataset.item===name));
+  },
+
+  buildReqPanel() {
+    const el=document.getElementById('hb-req-list');
+    if (!el) return;
+    if (!this.requiredItems.length) {
+      el.innerHTML = '<div style="color:#4ade80;text-align:center;padding:8px;font-size:11px;">🏗️ Free Build<br><span style="color:#6b7280;font-size:9px;">No requirements</span><\/div>';
+      return;
+    }
+    // Count placed per type
+    const placed={}; for (const f of this.furniture) placed[f.type]=(placed[f.type]||0)+1;
+    const needed={}; for (const n of this.requiredItems) needed[n]=(needed[n]||0)+1;
+    const allTypes=[...new Set(this.requiredItems)];
+    el.innerHTML=allTypes.map(name=>{
+      const p=placed[name]||0, n=needed[name]||0;
+      const done=p>=n;
+      const ci=this.catalog.find(it=>it.name===name);
+      const icon=ci?ci.icon:'📦';
+      return '<div class="hb-req-item'+(done?' done':'')+'">'+
+        '<span class="hb-req-icon">'+icon+'</span>'+
+        '<span class="hb-req-name">'+name+'</span>'+
+        (n>1?'<span class="hb-req-count">'+p+'/'+n+'</span>':'')+
+        (done?' \u2705':'')+
+      '<\/div>';
+    }).join('');
+  },
+
+  updateUI() {
+    document.querySelectorAll('.hb-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===this.mode));
+    document.getElementById('hb-tools').style.display=this.mode==='build'?'flex':'none';
+    document.querySelectorAll('.hb-tool-btn').forEach(b=>b.classList.toggle('active',b.dataset.tool===this.buildTool));
+    document.getElementById('hb-catalog').classList.toggle('show',this.mode==='furnish');
+  },
+
+  updateStatus() {
+    const el=document.getElementById('hb-status');
+    if (!el) return;
+    if (this.mode==='build') {
+      const tn={wall:'Click grid edges to place walls',floor:'Click cells to toggle floor',door:'Click walls to add doors',erase:'Click to erase'};
+      el.innerHTML=tn[this.buildTool]||'';
+    } else if (this.mode==='furnish') {
+      const p=this.furniture.length, n=this.requiredItems.length;
+      el.innerHTML='<span class="hb-done">'+p+'</span> / '+n+' items placed \u2014 select from catalog';
+    } else {
+      el.innerHTML='WASD to walk \u2022 Right-drag to orbit \u2022 Scroll to zoom \u2022 1/2/3 modes';
+    }
+  },
+
+  toast(msg) {
+    const el=document.getElementById('hb-toast');
+    if (!el) return;
+    el.textContent=msg; el.classList.add('show');
+    clearTimeout(this._tt); this._tt=setTimeout(()=>el.classList.remove('show'),1500);
+  },
+
+  // ══════════ WIN ══════════
+  checkWin() {
+    if (this.winShown || !this.requiredItems.length) return;
+    const rem=[...this.requiredItems];
+    for (const f of this.furniture) { const idx=rem.indexOf(f.type); if (idx!==-1) rem.splice(idx,1); }
+    let meets=rem.length===0;
+    if (meets && this.levelData.minRooms) {
+      const rooms=this.findRooms();
+      if (rooms.length < this.levelData.minRooms) meets=false;
+    }
+    if (meets) {
+      this.winShown=true;
+      document.getElementById('hb-win-sub').textContent='Level '+this.levelData.num+' \u2014 '+this.levelData.title+' complete!';
+      document.getElementById('hb-win').classList.add('show');
+      document.getElementById('hb-status').innerHTML='<span class="hb-done">🏠 House Complete!</span>';
+    }
+  },
+
+  findRooms() {
+    const visited=new Set(), rooms=[];
+    for (let r=0; r<this.rows; r++) {
+      for (let c=0; c<this.cols; c++) {
+        const key=r+','+c;
+        if (!this.floors.has(key)||visited.has(key)) continue;
+        const region=[], queue=[[r,c]];
+        visited.add(key);
+        let enclosed=true;
+        while (queue.length) {
+          const [cr,cc]=queue.shift();
+          region.push([cr,cc]);
+          // North
+          if (cr===0) {
+            if (!this.walls.has(cr+','+cc+'-N')||this.doors.has(cr+','+cc+'-N')) enclosed=false;
+          } else {
+            const nr=cr-1,nc=cc;
+            if (this.floors.has(nr+','+nc)) {
+              const wk=cr+','+cc+'-N';
+              if (!this.walls.has(wk)||this.doors.has(wk)) {
+                if (!visited.has(nr+','+nc)){visited.add(nr+','+nc);queue.push([nr,nc]);}
+              }
+            }
+          }
+          // South
+          if (cr===this.rows-1) {
+            if (!this.walls.has((cr+1)+','+cc+'-N')||this.doors.has((cr+1)+','+cc+'-N')) enclosed=false;
+          } else {
+            const nr=cr+1,nc=cc;
+            if (this.floors.has(nr+','+nc)) {
+              const wk=(cr+1)+','+cc+'-N';
+              if (!this.walls.has(wk)||this.doors.has(wk)) {
+                if (!visited.has(nr+','+nc)){visited.add(nr+','+nc);queue.push([nr,nc]);}
+              }
+            }
+          }
+          // West
+          if (cc===0) {
+            if (!this.walls.has(cr+','+cc+'-W')||this.doors.has(cr+','+cc+'-W')) enclosed=false;
+          } else {
+            const nr=cr,nc=cc-1;
+            if (this.floors.has(nr+','+nc)) {
+              const wk=cr+','+cc+'-W';
+              if (!this.walls.has(wk)||this.doors.has(wk)) {
+                if (!visited.has(nr+','+nc)){visited.add(nr+','+nc);queue.push([nr,nc]);}
+              }
+            }
+          }
+          // East
+          if (cc===this.cols-1) {
+            if (!this.walls.has(cr+','+(cc+1)+'-W')||this.doors.has(cr+','+(cc+1)+'-W')) enclosed=false;
+          } else {
+            const nr=cr,nc=cc+1;
+            if (this.floors.has(nr+','+nc)) {
+              const wk=cr+','+(cc+1)+'-W';
+              if (!this.walls.has(wk)||this.doors.has(wk)) {
+                if (!visited.has(nr+','+nc)){visited.add(nr+','+nc);queue.push([nr,nc]);}
+              }
+            }
+          }
+        }
+        if (region.length>=2&&enclosed) rooms.push(region);
+      }
+    }
+    return rooms;
+  },
+
+  goBack(){this.stop();window.openPhase(3);},
   nextLevel(){
     const pid=3,ln=+document.getElementById('play-screen').dataset.levelNum;
     window.completed[pid].add(ln);window.saveState();
     this.stop();
-    const nextLn=ln+1;
-    const phase=window.GAME.phases.find(p=>p.id===pid);
-    if(nextLn<=phase.levels.length){
-      document.getElementById('play-screen').dataset.levelNum=nextLn;
-      window.initPhase3(phase,phase.levels[nextLn-1]);
-    }else{
-      window.openPhase(pid);
-    }
-  },
-  playAgain(){
-    this.stop();
-    const pid=3,ln=+document.getElementById('play-screen').dataset.levelNum;
-    const phase=window.GAME.phases.find(p=>p.id===pid);
-    document.getElementById('play-screen').dataset.levelNum=ln;
-    window.initPhase3(phase,phase.levels[ln-1]);
+    const nl=ln+1,ph=window.GAME.phases.find(p=>p.id===pid);
+    if (nl<=ph.levels.length){
+      document.getElementById('play-screen').dataset.levelNum=nl;
+      window.initPhase3(ph,ph.levels[nl-1]);
+    }else window.openPhase(pid);
   },
 
   stop(){
-    this.gameActive=false;if(this.animId){cancelAnimationFrame(this.animId);this.animId=null;}
-    this.obstacles=[];this.collectibles=[];this.powerups=[];this.particles=[];this.trail=[];
+    this.gameActive=false;
+    if (this.animId){cancelAnimationFrame(this.animId);this.animId=null;}
+    if (this._rh) window.removeEventListener('resize',this._rh);
+    if (this.renderer) {
+      if (this._mh) this.renderer.domElement.removeEventListener('mousedown',this._mh);
+      if (this._mmh) this.renderer.domElement.removeEventListener('mousemove',this._mmh);
+      if (this._wh) this.renderer.domElement.removeEventListener('wheel',this._wh);
+      if (this._th) this.renderer.domElement.removeEventListener('touchstart',this._th);
+      if (this._tmh) this.renderer.domElement.removeEventListener('touchmove',this._tmh);
+    }
+    if (this._kh) window.removeEventListener('keydown',this._kh);
+    clearTimeout(this._tt);
+    // Dispose Three.js
+    if (this.scene) {
+      this.scene.traverse(obj=>{if(obj.geometry)obj.geometry.dispose();if(obj.material){if(Array.isArray(obj.material))obj.material.forEach(m=>m.dispose());else obj.material.dispose();}});
+    }
+    if (this.renderer){this.renderer.dispose();this.renderer=null;}
+    this.scene=null;this.camera=null;
     document.getElementById('ts-viewport').classList.remove('active');
-    document.getElementById('ts-win').classList.remove('show');
-    document.getElementById('ts-lose').classList.remove('show');
+    document.getElementById('hb-win').classList.remove('show');
   },
 };
 
-window.initPhase3=function(p,l){document.getElementById('placeholder-container').style.display='none';document.getElementById('viewport').style.display='none';document.getElementById('viewport3d').style.display='none';document.getElementById('play-screen').classList.add('game-mode');requestAnimationFrame(()=>TS.init(l));};
-window.stopPhase3=function(){if(TS)TS.stop();};
-console.log('Timber Slide v2 — Phase 3 ready');
+// Mouse up handler (global, for orbit drag release)
+window.addEventListener('mouseup', function(e) { if (HB && HB.isDragging) HB.isDragging = false; });
+
+window.initPhase3 = function(p, l) {
+  document.getElementById('placeholder-container').style.display = 'none';
+  document.getElementById('viewport').style.display = 'none';
+  document.getElementById('viewport3d').style.display = 'none';
+  document.getElementById('play-screen').classList.add('game-mode');
+  requestAnimationFrame(() => HB.init(l));
+};
+window.stopPhase3 = function() { if (HB) HB.stop(); };
+console.log('House Builder \u2014 Phase 3 ready');
+
 </script>
 
 
@@ -3465,15 +4059,22 @@ window.showScreen = function(name, arg) {
 window.renderPhaseSelect = function() {
   document.getElementById('phase-cards').innerHTML = window.GAME.phases.map(p => {
     const d = window.completed[p.id].size;
-    return `<div class="phase-card" onclick="window.openPhase(${p.id})"><span class="phase-num">${['','I','II','III'][p.id]}</span><span class="phase-label">Phase ${p.id}</span><div class="phase-name">${p.name}</div><div class="level-count">${d} / ${p.levels.length} complete</div></div>`;
+    const label = p.id === 3 ? 'FREE BUILD' : `Phase ${p.id}`;
+    const extra = p.id === 3 ? '<div class="level-count" style="color:#4ade80;">🏗️ Open Sandbox</div>' : `<div class="level-count">${d} / ${p.levels.length} complete</div>`;
+    return `<div class="phase-card" onclick="window.openPhase(${p.id})"><span class="phase-num">${['','I','II','III'][p.id]}</span><span class="phase-label">${label}</span><div class="phase-name">${p.name}</div>${extra}</div>`;
   }).join('');
 };
 
 window.openPhase = function(pid) {
   window.currentPhase = pid;
   const p = window.GAME.phases.find(x=>x.id===pid);
-  document.getElementById('level-phase-title').textContent = `Phase ${['','I','II','III'][pid]} — ${p.name}`;
-  document.getElementById('level-phase-sub').textContent = `${p.desc}  ·  ${window.completed[pid].size} / ${p.levels.length} complete`;
+  if (pid === 3) {
+    // Phase 3: show project list
+    window.showProjects();
+    return;
+  }
+  document.getElementById('level-phase-title').textContent = `Phase ${['','I','II','III'][pid]} \u2014 ${p.name}`;
+  document.getElementById('level-phase-sub').textContent = `${p.desc}  \u00b7  ${window.completed[pid].size} / ${p.levels.length} complete`;
   window.showScreen('level');
 };
 
@@ -3526,6 +4127,93 @@ window.markComplete = function() {
 };
 
 window.loadState(); window.renderPhaseSelect();
+
+// ── Audio ──
+window.playPop = function() {
+  const a = new Audio('a_pop_sound,_dark_%231-1785417507501.mp3');
+  a.volume = 0.5; a.play().catch(() => {});
+};
+
+window.startMusic = function() {
+  const m = document.getElementById('bg-music');
+  if (m && m.paused) { m.volume = 0.3; m.play().catch(() => {}); }
+};
+
+// Start music on first user interaction
+document.addEventListener('click', function startOnce() {
+  window.startMusic();
+  document.removeEventListener('click', startOnce);
+}, { once: true });
+
+// ── Project list ──
+window.showProjects = function() {
+  const projects = JSON.parse(localStorage.getItem('hb_projects') || '[]');
+  const list = document.getElementById('hb-project-list');
+  if (projects.length === 0) {
+    list.innerHTML = '<div style=\"color:#6b7280;text-align:center;padding:12px;font-size:11px;\">No saved projects yet.<br>Start a new build and click 💾 Save!</div>';
+  } else {
+    list.innerHTML = projects.map(p => {
+      const w = p.walls?.length || 0, f = p.floors?.length || 0, fur = p.furniture?.length || 0;
+      return '<div class=\"hb-project-item\" onclick=\"window.showProjectDetail(\x27' + p.name + '\x27)\">' +
+        '<span class=\"hb-pj-name\">🏠 ' + p.name + '</span>' +
+        '<span class=\"hb-pj-info\">' + p.cols + '\xd7' + p.rows + ' \u2022 ' + w + 'w ' + f + 'f ' + fur + 'i</span>' +
+      '<\/div>';
+    }).join('');
+  }
+  document.getElementById('hb-project-overlay').classList.add('show');
+};
+
+window.showProjectDetail = function(name) {
+  const projects = JSON.parse(localStorage.getItem('hb_projects') || '[]');
+  const p = projects.find(x => x.name === name);
+  if (!p) return;
+  const w = p.walls?.length || 0, f = p.floors?.length || 0, fur = p.furniture?.length || 0;
+  const list = document.getElementById('hb-project-list');
+  list.innerHTML =
+    '<div style=\"text-align:center;padding:8px 0;\">' +
+    '<div style=\"font-size:28px;margin-bottom:4px;\">🏠</div>' +
+    '<div style=\"font-family:Orbitron,sans-serif;font-size:18px;color:#4ade80;margin-bottom:6px;\">' + p.name + '</div>' +
+    '<div style=\"color:#6b7280;font-size:11px;\">' + p.cols + '\xd7' + p.rows + ' grid \u2022 ' + w + ' walls \u2022 ' + f + ' floors \u2022 ' + fur + ' items</div>' +
+    '</div>' +
+    '<div style=\"display:flex;gap:8px;margin-top:12px;\">' +
+    '<button class=\"hb-project-new\" style=\"flex:1;\" onclick=\"window.loadHBProject(\x27' + p.name + '\x27)\">\u270f\ufe0f Edit</button>' +
+    '<button class=\"hb-project-new\" style=\"flex:1;border-color:#f87171;background:rgba(248,113,113,0.1);color:#f87171;\" onclick=\"window.deleteHBProject(\x27' + p.name + '\x27)\">🗑 Delete</button>' +
+    '</div>' +
+    '<button class=\"hb-project-new\" style=\"margin-top:8px;border-color:#6b7280;color:#9ca3af;background:rgba(107,114,128,0.08);\" onclick=\"window.showProjects()\">\u2190 Back</button>';
+};
+
+window.loadHBProject = function(name) {
+  const projects = JSON.parse(localStorage.getItem('hb_projects') || '[]');
+  const p = projects.find(x => x.name === name);
+  if (!p) return;
+  document.getElementById('hb-project-overlay').classList.remove('show');
+  // Switch to play screen directly (skip showScreen which calls stopPhase3)
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  var ps = document.getElementById('play-screen');
+  ps.classList.add('active', 'game-mode');
+  document.getElementById('back-btn').classList.add('show');
+  // Load project
+  setTimeout(() => { HB.loadProject(p); }, 100);
+};
+
+window.deleteHBProject = function(name) {
+  if (!confirm('Delete \"' + name + '\"?')) return;
+  let projects = JSON.parse(localStorage.getItem('hb_projects') || '[]');
+  projects = projects.filter(p => p.name !== name);
+  localStorage.setItem('hb_projects', JSON.stringify(projects));
+  window.showProjects();
+};
 </script>
+<!-- Project list overlay -->
+<div class="hb-project-overlay" id="hb-project-overlay">
+  <div class="hb-project-box">
+    <h3>🏗️ Saved Projects</h3>
+    <div id="hb-project-list"></div>
+    <button class="hb-project-new" onclick="HB.startNew()">＋ New Build</button>
+  </div>
+</div>
+<!-- Audio -->
+<audio id="bg-music" loop preload="auto" src="Morning%20Porch.mp3"></audio>
+
 </body>
 </html>
