@@ -564,84 +564,6 @@
   .hb-req-item .hb-req-icon { font-size: 16px; width: 22px; text-align: center; }
   .hb-req-item .hb-req-name { flex: 1; }
   .hb-req-item .hb-req-count { color: #fbbf24; font-weight: 700; }
-  /* ── Phase 2: 3D Woodcutting HUD ── */
-  #viewport3d { position: absolute; inset: 0; display: none; }
-  #viewport3d.active { display: block; }
-  #viewport3d canvas { display: block; width: 100%; height: 100%; }
-
-  #wood-panel {
-    position: absolute; top: 14px; left: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 10px 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  #wood-icon { font-size: 28px; }
-  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
-  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-
-  #house-panel {
-    position: absolute; top: 14px; right: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-  }
-  #preview-viewport {
-    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
-    border: 2px solid #4a5568;
-    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
-  }
-  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
-  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
-  #build-cost.has-enough { color: #4ade80; }
-  #build-btn {
-    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
-    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
-    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
-    transition: all 0.3s ease; letter-spacing: 1px;
-  }
-  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
-  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
-
-  #build-mode-banner {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
-    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
-    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
-  }
-  #build-mode-banner.show { display: block; }
-  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
-  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
-
-  #completion-overlay-3d {
-    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
-    display: none; justify-content: center; align-items: center; flex-direction: column;
-    backdrop-filter: blur(4px);
-  }
-  #completion-overlay-3d.show { display: flex; }
-  #completion-card-3d {
-    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
-    border-radius: 18px; padding: 30px 40px; text-align: center;
-    box-shadow: 0 0 60px rgba(251,191,36,0.25);
-  }
-  #completion-emoji { font-size: 64px; }
-  #completion-title-3d {
-    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
-  }
-  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
-  .btn-gold {
-    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
-    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
-    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
-  }
-  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
-
-  #phase2-instructions {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
-    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
-  }
-  #phase2-instructions span { color: #4ade80; font-weight: 700; }
 
   /* ── Leave button ── */
   .leave-btn {
@@ -787,84 +709,6 @@
   .ts-toast.show { opacity: 1; }
   .ts-toast.good { color: #d4a574; }
   .ts-toast.bad { color: #f87171; }
-  /* ── Phase 2: 3D Woodcutting HUD ── */
-  #viewport3d { position: absolute; inset: 0; display: none; }
-  #viewport3d.active { display: block; }
-  #viewport3d canvas { display: block; width: 100%; height: 100%; }
-
-  #wood-panel {
-    position: absolute; top: 14px; left: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 10px 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  #wood-icon { font-size: 28px; }
-  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
-  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-
-  #house-panel {
-    position: absolute; top: 14px; right: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-  }
-  #preview-viewport {
-    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
-    border: 2px solid #4a5568;
-    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
-  }
-  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
-  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
-  #build-cost.has-enough { color: #4ade80; }
-  #build-btn {
-    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
-    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
-    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
-    transition: all 0.3s ease; letter-spacing: 1px;
-  }
-  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
-  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
-
-  #build-mode-banner {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
-    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
-    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
-  }
-  #build-mode-banner.show { display: block; }
-  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
-  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
-
-  #completion-overlay-3d {
-    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
-    display: none; justify-content: center; align-items: center; flex-direction: column;
-    backdrop-filter: blur(4px);
-  }
-  #completion-overlay-3d.show { display: flex; }
-  #completion-card-3d {
-    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
-    border-radius: 18px; padding: 30px 40px; text-align: center;
-    box-shadow: 0 0 60px rgba(251,191,36,0.25);
-  }
-  #completion-emoji { font-size: 64px; }
-  #completion-title-3d {
-    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
-  }
-  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
-  .btn-gold {
-    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
-    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
-    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
-  }
-  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
-
-  #phase2-instructions {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
-    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
-  }
-  #phase2-instructions span { color: #4ade80; font-weight: 700; }
 
   /* ── Leave button ── */
   .leave-btn {
@@ -1051,84 +895,6 @@
   .lb-toast.show { opacity: 1; }
   .lb-toast.good { color: #4ade80; }
   .lb-toast.bad { color: #f87171; }
-  /* ── Phase 2: 3D Woodcutting HUD ── */
-  #viewport3d { position: absolute; inset: 0; display: none; }
-  #viewport3d.active { display: block; }
-  #viewport3d canvas { display: block; width: 100%; height: 100%; }
-
-  #wood-panel {
-    position: absolute; top: 14px; left: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 10px 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  #wood-icon { font-size: 28px; }
-  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
-  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-
-  #house-panel {
-    position: absolute; top: 14px; right: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-  }
-  #preview-viewport {
-    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
-    border: 2px solid #4a5568;
-    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
-  }
-  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
-  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
-  #build-cost.has-enough { color: #4ade80; }
-  #build-btn {
-    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
-    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
-    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
-    transition: all 0.3s ease; letter-spacing: 1px;
-  }
-  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
-  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
-
-  #build-mode-banner {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
-    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
-    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
-  }
-  #build-mode-banner.show { display: block; }
-  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
-  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
-
-  #completion-overlay-3d {
-    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
-    display: none; justify-content: center; align-items: center; flex-direction: column;
-    backdrop-filter: blur(4px);
-  }
-  #completion-overlay-3d.show { display: flex; }
-  #completion-card-3d {
-    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
-    border-radius: 18px; padding: 30px 40px; text-align: center;
-    box-shadow: 0 0 60px rgba(251,191,36,0.25);
-  }
-  #completion-emoji { font-size: 64px; }
-  #completion-title-3d {
-    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
-  }
-  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
-  .btn-gold {
-    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
-    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
-    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
-  }
-  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
-
-  #phase2-instructions {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
-    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
-  }
-  #phase2-instructions span { color: #4ade80; font-weight: 700; }
 
   /* ── Leave button ── */
   .leave-btn {
@@ -1299,84 +1065,6 @@
     color: #4ade80; opacity: 0; transition: opacity 0.3s; pointer-events: none;
   }
   .ib-toast.show { opacity: 1; }
-  /* ── Phase 2: 3D Woodcutting HUD ── */
-  #viewport3d { position: absolute; inset: 0; display: none; }
-  #viewport3d.active { display: block; }
-  #viewport3d canvas { display: block; width: 100%; height: 100%; }
-
-  #wood-panel {
-    position: absolute; top: 14px; left: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 10px 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  #wood-icon { font-size: 28px; }
-  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
-  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-
-  #house-panel {
-    position: absolute; top: 14px; right: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-  }
-  #preview-viewport {
-    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
-    border: 2px solid #4a5568;
-    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
-  }
-  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
-  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
-  #build-cost.has-enough { color: #4ade80; }
-  #build-btn {
-    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
-    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
-    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
-    transition: all 0.3s ease; letter-spacing: 1px;
-  }
-  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
-  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
-
-  #build-mode-banner {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
-    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
-    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
-  }
-  #build-mode-banner.show { display: block; }
-  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
-  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
-
-  #completion-overlay-3d {
-    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
-    display: none; justify-content: center; align-items: center; flex-direction: column;
-    backdrop-filter: blur(4px);
-  }
-  #completion-overlay-3d.show { display: flex; }
-  #completion-card-3d {
-    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
-    border-radius: 18px; padding: 30px 40px; text-align: center;
-    box-shadow: 0 0 60px rgba(251,191,36,0.25);
-  }
-  #completion-emoji { font-size: 64px; }
-  #completion-title-3d {
-    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
-  }
-  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
-  .btn-gold {
-    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
-    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
-    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
-  }
-  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
-
-  #phase2-instructions {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
-    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
-  }
-  #phase2-instructions span { color: #4ade80; font-weight: 700; }
 
   /* ── Leave button ── */
   .leave-btn {
@@ -1555,84 +1243,6 @@
     color: #fbbf24; opacity: 0; transition: opacity 0.3s; pointer-events: none;
   }
   .mg-toast.show { opacity: 1; }
-  /* ── Phase 2: 3D Woodcutting HUD ── */
-  #viewport3d { position: absolute; inset: 0; display: none; }
-  #viewport3d.active { display: block; }
-  #viewport3d canvas { display: block; width: 100%; height: 100%; }
-
-  #wood-panel {
-    position: absolute; top: 14px; left: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 10px 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  #wood-icon { font-size: 28px; }
-  #wood-count { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #4ade80; }
-  #wood-label { color: #9ca3af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-
-  #house-panel {
-    position: absolute; top: 14px; right: 14px; z-index: 12;
-    background: rgba(15,17,15,0.92); border: 2px solid #374151;
-    border-radius: 12px; padding: 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-  }
-  #preview-viewport {
-    width: 120px; height: 100px; border-radius: 8px; overflow: hidden;
-    border: 2px solid #4a5568;
-    background: radial-gradient(ellipse at center, #1a3a1a 0%, #0d110d 100%);
-  }
-  #preview-viewport canvas { display: block; width: 100%; height: 100%; }
-  #build-cost { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fbbf24; }
-  #build-cost.has-enough { color: #4ade80; }
-  #build-btn {
-    font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
-    padding: 8px 18px; border-radius: 50px; border: 2px solid #4ade80;
-    background: rgba(74,222,128,0.15); color: #4ade80; cursor: pointer;
-    transition: all 0.3s ease; letter-spacing: 1px;
-  }
-  #build-btn:hover:not(:disabled) { background: rgba(74,222,128,0.3); box-shadow: 0 0 20px rgba(74,222,128,0.3); }
-  #build-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #4a5568; color: #6b7280; }
-
-  #build-mode-banner {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 12;
-    background: rgba(15,17,15,0.94); border: 2px solid #4ade80;
-    border-radius: 14px; padding: 14px 24px; text-align: center; display: none;
-  }
-  #build-mode-banner.show { display: block; }
-  #build-progress-text { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #4ade80; }
-  #build-hint { color: #9ca3af; font-size: 11px; margin-top: 4px; }
-
-  #completion-overlay-3d {
-    position: absolute; inset: 0; z-index: 30; background: rgba(0,0,0,0.75);
-    display: none; justify-content: center; align-items: center; flex-direction: column;
-    backdrop-filter: blur(4px);
-  }
-  #completion-overlay-3d.show { display: flex; }
-  #completion-card-3d {
-    background: rgba(15,17,15,0.96); border: 3px solid #fbbf24;
-    border-radius: 18px; padding: 30px 40px; text-align: center;
-    box-shadow: 0 0 60px rgba(251,191,36,0.25);
-  }
-  #completion-emoji { font-size: 64px; }
-  #completion-title-3d {
-    font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; background-clip: text; margin: 8px 0;
-  }
-  #completion-subtitle-3d { color: #d1d5db; font-size: 12px; letter-spacing: 1px; margin-bottom: 14px; }
-  .btn-gold {
-    font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700;
-    padding: 10px 24px; border-radius: 50px; border: 2px solid #fbbf24;
-    background: rgba(251,191,36,0.15); color: #fbbf24; cursor: pointer; transition: all 0.3s ease;
-  }
-  .btn-gold:hover { background: rgba(251,191,36,0.3); box-shadow: 0 0 24px rgba(251,191,36,0.35); }
-
-  #phase2-instructions {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 11;
-    background: rgba(15,17,15,0.85); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; padding: 8px 20px; color: #6b7280; font-size: 11px;
-  }
-  #phase2-instructions span { color: #4ade80; font-weight: 700; }
 
   /* ── Leave button ── */
   .leave-btn {
@@ -1950,10 +1560,10 @@
         <button class="hb-mode-btn" data-mode="walk">🚶 Walk</button>
       </div>
       <div class="hb-hud-bottom" id="hb-tools">
-        <button class="hb-tool-btn active" data-tool="wall">🧱 Wall</button>
-        <button class="hb-tool-btn" data-tool="floor">🪨 Floor</button>
-        <button class="hb-tool-btn" data-tool="door">🚪 Door</button>
-        <button class="hb-tool-btn erase" data-tool="erase">❌ Erase</button>
+        <button class="hb-tool-btn active" data-tool="wall" onclick="HB.setBuildTool('wall')">🧱 Wall</button>
+        <button class="hb-tool-btn" data-tool="floor" onclick="HB.setBuildTool('floor')">🪨 Floor</button>
+        <button class="hb-tool-btn" data-tool="door" onclick="HB.setBuildTool('door')">🚪 Door</button>
+        <button class="hb-tool-btn erase" data-tool="erase" onclick="HB.setBuildTool('erase')">❌ Erase</button>
       </div>
       <div class="hb-catalog" id="hb-catalog">
         <h4>🛋️ Furniture</h4>
@@ -1993,7 +1603,7 @@
 // ═══════════════════════════════════════
 //  GAME DATA
 // ═══════════════════════════════════════
-const PHASE1_DISTANCES = [1500, 4000, 8000];
+const PHASE1_DISTANCES = [1000, 2500, 5000];
 const WOOD_ITEMS = ['plank','beam','post'];
 
 window.GAME = {
@@ -2029,7 +1639,7 @@ let roadSampledC = [];       // road 2 (center)
 let roadSampledR = [];       // road 3 (right)
 let roadSegments = [];       // {x1,z1,x2,z2,dir} for scenery placement
 let roadLength = 0;
-const ROAD_HALF_W = 28.0;   // wider lanes (easier Phase 1)
+const ROAD_HALF_W = 36.0;   // wider lanes (easier Phase 1)
 const TRACK_GAP = 30;        // wider spacing
 const BLOCK_SIZE = 220;      // distance between intersections
 const HOUSE_OFFSET = 38;     // houses beside road edge
@@ -2061,6 +1671,11 @@ let sceneryItems = [];
 let mountains = [];
 let camZoom = 0.45;
 
+// Seeded PRNG — makes each level deterministic (same road every play)
+let _seed = 1;
+function seedRNG(s) { _seed = s; }
+function rnd() { _seed = (_seed * 16807) % 2147483647; return (_seed - 1) / 2147483646; }
+
 // Minimap
 let mmCanvas, mmCtx;
 
@@ -2090,7 +1705,7 @@ function generateRoad(totalDist) {
 
     if (remaining > BLOCK * 0.6) {
       // 90° turn at intersection: 35% left, 35% right, 30% straight
-      const r = Math.random();
+      const r = rnd();
       if (r < 0.35) dir = (dir + 3) % 4;      // left turn
       else if (r < 0.7) dir = (dir + 1) % 4;  // right turn
       // else continue straight
@@ -2179,15 +1794,15 @@ function findClosestRoadPoint(cx, cz) {
 function generateObstacles() {
   obstacles = [];
   if (roadSampledC.length < 20) return;
-  const step = Math.floor(roadSampledC.length / Math.max(1, Math.floor(targetDist / 300)));
+  const step = Math.floor(roadSampledC.length / Math.max(1, Math.floor(targetDist / 700)));
   for (let i = step; i < roadSampledC.length - step; i += step) {
     const pt = roadSampledC[i];
     // Place obstacle randomly left or right of center, but ON the road
-    const side = Math.random() > 0.5 ? 1 : -1;
-    const offset = (ROAD_HALF_W * 0.3 + Math.random() * ROAD_HALF_W * 0.5) * side;
+    const side = rnd() > 0.5 ? 1 : -1;
+    const offset = (ROAD_HALF_W * 0.3 + rnd() * ROAD_HALF_W * 0.5) * side;
     const ox = pt.x + Math.cos(pt.angle + Math.PI/2) * offset;
     const oz = pt.z + Math.sin(pt.angle + Math.PI/2) * offset;
-    obstacles.push({ x: ox, z: oz, r: 2.5 + Math.random() * 3 });
+    obstacles.push({ x: ox, z: oz, r: 2.0 + rnd() * 2 });
   }
 }
 function generateCoins() {
@@ -2237,7 +1852,7 @@ function generateScenery() {
         sceneryItems.push({
           x: hx, z: hz, type: 'house',
           rot: ang + (side === 1 ? Math.PI/2 : -Math.PI/2),
-          color: houseColors[Math.floor(Math.random() * houseColors.length)]
+          color: houseColors[Math.floor(rnd() * houseColors.length)]
         });
 
         // Tree in front yard (closer to road)
@@ -2246,7 +1861,7 @@ function generateScenery() {
         sceneryItems.push({x: tx, z: tz, type: 'tree'});
 
         // Second tree
-        if (Math.random() < 0.5) {
+        if (rnd() < 0.5) {
           const tx2 = sx + (side === 1 ? pxR : pxL) * (HO - 18) * mult;
           const tz2 = sz + (side === 1 ? pzR : pzL) * (HO - 18) * mult;
           sceneryItems.push({x: tx2, z: tz2, type: 'tree'});
@@ -2281,6 +1896,7 @@ function initGame2D(phase, level) {
   crashCount = 0; crashCooldown = 0;
   startTime = performance.now();
   closestRoadIdx = 0;
+  seedRNG(level.num * 7919 + 1); // deterministic per level
 
   canvas = document.getElementById('game-canvas');
   ctx = canvas.getContext('2d');
@@ -2330,8 +1946,8 @@ function update(dt) {
   crashCooldown = Math.max(0, crashCooldown - dt);
 
   // Speed — 2x faster
-  if (keys['KeyW'] || keys['ArrowUp']) targetSpeed = Math.min(targetSpeed + 60 * dt, 200);
-  else if (keys['KeyS'] || keys['ArrowDown']) targetSpeed = Math.max(targetSpeed - 55 * dt, -15);
+  if (keys['KeyW'] || keys['ArrowUp']) targetSpeed = Math.min(targetSpeed + 60 * dt, 170);
+  else if (keys['KeyS'] || keys['ArrowDown']) targetSpeed = Math.max(targetSpeed - 40 * dt, -10);
   else { targetSpeed *= 0.96; if (Math.abs(targetSpeed) < 0.3) targetSpeed = 0; }
 
   carSpeed += (targetSpeed - carSpeed) * 0.1;
@@ -2341,10 +1957,10 @@ function update(dt) {
   let steerInput = 0;
   if (keys['KeyA'] || keys['ArrowLeft']) steerInput = -1;
   if (keys['KeyD'] || keys['ArrowRight']) steerInput = 1;
-  carSteer += (steerInput - carSteer) * 0.25;
+  carSteer += (steerInput - carSteer) * 0.18;
 
   // Apply steering to car angle — faster steering, full turns
-  const steerRate = 2.2 * (Math.max(carSpeed, 10) / 35);  // easier: faster steering, min speed floor
+  const steerRate = 1.8 * (Math.max(carSpeed, 6) / 35);  // easier: faster steering, min speed floor
   carAngle += carSteer * steerRate * dt;
 
   // Move car
@@ -2369,9 +1985,9 @@ function update(dt) {
       const dx = carX - obs.x, dz = carZ - obs.z;
       const dist = Math.sqrt(dx*dx + dz*dz);
       if (dist < obs.r + 3) {
-        crashCooldown = 0.8;
-        carSpeed *= 0.5;
-        targetSpeed *= 0.5;
+        crashCooldown = 1.2;
+        carSpeed *= 0.7;
+        targetSpeed *= 0.7;
         // Push car away from obstacle
         if (dist > 0.01) {
           carX += dx/dist * 4;
@@ -2429,12 +2045,12 @@ function update(dt) {
 function crash() {
   if (crashCooldown > 0) return;
   crashCount++;
-  crashCooldown = 1.5;
+  crashCooldown = 2.5;
   carSpeed = 0;
   targetSpeed = 0;
 
   const track = getActiveTrack();
-  const backIdx = Math.max(0, closestRoadIdx - 15);
+  const backIdx = Math.max(0, closestRoadIdx - 4);
   carX = track[backIdx].x;
   carZ = track[backIdx].z;
   carAngle = track[backIdx].angle;
@@ -2450,7 +2066,7 @@ function crash() {
   setTimeout(() => { flash.classList.remove('show'); text.classList.remove('show'); }, 600);
 
   // If crashed 3+ times, lose level
-  if (crashCount >= 5) {
+  if (crashCount >= 7) {
     levelDone = true;
     setTimeout(() => {
       document.getElementById('complete-overlay').querySelector('.check').textContent = '✗';
@@ -2661,7 +2277,7 @@ function draw() {
     ctx.fillStyle = '#ff4444';
     ctx.font = `${Math.max(10, 14*camZoom)}px "Share Tech Mono", monospace`;
     ctx.textAlign = 'center';
-    ctx.fillText(`Crashes: ${crashCount}/5`, cw/2, 44);
+    ctx.fillText(`Crashes: ${crashCount}/7`, cw/2, 44);
     ctx.textAlign = 'start';
   }
 }
@@ -2893,12 +2509,12 @@ function updateWoodDrops3D(dt){for(var i=0;i<g3d.woodDrops.length;i++){var d=g3d
 function collectNearby3D(){ensureAudio3D();for(var i=g3d.woodDrops.length-1;i>=0;i--){if(g3d.player.position.distanceTo(g3d.woodDrops[i].position)<COLLECT_RADIUS_3D)collectWood3D(g3d.woodDrops[i],i);}}
 
 // ── Plank Generation ──
-function generatePlankTargets3D(cfg){var targets=[],cs=cfg.colsPerSide,ps=cfg.plankSpacing,wr=cfg.wallRows,ww=cfg.wallWidth,wd=cfg.wallDepth,rp=cfg.roofPlanks,hw2=ps*(cs-1)/2,hd2=ps*(cs-1)/2;for(var i=0;i<cs;i++)targets.push({pos:new THREE.Vector3(-hw2+i*ps,0.08,0),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[i%PLANK_COLORS.length]});for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var c=0;c<cs;c++){if(r===0&&c===Math.floor(cs/2))continue;targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,wd/2+0.1),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[(r*cs+c)%PLANK_COLORS.length]});}}for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var c=0;c<cs;c++){if(r===Math.floor(wr/2)&&c===Math.floor(cs/2))continue;targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,-wd/2-0.1),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[(r*cs+c+2)%PLANK_COLORS.length]});}}for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var s=0;s<cs;s++){targets.push({pos:new THREE.Vector3(-ww/2-0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:PLANK_COLORS[(r*cs+s+4)%PLANK_COLORS.length]});targets.push({pos:new THREE.Vector3(ww/2+0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:PLANK_COLORS[(r*cs+s+6)%PLANK_COLORS.length]});}}for(var i=0;i<rp;i++){var t=i/(rp-1);targets.push({pos:new THREE.Vector3(-ww/2+t*ww,1.2+t*1.2,0),rot:new THREE.Euler(0.45,0,0),color:0x5c3d2e});}for(var i=0;i<rp;i++){var t=i/(rp-1);targets.push({pos:new THREE.Vector3(ww/2-t*ww,1.2+t*1.2,0),rot:new THREE.Euler(-0.45,0,0),color:0x5c3d2e});}return targets;}
+function generatePlankTargets3D(cfg){var targets=[],cs=cfg.colsPerSide,ps=cfg.plankSpacing,wr=cfg.wallRows,ww=cfg.wallWidth,wd=cfg.wallDepth,rp=cfg.roofPlanks,hw2=ps*(cs-1)/2,hd2=ps*(cs-1)/2,wc=Math.floor(cs/2),dc=Math.floor(cs/2);for(var i=0;i<cs;i++){if(i===dc)continue;targets.push({pos:new THREE.Vector3(-hw2+i*ps,0.08,0),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[i%PLANK_COLORS.length]});}for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var c=0;c<cs;c++){if(r===0&&c===Math.floor(cs/2))continue;if(((c===1||c===cs-2)&&r===1)||((c===1||c===cs-2)&&r===wr-1)){targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,wd/2+0.1),rot:new THREE.Euler(0,0,0),color:0x87CEEB});}else{targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,wd/2+0.1),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[(r*cs+c)%PLANK_COLORS.length]});}}}for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var c=0;c<cs;c++){if(r===Math.floor(wr/2)&&c===Math.floor(cs/2))continue;if(((c===1||c===cs-2)&&r===1)||((c===1||c===cs-2)&&r===wr-1)){targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,-wd/2-0.1),rot:new THREE.Euler(0,0,0),color:0x87CEEB});}else{targets.push({pos:new THREE.Vector3(-hw2+c*ps,y,-wd/2-0.1),rot:new THREE.Euler(0,0,0),color:PLANK_COLORS[(r*cs+c+2)%PLANK_COLORS.length]});}}}for(var r=0;r<wr;r++){var y=0.25+r*0.55;for(var s=0;s<cs;s++){if(((s===1||s===cs-2)&&r===1)||((s===1||s===cs-2)&&r===wr-1)){targets.push({pos:new THREE.Vector3(-ww/2-0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:0x87CEEB});targets.push({pos:new THREE.Vector3(ww/2+0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:0x87CEEB});}else{targets.push({pos:new THREE.Vector3(-ww/2-0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:PLANK_COLORS[(r*cs+s+4)%PLANK_COLORS.length]});targets.push({pos:new THREE.Vector3(ww/2+0.1,y,-hd2+s*ps),rot:new THREE.Euler(0,Math.PI/2,0),color:PLANK_COLORS[(r*cs+s+6)%PLANK_COLORS.length]});}}}for(var i=0;i<rp;i++){var t=i/(rp-1);targets.push({pos:new THREE.Vector3(-ww/2+t*ww,1.2+t*1.2,0),rot:new THREE.Euler(0.45,0,0),color:0x8B4513});}for(var i=0;i<rp;i++){var t=i/(rp-1);targets.push({pos:new THREE.Vector3(ww/2-t*ww,1.2+t*1.2,0),rot:new THREE.Euler(-0.45,0,0),color:0x8B4513});}var chx=hw2*0.3,chy=1.2+rp*0.6;targets.push({pos:new THREE.Vector3(chx,chy,0),rot:new THREE.Euler(0,0,0),color:0x696969});targets.push({pos:new THREE.Vector3(chx,chy-0.3,0),rot:new THREE.Euler(0,0,0),color:0x808080});return targets;}
 
 // ── Blueprint & House ──
-function createBlueprint3D(){g3d.blueprintGroup=new THREE.Group();var pgeo=new THREE.BoxGeometry(1.6,0.15,0.4);for(var i=0;i<g3d.plankTargets.length;i++){var t=g3d.plankTargets[i],bp=new THREE.Mesh(pgeo,new THREE.MeshBasicMaterial({color:0x4ade80,transparent:true,opacity:0.25,depthTest:true}));bp.position.copy(t.pos);bp.rotation.copy(t.rot);g3d.blueprintGroup.add(bp);}g3d.blueprintGroup.position.copy(BUILD_ZONE);g3d.scene.add(g3d.blueprintGroup);}
+function createBlueprint3D(){g3d.blueprintGroup=new THREE.Group();var pgeo=new THREE.BoxGeometry(1.6,0.18,0.5);for(var i=0;i<g3d.plankTargets.length;i++){var t=g3d.plankTargets[i],bp=new THREE.Mesh(pgeo,new THREE.MeshBasicMaterial({color:0x4ade80,transparent:true,opacity:0.25,depthTest:true}));bp.position.copy(t.pos);bp.rotation.copy(t.rot);g3d.blueprintGroup.add(bp);}g3d.blueprintGroup.position.copy(BUILD_ZONE);g3d.scene.add(g3d.blueprintGroup);}
 function createHouseGroup3D(){g3d.houseGroup=new THREE.Group();g3d.houseGroup.position.copy(BUILD_ZONE);g3d.scene.add(g3d.houseGroup);}
-function placeNextPlank3D(){if(g3d.placedPlanks>=g3d.plankTargets.length)return;var t=g3d.plankTargets[g3d.placedPlanks],plank=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.15,0.4),new THREE.MeshStandardMaterial({color:t.color,roughness:0.5}));plank.position.copy(t.pos);plank.position.y+=3;plank.rotation.copy(t.rot);g3d.houseGroup.add(plank);plank.userData={targetY:t.pos.y,lerpSpeed:6,placed:false};var wp=t.pos.clone().add(BUILD_ZONE);spawnParticles3D(wp,0xcd853f,5);spawnParticles3D(wp,0x4ade80,3);screenShake3D(0.06,0.12);g3d.placedPlanks++;playPlank3D();updateBuildUI3D();if(g3d.placedPlanks>=g3d.plankTargets.length)completeHouse3D();}
+function placeNextPlank3D(){if(g3d.placedPlanks>=g3d.plankTargets.length)return;var t=g3d.plankTargets[g3d.placedPlanks],plank=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.18,0.5),new THREE.MeshStandardMaterial({color:t.color,roughness:0.5}));plank.position.copy(t.pos);plank.position.y+=3;plank.rotation.copy(t.rot);g3d.houseGroup.add(plank);plank.userData={targetY:t.pos.y,lerpSpeed:6,placed:false};var wp=t.pos.clone().add(BUILD_ZONE);spawnParticles3D(wp,0xcd853f,5);spawnParticles3D(wp,0x4ade80,3);screenShake3D(0.06,0.12);g3d.placedPlanks++;playPlank3D();updateBuildUI3D();if(g3d.placedPlanks>=g3d.plankTargets.length)completeHouse3D();}
 function animatePlanks3D(dt){if(!g3d.houseGroup)return;for(var i=0;i<g3d.houseGroup.children.length;i++){var c=g3d.houseGroup.children[i];if(!c.userData||c.userData.placed||c.userData.targetY===undefined)continue;c.position.y+=(c.userData.targetY-c.position.y)*c.userData.lerpSpeed*dt;if(Math.abs(c.position.y-c.userData.targetY)<0.02){c.position.y=c.userData.targetY;c.userData.placed=true;spawnParticles3D(c.position.clone().add(BUILD_ZONE),0xfbbf24,3);}}}
 function completeHouse3D(){g3d.buildingMode=false;if(g3d.blueprintGroup){g3d.scene.remove(g3d.blueprintGroup);g3d.blueprintGroup=null;}document.getElementById('build-mode-banner').classList.remove('show');document.getElementById('place-plank-btn').classList.remove('show');document.getElementById('build-btn').style.display='none';document.getElementById('design-btn').style.display='none';spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,3,0)),0xfbbf24,30);spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,3,0)),0x4ade80,20);spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,3,0)),0xff6b6b,15);playBuildComplete3D();screenShake3D(0.3,0.8);var cfg=g3d.levelConfig;document.getElementById('completion-subtitle-3d').textContent='You built the '+cfg.houseName+'!';setTimeout(function(){document.getElementById('completion-overlay-3d').classList.add('show');},1200);var bc=0,bi=setInterval(function(){spawnParticles3D(BUILD_ZONE.clone().add(new THREE.Vector3(0,4,0)),0xfbbf24,8);bc++;if(bc>=5)clearInterval(bi);},300);}
 function startBuilding3D(){if(g3d.shopOpen||(g3d.woodCount<g3d.woodRequired||g3d.screws<g3d.screwsRequired||g3d.buildingMode||g3d.placedPlanks>0))return;if(g3d.player.position.distanceTo(BUILD_ZONE)>BUILD_RADIUS){playTone3D(150,'square',0.1,0.04);return;}g3d.buildingMode=true;g3d.woodCount-=g3d.woodRequired;g3d.screws-=g3d.screwsRequired;updateUI3D();if(g3d.freeDesign){g3d.plankTargets=[];g3d.totalPlanks=999;document.getElementById('build-hint').textContent='Free Design — Click to place planks anywhere near the zone! (Esc to finish)';}else{g3d.plankTargets=generatePlankTargets3D(g3d.levelConfig);g3d.totalPlanks=g3d.plankTargets.length;document.getElementById('build-hint').textContent='Click near the blueprint to place planks! (Esc to cancel)';createBlueprint3D();}createHouseGroup3D();document.getElementById('build-mode-banner').classList.add('show');document.getElementById('place-plank-btn').classList.add('show');updateBuildUI3D();document.getElementById('build-btn').disabled=true;playTone3D(400,'sine',0.3,0.1);setTimeout(function(){playTone3D(600,'sine',0.3,0.1);},150);}
@@ -2982,7 +2598,15 @@ function createBuildZoneMarker(){bzMarker=new THREE.Group();var ring=new THREE.M
 function animateBZMarker(){if(!bzMarker||!g3d.gameActive)return;var pulse=0.3+Math.sin(Date.now()*0.003)*0.15;for(var i=0;i<bzMarker.children.length;i++)bzMarker.children[i].material.opacity=pulse;var dist=g3d.player.position.distanceTo(BUILD_ZONE);document.getElementById('build-zone-indicator').style.display=dist<=BUILD_RADIUS+5?'block':'none';}
 
 // ── Init & Loop ──
-function initPhase2Scene(cfg){g3d.levelConfig=cfg;g3d.woodRequired=cfg.woodRequired;g3d.screwsRequired=cfg.screwsRequired||5;g3d.woodCount=0;g3d.money=0;g3d.screws=0;g3d.axeLevel=1;g3d.trees=[];g3d.woodDrops=[];g3d.particles=[];g3d.buildingMode=false;g3d.placedPlanks=0;g3d.freeDesign=false;g3d.shiftLock=false;g3d.shopOpen=false;g3d.houseGroup=null;g3d.blueprintGroup=null;g3d.plankTargets=[];g3d.chopCooldown=0;g3d.animFrameId=null;g3d.shakeIntensity=0;g3d.shakeDuration=0;g3d.camTheta=0;g3d.camPhi=0.55;g3d.camDistance=18;g3d.targetCamTheta=0;g3d.targetCamPhi=0.55;g3d.targetCamDistance=18;g3d.scene=new THREE.Scene();g3d.scene.background=new THREE.Color(0x87CEEB);g3d.scene.fog=new THREE.Fog(0x9ab89a,70,180);var vp=document.getElementById('viewport3d'),w=vp.clientWidth,h=vp.clientHeight;g3d.camera=new THREE.PerspectiveCamera(60,w/h,0.5,300);g3d.camera.position.set(0,18,24);g3d.renderer=new THREE.WebGLRenderer({antialias:true});g3d.renderer.setSize(w,h);g3d.renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));g3d.renderer.shadowMap.enabled=true;g3d.renderer.shadowMap.type=THREE.PCFSoftShadowMap;g3d.renderer.toneMapping=THREE.ACESFilmicToneMapping;g3d.renderer.toneMappingExposure=1.1;vp.appendChild(g3d.renderer.domElement);var sun=new THREE.DirectionalLight(0xfff5e6,3.5);sun.position.set(40,50,30);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.near=0.5;sun.shadow.camera.far=200;sun.shadow.camera.left=-70;sun.shadow.camera.right=70;sun.shadow.camera.top=70;sun.shadow.camera.bottom=-70;sun.shadow.bias=-0.0004;g3d.scene.add(sun);g3d.scene.add(new THREE.AmbientLight(0x889977,1.0));g3d.scene.add(new THREE.HemisphereLight(0x87CEEB,0x446633,0.7));var ground=new THREE.Mesh(new THREE.PlaneGeometry(WORLD_SIZE_3D,WORLD_SIZE_3D),new THREE.MeshStandardMaterial({color:0x3d6b2e,roughness:0.85}));ground.rotation.x=-Math.PI/2;ground.position.y=-0.05;ground.receiveShadow=true;g3d.scene.add(ground);for(var i=0;i<400;i++){var x=(Math.random()-0.5)*WORLD_SIZE_3D*0.95,z=(Math.random()-0.5)*WORLD_SIZE_3D*0.95;if(Math.abs(x)<3&&Math.abs(z)<3)continue;var tuft=new THREE.Mesh(new THREE.ConeGeometry(0.15,0.4+Math.random()*0.6,4),new THREE.MeshStandardMaterial({color:new THREE.Color().setHSL(0.22+Math.random()*0.08,0.7,0.25+Math.random()*0.2),roughness:0.8}));tuft.position.set(x,0.15,z);tuft.castShadow=true;g3d.scene.add(tuft);}spawnTrees3D(cfg.treeCount);createPlayer3D();createBuildZoneMarker();g3d.clock=new THREE.Clock();}
+function initPhase2Scene(cfg){g3d.levelConfig=cfg;g3d.woodRequired=cfg.woodRequired;g3d.screwsRequired=cfg.screwsRequired||5;g3d.woodCount=0;g3d.money=0;g3d.screws=0;g3d.axeLevel=1;g3d.trees=[];g3d.woodDrops=[];g3d.particles=[];g3d.buildingMode=false;g3d.placedPlanks=0;g3d.freeDesign=false;g3d.shiftLock=false;g3d.shopOpen=false;g3d.houseGroup=null;g3d.blueprintGroup=null;g3d.plankTargets=[];g3d.chopCooldown=0;g3d.animFrameId=null;g3d.shakeIntensity=0;g3d.shakeDuration=0;g3d.camTheta=0;g3d.camPhi=0.55;g3d.camDistance=18;g3d.targetCamTheta=0;g3d.targetCamPhi=0.55;g3d.targetCamDistance=18;g3d.scene=new THREE.Scene();g3d.scene.background=new THREE.Color(0x87CEEB);g3d.scene.fog=new THREE.Fog(0x9ab89a,70,180);var vp=document.getElementById('viewport3d'),w=vp.clientWidth,h=vp.clientHeight;g3d.camera=new THREE.PerspectiveCamera(60,w/h,0.5,300);g3d.camera.position.set(0,18,24);g3d.renderer=new THREE.WebGLRenderer({antialias:true});g3d.renderer.setSize(w,h);g3d.renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));g3d.renderer.shadowMap.enabled=true;g3d.renderer.shadowMap.type=THREE.PCFSoftShadowMap;g3d.renderer.toneMapping=THREE.ACESFilmicToneMapping;g3d.renderer.toneMappingExposure=1.1;vp.appendChild(g3d.renderer.domElement);var sun=new THREE.DirectionalLight(0xfff5e6,3.5);sun.position.set(40,50,30);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.near=0.5;sun.shadow.camera.far=200;sun.shadow.camera.left=-70;sun.shadow.camera.right=70;sun.shadow.camera.top=70;sun.shadow.camera.bottom=-70;sun.shadow.bias=-0.0004;g3d.scene.add(sun);g3d.scene.add(new THREE.AmbientLight(0x889977,1.0));g3d.scene.add(new THREE.HemisphereLight(0x87CEEB,0x446633,0.7));var ground=new THREE.Mesh(new THREE.PlaneGeometry(WORLD_SIZE_3D,WORLD_SIZE_3D),new THREE.MeshStandardMaterial({color:0x3d6b2e,roughness:0.85}));ground.rotation.x=-Math.PI/2;ground.position.y=-0.05;ground.receiveShadow=true;g3d.scene.add(ground);
+// Mountain backdrop — full scene background texture
+(function(){
+  var ldr=new THREE.TextureLoader();
+  var tx=ldr.load('lucid-origin_an_image_of_beautifull_mountains_only_mountAINS_AND_THE_SKY_NOTHING_ELSE_green_a-0.jpg');
+  tx.colorSpace=THREE.SRGBColorSpace;
+  g3d.scene.background=tx;
+})();
+for(var i=0;i<400;i++){var x=(Math.random()-0.5)*WORLD_SIZE_3D*0.95,z=(Math.random()-0.5)*WORLD_SIZE_3D*0.95;if(Math.abs(x)<3&&Math.abs(z)<3)continue;var tuft=new THREE.Mesh(new THREE.ConeGeometry(0.15,0.4+Math.random()*0.6,4),new THREE.MeshStandardMaterial({color:new THREE.Color().setHSL(0.22+Math.random()*0.08,0.7,0.25+Math.random()*0.2),roughness:0.8}));tuft.position.set(x,0.15,z);tuft.castShadow=true;g3d.scene.add(tuft);}spawnTrees3D(cfg.treeCount);createPlayer3D();createBuildZoneMarker();g3d.clock=new THREE.Clock();}
 
 function initPhase2Controls(){var canvas=g3d.renderer.domElement;canvas.addEventListener('mousedown',function(e){if(e.button===0){g3d.mouse.down=true;if(g3d.buildingMode)handleBuildClick3D();else handleChop3D();}else if(e.button===2&&!g3d.shiftLock){g3d.isDragging=true;g3d.lastMouseX=e.clientX;g3d.lastMouseY=e.clientY;}});canvas.addEventListener('mousemove',function(e){g3d.mouseNDC.x=(e.clientX/window.innerWidth)*2-1;g3d.mouseNDC.y=-(e.clientY/window.innerHeight)*2+1;if(g3d.isDragging){var dx=e.clientX-g3d.lastMouseX,dy=e.clientY-g3d.lastMouseY;g3d.targetCamTheta-=dx*0.005;g3d.targetCamPhi=Math.max(0.1,Math.min(1.3,g3d.targetCamPhi-dy*0.005));g3d.lastMouseX=e.clientX;g3d.lastMouseY=e.clientY;}});canvas.addEventListener('mouseup',function(e){if(e.button===0)g3d.mouse.down=false;if(e.button===2)g3d.isDragging=false;});canvas.addEventListener('contextmenu',function(e){e.preventDefault();});canvas.addEventListener('wheel',function(e){g3d.targetCamDistance=Math.max(6,Math.min(40,g3d.targetCamDistance+e.deltaY*0.02));e.preventDefault();},{passive:false});}
 
@@ -3024,6 +2648,7 @@ const HB = {
   walls: null, floors: null, doors: null,
   furniture: [],
   mode: 'build', buildTool: 'wall', selectedItem: null,
+  furnRotation: 0, // furniture rotation (0=0°, 1=90°, 2=180°, 3=270°)
   playerR: 0, playerC: 0,
   levelData: null, requiredItems: [],
   gameActive: false, animId: null, winShown: false,
@@ -3041,6 +2666,7 @@ const HB = {
   isDragging: false, dragButton: 0, lastMX: 0, lastMY: 0,
 
   hoverR: -1, hoverC: -1, hoverEdge: null,
+  povMode: false, povKeys: {},
 
   catalog: [
     { name:'Bed', icon:'🛏️', w:2, h:1, color:'#e8b4b8', cat:'bedroom' },
@@ -3074,9 +2700,11 @@ const HB = {
     this.mode = 'build';
     this.buildTool = 'wall';
     this.selectedItem = null;
+    this.furnRotation = 0;
     this.playerR = Math.floor(this.rows/2);
     this.playerC = Math.floor(this.cols/2);
     this.hoverR = -1; this.hoverC = -1; this.hoverEdge = null;
+    this.povMode = false; this.povKeys = {};
     this.winShown = false;
     this.gameActive = true;
     this.isDragging = false;
@@ -3086,11 +2714,12 @@ const HB = {
     if (this.renderer) { this.renderer.dispose(); this.renderer = null; }
     if (this.scene) { this.scene.traverse(obj => { if(obj.geometry)obj.geometry.dispose(); if(obj.material){if(Array.isArray(obj.material))obj.material.forEach(m=>m.dispose());else obj.material.dispose();} }); }
     const vp = document.getElementById('ts-viewport');
+    vp.classList.add('active'); // must be visible before reading dimensions
     const W = vp.clientWidth, H = vp.clientHeight;
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color('#1a1c1a');
-    this.scene.fog = new THREE.Fog('#1a1c1a', 10, 45);
+    this.scene.background = new THREE.Color('#87CEEB');
+    this.scene.fog = new THREE.Fog('#9ab89a', 15, 60);
 
     this.camera = new THREE.PerspectiveCamera(50, W/H||1, 0.5, 80);
     this.camTarget = new THREE.Vector3(this.cols/2, 0, this.rows/2);
@@ -3128,6 +2757,12 @@ const HB = {
     ground.position.set(this.cols/2, -0.08, this.rows/2);
     ground.receiveShadow = true;
     this.scene.add(ground);
+
+    // Mountain backdrop — full scene background texture
+    const loader = new THREE.TextureLoader();
+    const mtTex = loader.load('lucid-origin_an_image_of_beautifull_mountains_only_mountAINS_AND_THE_SKY_NOTHING_ELSE_green_a-0.jpg');
+    mtTex.colorSpace = THREE.SRGBColorSpace;
+    this.scene.background = mtTex;
 
     // Invisible plane for raycaster (match ground size)
     const rGeo = new THREE.PlaneGeometry(groundSize, groundSize);
@@ -3184,7 +2819,6 @@ const HB = {
     this.updateStatus();
     this.buildReqPanel();
 
-    document.getElementById('ts-viewport').classList.add('active');
     document.getElementById('hb-catalog').classList.remove('show');
     document.getElementById('hb-win').classList.remove('show');
 
@@ -3246,15 +2880,63 @@ const HB = {
   loop(ts) {
     if (!this.gameActive) return;
     this.animId = requestAnimationFrame((t) => this.loop(t));
+    if (this.povMode) this.updatePOV();
     this.renderer.render(this.scene, this.camera);
+  },
+
+  updatePOV() {
+    // POV camera at player eye level inside the house
+    const speed = 4.0;
+    const keys = this.povKeys;
+    const px = this.playerC + 0.5;
+    const pz = this.playerR + 0.5;
+    const dir = new THREE.Vector3();
+    this.camera.getWorldDirection(dir);
+    dir.y = 0; dir.normalize();
+    const right = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0,1,0)).normalize();
+
+    let mx = 0, mz = 0;
+    if (keys['KeyW'] || keys['ArrowUp']) { mx += dir.x; mz += dir.z; }
+    if (keys['KeyS'] || keys['ArrowDown']) { mx -= dir.x; mz -= dir.z; }
+    if (keys['KeyA'] || keys['ArrowLeft']) { mx -= right.x; mz -= right.z; }
+    if (keys['KeyD'] || keys['ArrowRight']) { mx += right.x; mz += right.z; }
+
+    const len = Math.sqrt(mx*mx + mz*mz);
+    if (len > 1) { mx /= len; mz /= len; }
+
+    const dt = 1/60;
+    let nx = this.camera.position.x + mx * speed * dt;
+    let nz = this.camera.position.z + mz * speed * dt;
+
+    // Clamp to grid bounds
+    nx = Math.max(0.2, Math.min(this.cols - 0.2, nx));
+    nz = Math.max(0.2, Math.min(this.rows - 0.2, nz));
+
+    // Check wall collisions
+    const cr = Math.floor(nz), cc = Math.floor(nx);
+    const pr = Math.floor(this.camera.position.z), pc = Math.floor(this.camera.position.x);
+    let blocked = false;
+    if (cr < pr && this.walls.has(pr+','+pc+'-N') && !this.doors.has(pr+','+pc+'-N')) blocked = true;
+    if (cr > pr && this.walls.has((pr+1)+','+pc+'-N') && !this.doors.has((pr+1)+','+pc+'-N')) blocked = true;
+    if (cc < pc && this.walls.has(pr+','+pc+'-W') && !this.doors.has(pr+','+pc+'-W')) blocked = true;
+    if (cc > pc && this.walls.has(pr+','+(pc+1)+'-W') && !this.doors.has(pr+','+(pc+1)+'-W')) blocked = true;
+
+    if (!blocked) {
+      this.camera.position.x = nx;
+      this.camera.position.z = nz;
+    }
+    this.camera.position.y = 0.55; // Eye level
+    this.camTarget.set(this.camera.position.x + dir.x, 0.55, this.camera.position.z + dir.z);
+    this.camera.lookAt(this.camTarget);
   },
 
   // ══════════ SCENE REBUILD ══════════
   rebuildScene() {
-    // Clear groups
-    while(this.floorGroup.children.length) this.floorGroup.remove(this.floorGroup.children[0]);
-    while(this.wallGroup.children.length) this.wallGroup.remove(this.wallGroup.children[0]);
-    while(this.furnGroup.children.length) this.furnGroup.remove(this.furnGroup.children[0]);
+    // Clear groups — dispose old geometries to prevent WebGL memory leaks
+    const disposeGroup = (g) => { while(g.children.length) { const c = g.children[0]; g.remove(c); c.traverse(ch => { if (ch.geometry) ch.geometry.dispose(); if (ch.material) { if (Array.isArray(ch.material)) ch.material.forEach(m => m.dispose()); else ch.material.dispose(); } }); } };
+    disposeGroup(this.floorGroup);
+    disposeGroup(this.wallGroup);
+    disposeGroup(this.furnGroup);
 
     // Grass markers — subtle raised cell on grass (helps see the grid)
     const grassGeo = new THREE.BoxGeometry(0.96, 0.008, 0.96);
@@ -3313,6 +2995,7 @@ const HB = {
         if (under) baseY = 0.27;
       }
       group.position.set(f.c+ci.w/2, baseY, f.r+ci.h/2);
+      if (f.rot) group.rotation.y = (f.rot || 0) * Math.PI/2;
       group.traverse(ch => { if (ch.isMesh) { ch.castShadow = true; ch.receiveShadow = true; } });
       this.furnGroup.add(group);
     }
@@ -3326,7 +3009,7 @@ const HB = {
       walls: [...this.walls],
       floors: [...this.floors],
       doors: [...this.doors],
-      furniture: this.furniture.map(f => ({type: f.type, r: f.r, c: f.c})),
+      furniture: this.furniture.map(f => ({type: f.type, r: f.r, c: f.c, rot: f.rot||0})),
     };
     let projects = JSON.parse(localStorage.getItem('hb_projects') || '[]');
     const idx = projects.findIndex(p => p.name === name);
@@ -3363,7 +3046,7 @@ const HB = {
     this.walls = new Set(data.walls);
     this.floors = new Set(data.floors);
     this.doors = new Set(data.doors);
-    this.furniture = data.furniture.map(f => ({type: f.type, r: f.r, c: f.c}));
+    this.furniture = data.furniture.map(f => ({type: f.type, r: f.r, c: f.c, rot: f.rot||0}));
     this.requiredItems = [];
     this.winShown = false;
     this.rebuildScene();
@@ -3377,8 +3060,8 @@ const HB = {
     if (this.renderer) { this.renderer.dispose(); }
     if (this.scene) { this.scene.traverse(obj => { if(obj.geometry)obj.geometry.dispose(); if(obj.material){if(Array.isArray(obj.material))obj.material.forEach(m=>m.dispose());else obj.material.dispose();} }); }
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color('#1a1c1a');
-    this.scene.fog = new THREE.Fog('#1a1c1a', 10, 45);
+    this.scene.background = new THREE.Color('#87CEEB');
+    this.scene.fog = new THREE.Fog('#9ab89a', 15, 60);
     this.camera = new THREE.PerspectiveCamera(50, W/H||1, 0.5, 80);
     this.camTarget = new THREE.Vector3(this.cols/2, 0, this.rows/2);
     this.camDist = Math.max(8, Math.max(this.cols, this.rows) * 0.7);
@@ -3743,7 +3426,7 @@ const HB = {
         }
       }
       if (can) {
-        this.furniture.push({type:this.selectedItem, r:g.r, c:g.c});
+        this.furniture.push({type:this.selectedItem, r:g.r, c:g.c, rot:this.furnRotation});
         this.toast('Placed '+this.selectedItem+'!');
         this.rebuildScene();
         window.playPop();
@@ -3762,7 +3445,23 @@ const HB = {
     if (!this.gameActive || this.winShown) return;
     if (e.key==='1') this.setMode('build');
     if (e.key==='2') this.setMode('furnish');
-    if (e.key==='3') this.setMode('walk');
+    if (e.key==='3') { this.setMode('walk'); this.activatePOV(); }
+    // R key: rotate furniture before placing (in furnish mode)
+    if ((e.key==='r'||e.key==='R') && this.mode==='furnish' && this.selectedItem) {
+      this.furnRotation = (this.furnRotation + 1) % 4;
+      this.toast('Rotation: ' + (this.furnRotation*90) + '\u00b0');
+      e.preventDefault();
+    }
+    // POV movement keys
+    if (this.povMode) {
+      this.povKeys[e.code] = true;
+      if (e.code === 'Escape') { this.exitPOV(); e.preventDefault(); return; }
+      if (e.code === 'KeyW' || e.code === 'KeyA' || e.code === 'KeyS' || e.code === 'KeyD' ||
+          e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+        e.preventDefault();
+      }
+      return;
+    }
     if (this.mode==='build') {
       if (e.key==='q'||e.key==='Q') this.setBuildTool('wall');
       if (e.key==='w'||e.key==='W') this.setBuildTool('floor');
@@ -3777,22 +3476,59 @@ const HB = {
       if (e.key==='d'||e.key==='ArrowRight') nc++;
       if (nr>=0&&nr<this.rows&&nc>=0&&nc<this.cols) {
         let blocked=false;
+        // Wall keys are normalized to N (horizontal) and W (vertical) only
+        // S→(r+1),c-N  and  E→r,(c+1)-W
         if (nr<this.playerR) blocked=this.walls.has(this.playerR+','+this.playerC+'-N')&&!this.doors.has(this.playerR+','+this.playerC+'-N');
-        if (nr>this.playerR) blocked=this.walls.has(this.playerR+','+this.playerC+'-S')&&!this.doors.has(this.playerR+','+this.playerC+'-S');
+        if (nr>this.playerR) blocked=this.walls.has((this.playerR+1)+','+this.playerC+'-N')&&!this.doors.has((this.playerR+1)+','+this.playerC+'-N');
         if (nc<this.playerC) blocked=this.walls.has(this.playerR+','+this.playerC+'-W')&&!this.doors.has(this.playerR+','+this.playerC+'-W');
-        if (nc>this.playerC) blocked=this.walls.has(this.playerR+','+this.playerC+'-E')&&!this.doors.has(this.playerR+','+this.playerC+'-E');
+        if (nc>this.playerC) blocked=this.walls.has(this.playerR+','+(this.playerC+1)+'-W')&&!this.doors.has(this.playerR+','+(this.playerC+1)+'-W');
         if (!blocked&&this.floors.has(nr+','+nc)) { this.playerR=nr; this.playerC=nc; }
       }
     }
     e.preventDefault();
   },
 
-  setMode(m) {
+  activatePOV() {
+    // Switch to first-person POV inside the house
+    if (!this.floors.has(this.playerR+','+this.playerC)) {
+      this.toast('Step onto a floor tile first!');
+      return;
+    }
+    this.povMode = true;
+    this.povKeys = {};
+    this.isDragging = false;
+    // Place camera at player position, eye level
+    this.camera.position.set(this.playerC + 0.5, 0.55, this.playerR + 0.5);
+    // Face north by default
+    this.camTarget.set(this.playerC + 0.5, 0.55, this.playerR + 0.5 - 1);
+    this.camera.lookAt(this.camTarget);
+    this.toast('🚶 POV Mode — WASD to walk, ESC to exit');
+  },
+
+  exitPOV() {
+    this.povMode = false;
+    this.povKeys = {};
+    // Restore orbit camera
+    this.camTarget.set(this.cols/2, 0, this.rows/2);
+    this.camDist = Math.max(8, Math.max(this.cols, this.rows) * 0.7);
+    this.camAngle = -0.6; this.camElev = 1.05;
+    this.updateCamera();
+    this.toast('Orbit camera restored');
+  },  setMode(m) {
+    if (this.mode === 'walk' && m !== 'walk') {
+      this.povMode = false;
+      // Restore orbit camera
+      this.camTarget.set(this.cols/2, 0, this.rows/2);
+      this.camDist = Math.max(8, Math.max(this.cols, this.rows) * 0.7);
+      this.camAngle = -0.6; this.camElev = 1.05;
+      this.updateCamera();
+      document.exitPointerLock?.();
+    }
     this.mode=m; this.selectedItem=null;
     document.querySelectorAll('.hb-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
     document.getElementById('hb-tools').style.display=m==='build'?'flex':'none';
     document.getElementById('hb-catalog').classList.toggle('show',m==='furnish');
-    if (m==='walk') { this.hoverMesh.visible=false; this.hoverEdgeMesh.visible=false; }
+    if (m==='walk' || m==='pov') { this.hoverMesh.visible=false; this.hoverEdgeMesh.visible=false; }
     this.updateUI(); this.updateStatus();
   },
 
@@ -3806,8 +3542,8 @@ const HB = {
     const c=document.getElementById('hb-cat-items');
     c.innerHTML=this.catalog.map(item=>
       '<div class="hb-cat-item" data-item="'+item.name+'" onclick="HB.selectFurniture(\x27'+item.name+'\x27)">'+
-      '<span class="hb-cat-icon">'+item.icon+'</span>'+
-      '<span class="hb-cat-name">'+item.name+'</span>'+
+      '<span class="hb-cat-icon">'+item.icon+'<\/span>'+
+      '<span class="hb-cat-name">'+item.name+'<\/span>'+
       '<\/div>'
     ).join('');
   },
@@ -3834,9 +3570,9 @@ const HB = {
       const ci=this.catalog.find(it=>it.name===name);
       const icon=ci?ci.icon:'📦';
       return '<div class="hb-req-item'+(done?' done':'')+'">'+
-        '<span class="hb-req-icon">'+icon+'</span>'+
-        '<span class="hb-req-name">'+name+'</span>'+
-        (n>1?'<span class="hb-req-count">'+p+'/'+n+'</span>':'')+
+        '<span class="hb-req-icon">'+icon+'<\/span>'+
+        '<span class="hb-req-name">'+name+'<\/span>'+
+        (n>1?'<span class="hb-req-count">'+p+'/'+n+'<\/span>':'')+
         (done?' \u2705':'')+
       '<\/div>';
     }).join('');
@@ -3955,7 +3691,15 @@ const HB = {
     return rooms;
   },
 
-  goBack(){this.stop();window.openPhase(3);},
+  goBack(){
+    // Prompt to save if there's work
+    if (this.walls.size > 0 || this.floors.size > 0 || this.furniture.length > 0) {
+      if (confirm('Save your project before leaving?')) {
+        this.savePrompt();
+      }
+    }
+    this.stop();window.openPhase(3);
+  },
   nextLevel(){
     const pid=3,ln=+document.getElementById('play-screen').dataset.levelNum;
     window.completed[pid].add(ln);window.saveState();
@@ -3993,6 +3737,24 @@ const HB = {
 
 // Mouse up handler (global, for orbit drag release)
 window.addEventListener('mouseup', function(e) { if (HB && HB.isDragging) HB.isDragging = false; });
+// Key up for POV mode
+window.addEventListener('keyup', function(e) {
+  if (HB && HB.povMode) { HB.povKeys[e.code] = false; }
+});
+// Mouse move for POV look (rotate camera)
+var _hbPovMouseHandler = function(e) {
+  if (!HB || !HB.povMode) return;
+  var dx = e.movementX || 0;
+  HB.camera.rotation.y -= dx * 0.002;
+};
+// Click to lock pointer for POV
+var _hbPovClickHandler = function(e) {
+  if (HB && HB.povMode && HB.renderer && HB.renderer.domElement) {
+    HB.renderer.domElement.requestPointerLock();
+  }
+};
+document.addEventListener('mousemove', _hbPovMouseHandler);
+document.addEventListener('click', _hbPovClickHandler);
 
 window.initPhase3 = function(p, l) {
   document.getElementById('placeholder-container').style.display = 'none';
@@ -4001,7 +3763,13 @@ window.initPhase3 = function(p, l) {
   document.getElementById('play-screen').classList.add('game-mode');
   requestAnimationFrame(() => HB.init(l));
 };
-window.stopPhase3 = function() { if (HB) HB.stop(); };
+window.stopPhase3 = function() {
+  // Prompt to save if there's work
+  if (HB && HB.gameActive && (HB.walls.size > 0 || HB.floors.size > 0 || HB.furniture.length > 0)) {
+    if (confirm('Save your project before leaving?')) { HB.savePrompt(); }
+  }
+  if (HB) HB.stop();
+};
 console.log('House Builder \u2014 Phase 3 ready');
 
 </script>
@@ -4113,11 +3881,17 @@ window.openLevel = function(pid, lnum) {
 };
 
 window.goBackToLevelGrid = function() {
+  const pid=+document.getElementById('play-screen').dataset.phaseId;
+  // Phase 3: prompt to save before leaving
+  if (pid === 3 && HB && HB.gameActive && (HB.walls.size > 0 || HB.floors.size > 0 || HB.furniture.length > 0)) {
+    if (confirm('Save your project before leaving?')) { HB.savePrompt(); }
+    HB.stop(); // stop directly to avoid double-prompt from stopPhase3
+  } else {
+    if(window.stopPhase3) window.stopPhase3();
+  }
   if(window.stopGame3D) window.stopGame3D();
   if(window.stopPhase2Game) window.stopPhase2Game();
-  if(window.stopPhase3) window.stopPhase3();
   document.getElementById('play-screen').classList.remove('game-mode');
-  const pid=+document.getElementById('play-screen').dataset.phaseId;
   pid?window.openPhase(pid):window.showScreen('phase-select');
 };
 window.markComplete = function() {
@@ -4210,6 +3984,7 @@ window.deleteHBProject = function(name) {
     <h3>🏗️ Saved Projects</h3>
     <div id="hb-project-list"></div>
     <button class="hb-project-new" onclick="HB.startNew()">＋ New Build</button>
+    <button class="hb-project-new" style="margin-top:6px;border-color:#6b7280;color:#9ca3af;background:rgba(107,114,128,0.08);" onclick="document.getElementById('hb-project-overlay').classList.remove('show');window.showScreen('phase-select')">← Back to Phases</button>
   </div>
 </div>
 <!-- Audio -->
